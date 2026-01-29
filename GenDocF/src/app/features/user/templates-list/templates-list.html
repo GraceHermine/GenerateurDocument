@@ -1,0 +1,62 @@
+<!-- Page Content -->
+<div class="p-8">
+  <!-- Heading -->
+  <div class="mb-8">
+    <h2 class="text-[#1b130d] dark:text-[#fcfaf8] text-3xl font-bold tracking-tight">Bibliothèque de Templates</h2>
+    <p class="text-[#9a6c4c] dark:text-[#b08b72] mt-1">Choisissez parmi plus de 50 modèles professionnels pour vos besoins administratifs.</p>
+  </div>
+
+  <!-- Filters -->
+  <div class="flex items-center gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+    <button routerLink="/templates" class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-5 text-white shadow-sm">
+      <span class="text-sm font-medium">Tous</span>
+    </button>
+    <button routerLink="/templates?category=contracts" class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-[#f3ece7] dark:bg-[#3a2a1d] px-5 text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
+      <span class="text-sm font-medium">Contrats</span>
+      <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+    </button>
+    <button routerLink="/templates?category=invoices" class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-[#f3ece7] dark:bg-[#3a2a1d] px-5 text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
+      <span class="text-sm font-medium">Factures</span>
+      <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+    </button>
+    <!-- Ajoute les autres filtres ici -->
+  </div>
+
+  <!-- Template Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <!-- Exemple de card -->
+    <div class="group flex flex-col rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] bg-white dark:bg-[#2d2116] overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all">
+      <div class="relative aspect-[3/4] bg-[#f9f5f2] dark:bg-[#1e150d] p-6 border-b border-[#f3ece7] dark:border-[#3a2a1d]">
+        <div class="w-full h-full bg-white dark:bg-[#221810] shadow-sm rounded p-4 flex flex-col gap-2 overflow-hidden opacity-80">
+          <div class="w-3/4 h-2 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
+          <div class="w-full h-1 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
+          <div class="w-full h-1 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
+          <div class="mt-4 w-1/2 h-2 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
+          <div class="w-full h-1 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
+        </div>
+        <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 scale-150 transition-all">visibility</span>
+        </div>
+      </div>
+      <div class="p-4 flex flex-col gap-3">
+        <div>
+          <h3 class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">Contrat de Prestation</h3>
+          <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72] mt-1">Juridique • 4 pages</p>
+        </div>
+        <div class="flex gap-2 pt-2">
+          <button routerLink="/template-preview" class="flex-1 text-xs font-bold py-2 px-3 border border-[#f3ece7] dark:border-[#3a2a1d] rounded-lg hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d] transition-colors">Aperçu</button>
+          <button routerLink="/user/dynamic-form" class="flex-1 text-xs font-bold py-2 px-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">Utiliser</button>
+        </div>
+      </div>
+    </div>
+    <!-- Tu peux dupliquer les cards pour les autres templates -->
+  </div>
+
+  <!-- Load More / Pagination -->
+  <div class="mt-12 flex justify-center">
+    <button routerLink="/templates" class="flex items-center gap-2 px-8 py-3 bg-[#f3ece7] dark:bg-[#3a2a1d] rounded-lg text-sm font-bold hover:bg-primary/10 transition-colors">
+      <span>Afficher plus de modèles</span>
+      <span class="material-symbols-outlined">expand_more</span>
+    </button>
+  </div>
+</div>

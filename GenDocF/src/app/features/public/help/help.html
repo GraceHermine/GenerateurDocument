@@ -1,0 +1,79 @@
+<div class="flex min-h-screen flex-col">
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-[1280px] mx-auto w-full px-6 py-10">
+    <!-- Hero Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-[#1b130e] dark:text-white text-3xl md:text-4xl font-bold leading-tight mb-6">
+        Comment pouvons-nous vous aider aujourd'hui ?
+      </h1>
+      <div class="max-w-2xl mx-auto">
+        <label class="relative block group">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-primary">
+            <span class="material-symbols-outlined">search</span>
+          </div>
+          <input type="text" placeholder="Rechercher une réponse, un guide ou un mot-clé..."
+                 class="block w-full h-14 pl-12 pr-4 bg-background-light dark:bg-[#1b130e] border border-[#e6dad1] dark:border-[#3d2b1f] rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-sm placeholder-[#976d50] text-[#1b130e] dark:text-white" />
+        </label>
+        <div class="mt-4 flex flex-wrap justify-center gap-2 text-xs text-[#976d50] dark:text-[#c5a38a]">
+          <span>Populaire : </span>
+          <a class="underline hover:text-primary" href="#">Récupérer mon mot de passe</a>,
+          <a class="underline hover:text-primary" href="#">Modifier un template</a>,
+          <a class="underline hover:text-primary" href="#">Factures PDF</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories Grid -->
+    <section class="mb-16">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-[#1b130e] dark:text-white text-2xl font-bold">Catégories d'aide</h2>
+        <a class="text-primary text-sm font-semibold hover:underline flex items-center gap-1" href="#">
+          Voir tout <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Category 1 -->
+        <div class="group flex flex-col gap-4 p-6 bg-background-light dark:bg-background-dark border border-[#e6dad1] dark:border-[#3d2b1f] rounded-xl hover:shadow-lg hover:border-primary/40 transition-all cursor-pointer">
+          <div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[28px]">rocket_launch</span>
+          </div>
+          <div>
+            <h3 class="text-[#1b130e] dark:text-white text-lg font-bold mb-1">Premiers Pas</h3>
+            <p class="text-[#976d50] text-sm leading-relaxed">Apprenez les bases de la plateforme et configurez votre profil.</p>
+          </div>
+        </div>
+        <!-- Category 2 -->
+        <div class="group flex flex-col gap-4 p-6 bg-background-light dark:bg-background-dark border border-[#e6dad1] dark:border-[#3d2b1f] rounded-xl hover:shadow-lg hover:border-primary/40 transition-all cursor-pointer">
+          <div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[28px]">edit_note</span>
+          </div>
+          <div>
+            <h3 class="text-[#1b130e] dark:text-white text-lg font-bold mb-1">Édition de Documents</h3>
+            <p class="text-[#976d50] text-sm leading-relaxed">Maîtrisez les outils de génération et les variables dynamiques.</p>
+          </div>
+        </div>
+        <!-- Category 3 -->
+        <div class="group flex flex-col gap-4 p-6 bg-background-light dark:bg-background-dark border border-[#e6dad1] dark:border-[#3d2b1f] rounded-xl hover:shadow-lg hover:border-primary/40 transition-all cursor-pointer">
+          <div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[28px]">lock</span>
+          </div>
+          <div>
+            <h3 class="text-[#1b130e] dark:text-white text-lg font-bold mb-1">Sécurité</h3>
+            <p class="text-[#976d50] text-sm leading-relaxed">Gestion des données, confidentialité et droits d'accès.</p>
+          </div>
+        </div>
+        <!-- Category 4 -->
+        <div class="group flex flex-col gap-4 p-6 bg-background-light dark:bg-background-dark border border-[#e6dad1] dark:border-[#3d2b1f] rounded-xl hover:shadow-lg hover:border-primary/40 transition-all cursor-pointer">
+          <div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-[28px]">payments</span>
+          </div>
+          <div>
+            <h3 class="text-[#1b130e] dark:text-white text-lg font-bold mb-1">Abonnements</h3>
+            <p class="text-[#976d50] text-sm leading-relaxed">Gérer vos forfaits, modes de paiement et factures.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

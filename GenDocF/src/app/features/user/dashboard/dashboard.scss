@@ -1,0 +1,79 @@
+// 1. Reset & Variables (Inspiré de DocuWood)
+$primary: #ffff00;
+$wood-dark: #2d2d14; // Le vert très sombre de la sidebar
+$wood-light: #a1a145;
+$bg-body: #fcfcf8;
+
+// 2. Application directe sur la Sidebar
+aside {
+  background-color: $wood-dark !important;
+  color: white !important;
+  border-right: 1px solid rgba($wood-light, 0.2) !important;
+
+  // Cibler les liens de navigation
+  nav a {
+    color: #a1a1aa !important; // Gris par défaut
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05) !important;
+      color: white !important;
+    }
+
+    // Forcer le style jaune sur l'élément actif
+    &.sidebar-active {
+      background-color: $primary !important;
+      color: $wood-dark !important;
+      font-weight: 700 !important;
+
+      span.material-symbols-outlined {
+        font-variation-settings: 'FILL' 1 !important;
+      }
+    }
+  }
+
+  // Bouton déconnexion en bas
+  .logout-btn, button {
+    background-color: rgba($primary, 0.1) !important;
+    border: 1px solid rgba($primary, 0.3) !important;
+    color: $primary !important;
+    
+    &:hover {
+      background-color: $primary !important;
+      color: $wood-dark !important;
+    }
+  }
+}
+
+// 3. Application sur le contenu principal (Dashboard)
+main {
+  background-color: $bg-body !important;
+
+  // Style des cartes (Nouvelle Génération, etc.)
+  .group { 
+    background-color: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02) !important;
+
+    &:hover {
+      border-color: $primary !important;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08) !important;
+    }
+  }
+
+  // Titres et textes
+  h2, h3 { color: $wood-dark !important; }
+  p { color: #6b7280 !important; }
+}
+
+// 4. Correction des tableaux
+table {
+  thead tr {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+    th { color: #9ca3af !important; font-size: 0.75rem !important; }
+  }
+  tbody tr:hover {
+    background-color: rgba($primary, 0.05) !important;
+  }
+}

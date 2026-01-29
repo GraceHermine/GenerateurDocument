@@ -1,0 +1,79 @@
+<div class="flex min-h-screen flex-col">
+  
+
+  <!-- Main Content -->
+  <main class="flex-1 flex items-center justify-center p-6 bg-background-light dark:bg-background-dark">
+    <div class="relative w-full max-w-md">
+      <!-- Form Card -->
+      <div class="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-xl rounded-2xl p-8 border border-[#e6dad1] dark:border-[#3d2b1f] shadow-2xl">
+        <div class="flex flex-col items-center mb-8">
+          <div class="bg-primary/20 rounded-full w-20 h-20 flex items-center justify-center mb-4 shadow-lg">
+            <span class="material-symbols-outlined text-4xl text-primary">description</span>
+          </div>
+          <h1 class="text-xl font-extrabold text-primary dark:text-[#d4a373]">GenDoc</h1>
+          <p class="text-sm text-[#956d50] dark:text-[#c5a38a]">Gestion & Génération de Documents</p>
+        </div>
+
+        <h2 class="text-lg font-bold text-primary dark:text-[#d4a373] mb-4">Connexion à l'Espace Client</h2>
+        <p class="text-sm text-[#956d50] dark:text-[#c5a38a] mb-6">Heureux de vous revoir parmi nous.</p>
+
+        <form class="space-y-6">
+          <!-- Email -->
+          <div class="space-y-2">
+            <label for="email" class="text-xs font-bold text-[#956d50] dark:text-[#c5a38a] uppercase tracking-wider ml-1">Email</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <span class="material-symbols-outlined text-[#956d50] dark:text-[#c5a38a] text-[20px]">mail</span>
+              </div>
+              <input id="email" type="email" required placeholder="votre@email.fr"
+                     class="block w-full pl-10 pr-4 py-3 border border-[#e6dad1] dark:border-[#3d2b1f] rounded-xl bg-background-light dark:bg-background-dark text-sm placeholder-[#956d50]/60 text-[#1b130e] dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"/>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center px-1">
+              <label for="password" class="text-xs font-bold text-[#956d50] dark:text-[#c5a38a] uppercase tracking-wider">Mot de passe</label>
+              <a href="#" class="text-[11px] font-bold text-primary hover:underline transition-all">Mot de passe oublié ?</a>
+            </div>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <span class="material-symbols-outlined text-[#956d50] dark:text-[#c5a38a] text-[20px]">lock</span>
+              </div>
+              <input id="password" type="password" required placeholder="••••••••"
+                     class="block w-full pl-10 pr-4 py-3 border border-[#e6dad1] dark:border-[#3d2b1f] rounded-xl bg-background-light dark:bg-background-dark text-sm placeholder-[#956d50]/60 text-[#1b130e] dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"/>
+            </div>
+          </div>
+
+          <!-- Remember Me -->
+          <div class="flex items-center gap-2 px-1">
+            <input type="checkbox" id="remember" class="w-4 h-4 rounded text-primary focus:ring-primary border-[#e6dad1] dark:border-[#3d2b1f] bg-background-light dark:bg-background-dark"/>
+            <label for="remember" class="text-sm text-[#956d50] dark:text-[#c5a38a] cursor-pointer">Se souvenir de moi</label>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="w-full ...">
+                <span>Se connecter</span>
+                <span class="material-symbols-outlined text-[20px]">login</span>
+        </button>
+        </form>
+
+        <div class="mt-8 pt-6 border-t border-[#e6dad1] dark:border-[#3d2b1f] text-center">
+          <p class="text-sm text-[#956d50] dark:text-[#c5a38a]">
+            Pas encore de compte ? 
+            <a routerLink="/register" class="text-primary font-bold hover:underline">S'inscrire</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-8 text-center">
+        <a routerLink="/help" class="inline-flex items-center gap-2 text-xs font-medium text-[#956d50] hover:text-primary transition-colors">
+          <span class="material-symbols-outlined text-[16px]">help_outline</span>
+          Besoin d'aide ou support technique ?
+        </a>
+      </div>
+    </div>
+  </main>
+
+  
+</div>

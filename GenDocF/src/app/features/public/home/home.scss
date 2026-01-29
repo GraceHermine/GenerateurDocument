@@ -1,0 +1,14 @@
+// Exemple si tu veux ajouter des styles custom en plus de Tailwind
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+// Styles spécifiques si besoin
+.hero-title {
+  @apply text-4xl font-black leading-[1.1] tracking-tight @[480px]:text-6xl;
+}
+
+.btn-primary {
+  @apply flex h-14 min-w-[180px] items-center justify-center rounded-xl bg-primary px-8 text-base font-bold text-white shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all hover:-translate-y-0.5;
+}

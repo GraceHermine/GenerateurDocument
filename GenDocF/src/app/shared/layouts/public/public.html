@@ -1,0 +1,62 @@
+<div class="flex min-h-screen flex-col">
+
+  <!-- HEADER -->
+  <header
+    class="sticky top-0 z-50 w-full border-b border-[#e6dad1] bg-background-light/80 backdrop-blur-md">
+    <div class="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4">
+
+      <h2 class="text-xl font-bold text-primary">GenDoc</h2>
+
+      <nav class="hidden md:flex items-center gap-8">
+        <a routerLink="/" class="text-sm font-semibold text-primary">Accueil</a>
+        <a routerLink="/about" class="text-sm font-semibold hover:text-primary">À propos</a>
+        <a routerLink="/contact" class="text-sm font-semibold hover:text-primary">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button routerLink="/auth/login" class="px-4 py-2 font-bold text-primary">
+          Connexion
+        </button>
+        <button routerLink="/auth/register" class="px-4 py-2 bg-primary text-white rounded-lg">
+          Inscription
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENU -->
+  <main class="flex-1">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#f3ece7] py-10 px-10 border-t">
+    <div class="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+
+      <div>
+        <h3 class="font-bold text-lg mb-3">GenDoc</h3>
+        <p>Gestion et génération intelligente de documents</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold mb-3">Navigation</h4>
+        <ul class="space-y-2">
+          <li><a routerLink="/" class="hover:text-primary">Accueil</a></li>
+          <li><a routerLink="/user/templates-list" class="hover:text-primary">Templates</a></li>
+          <li><a routerLink="/user/document-generation" class="hover:text-primary">Générer</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold mb-3">Compte</h4>
+        <ul class="space-y-2">
+          <li><a routerLink="/auth/login" class="hover:text-primary">Connexion</a></li>
+          <li><a routerLink="/auth/register" class="hover:text-primary">Inscription</a></li>
+          <li><a routerLink="/auth/forgot-password" class="hover:text-primary">Mot de passe oublié</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </footer>
+
+</div>

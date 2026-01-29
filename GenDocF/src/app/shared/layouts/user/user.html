@@ -1,0 +1,119 @@
+<div class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="flex flex-col border-r border-white/10 shadow-2xl">
+
+    <!-- Logo / En-tête -->
+    <div class="p-6">
+      <div class="flex items-center gap-4">
+        <div class="bg-primary rounded-xl p-3 flex items-center justify-center shadow-md">
+          <span class="material-symbols-outlined text-wood-dark text-4xl font-black">forest</span>
+        </div>
+        <div>
+          <h1 class="text-2xl font-extrabold text-white tracking-tight">GenDoc</h1>
+          <p class="text-white/70 text-sm font-medium uppercase tracking-widest mt-1">Gestion de Documents</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation principale -->
+    <nav class="flex-1 px-5 py-4 space-y-2 overflow-y-auto">
+      
+      <a 
+        routerLink="/user" 
+        routerLinkActive="sidebar-active"
+        routerLinkActiveOptions="{ exact: true }"
+        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
+      >
+        <span class="material-symbols-outlined text-2xl">dashboard</span>
+        <span class="text-base font-semibold">Dashboard</span>
+      </a>
+
+      <a 
+        routerLink="/user/profile" 
+        routerLinkActive="sidebar-active"
+        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
+      >
+        <span class="material-symbols-outlined text-2xl">person</span>
+        <span class="text-base font-medium">Profil</span>
+      </a>
+
+      <a 
+        routerLink="/user/history" 
+        routerLinkActive="sidebar-active"
+        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
+      >
+        <span class="material-symbols-outlined text-2xl">history</span>
+        <span class="text-base font-medium">Historique</span>
+      </a>
+
+      <a 
+        routerLink="/user/templates-list" 
+        routerLinkActive="sidebar-active"
+        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
+      >
+        <span class="material-symbols-outlined text-2xl">description</span>
+        <span class="text-base font-medium">Templates</span>
+      </a>
+
+      <a 
+        routerLink="/user/template-create" 
+        routerLinkActive="sidebar-active"
+        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
+      >
+        <span class="material-symbols-outlined text-2xl">note_add</span>
+        <span class="text-base font-medium">Créer Template</span>
+      </a>
+
+      <a 
+        routerLink="/user/dynamic-form" 
+        routerLinkActive="sidebar-active"
+        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
+      >
+        <span class="material-symbols-outlined text-2xl">add_circle</span>
+        <span class="text-base font-medium">Générer</span>
+      </a>
+
+      <div class="my-6 px-2">
+        <div class="h-px bg-white/15"></div>
+      </div>
+
+      <a 
+        routerLink="/user/document" 
+        routerLinkActive="sidebar-active"
+        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
+      >
+        <span class="material-symbols-outlined text-2xl">settings</span>
+        <span class="text-base font-medium">Paramètres</span>
+      </a>
+
+      <a 
+        routerLink="/user/notifications" 
+        routerLinkActive="sidebar-active"
+        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
+      >
+        <span class="material-symbols-outlined text-2xl">notifications</span>
+        <span class="text-base font-medium">Notifications</span>
+      </a>
+    </nav>
+
+    <!-- Bouton déconnexion -->
+    <div class="p-6 border-t border-white/10 mt-auto">
+      <button 
+        routerLink="/auth/logout"
+        class="logout-btn w-full flex items-center justify-center gap-3 py-3.5 rounded-xl font-semibold text-lg transition-all duration-200"
+      >
+        <span class="material-symbols-outlined text-2xl">logout</span>
+        <span>Se déconnecter</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Zone principale -->
+  <main class="flex-1 bg-bg-light overflow-hidden">
+    <div class="h-full overflow-y-auto p-6">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+</div>

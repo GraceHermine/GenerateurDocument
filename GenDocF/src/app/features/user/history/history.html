@@ -1,0 +1,118 @@
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+  <!-- Top Navigation -->
+  <header class="sticky top-0 z-10 flex items-center justify-between border-b border-[#f3ece7] dark:border-[#3a2a1d] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-8 py-4">
+    <div class="flex items-center gap-8 flex-1 max-w-2xl">
+      <label class="flex flex-col flex-1 h-10">
+        <div class="flex w-full flex-1 items-stretch rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d]">
+          <div class="text-[#9a6c4c] flex items-center justify-center pl-4">
+            <span class="material-symbols-outlined">search</span>
+          </div>
+          <input class="w-full border-none bg-transparent focus:ring-0 text-[#1b130d] dark:text-[#fcfaf8] placeholder-[#9a6c4c] px-4 text-base" placeholder="Rechercher un document..." value=""/>
+        </div>
+      </label>
+    </div>
+    <div class="flex items-center gap-4 ml-4">
+      <button class="p-2 rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d] text-[#1b130d] dark:text-[#fcfaf8] hover:bg-primary/20 transition-colors">
+        <span class="material-symbols-outlined">notifications</span>
+      </button>
+      <div class="h-8 w-[1px] bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
+      <button class="flex items-center gap-2 p-1 pr-3 rounded-full bg-[#f3ece7] dark:bg-[#3a2a1d] text-[#1b130d] dark:text-[#fcfaf8]">
+        <div class="size-8 rounded-full bg-cover bg-center" data-alt="Photo de profil de l'utilisateur" style="background-image: url('https://lh3.googleusercontent.com/...');"></div>
+        <span class="text-sm font-medium">M. Lefebvre</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <div class="p-8 max-w-6xl mx-auto w-full">
+    <!-- Heading -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-3xl font-extrabold text-[#1b130d] dark:text-[#fcfaf8] tracking-tight">Historique des Documents</h2>
+        <p class="text-[#9a6c4c] dark:text-[#b08b72] mt-1">Gérez et téléchargez vos documents précédemment générés.</p>
+      </div>
+      <button routerLink="/documents/new" class="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20">
+        <span class="material-symbols-outlined">add</span>
+        Nouveau Document
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+      <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-primary text-white px-4 text-sm font-semibold">Tous</button>
+      <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d] px-4 text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
+        Factures <span class="material-symbols-outlined text-lg">expand_more</span>
+      </button>
+      <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d] px-4 text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
+        Contrats <span class="material-symbols-outlined text-lg">expand_more</span>
+      </button>
+      <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d] px-4 text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
+        Rapports <span class="material-symbols-outlined text-lg">expand_more</span>
+      </button>
+    </div>
+
+    <!-- Documents Table -->
+    <div class="bg-white dark:bg-[#2d2116] rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] overflow-hidden shadow-sm">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-[#f3ece7] dark:bg-[#3a2a1d] border-b border-[#f3ece7] dark:border-[#3a2a1d]">
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Nom du Document</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Date de création</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Type</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#f3ece7] dark:divide-[#3a2a1d]">
+          <!-- Exemple Row -->
+          <tr class="hover:bg-[#f3ece7]/50 transition-colors">
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-3">
+                <div class="size-9 bg-primary/10 rounded flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                  <span class="material-symbols-outlined">picture_as_pdf</span>
+                </div>
+                <div>
+                  <p class="text-sm font-bold">Facture_Q4_Apple_Inc.pdf</p>
+                  <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72]">2.4 MB</p>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4"><p class="text-sm text-[#1b130d] dark:text-[#fcfaf8]">12 Oct 2023</p></td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide bg-accent-yellow/10 text-accent-yellow border border-accent-yellow/20">Facture</span>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <div class="flex justify-end gap-2">
+                <button routerLink="/document-preview" class="p-2 hover:bg-primary/10 rounded-lg transition-all">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                <button class="p-2 hover:bg-primary/10 rounded-lg transition-all">
+                  <span class="material-symbols-outlined">download</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <!-- Tu peux dupliquer Row ici pour plus de documents -->
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-[#f3ece7] flex items-center justify-between">
+        <p class="text-sm text-[#9a6c4c] dark:text-[#b08b72]">
+          Affichage de <span class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">1</span> à <span class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">10</span> sur <span class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">150</span> documents
+        </p>
+        <div class="flex items-center gap-2">
+          <button class="px-3 py-1.5 rounded border border-[#f3ece7] dark:border-[#3a2a1d] text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] disabled:opacity-50" disabled>Précédent</button>
+          <div class="flex items-center gap-1">
+            <button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-white text-sm font-bold shadow-sm">1</button>
+            <button class="w-8 h-8 flex items-center justify-center rounded text-[#1b130d] dark:text-[#fcfaf8] text-sm font-medium hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">2</button>
+            <button class="w-8 h-8 flex items-center justify-center rounded text-[#1b130d] dark:text-[#fcfaf8] text-sm font-medium hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">3</button>
+            <span class="px-1 text-[#9a6c4c] dark:text-[#b08b72]">...</span>
+            <button class="w-8 h-8 flex items-center justify-center rounded text-[#1b130d] dark:text-[#fcfaf8] text-sm font-medium hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">15</button>
+          </div>
+          <button class="px-3 py-1.5 rounded border border-[#f3ece7] dark:border-[#3a2a1d] text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">Suivant</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
