@@ -16,9 +16,12 @@
         </div>
 
         <div class="flex flex-wrap gap-4">
-          <button class="flex h-14 min-w-[180px] items-center justify-center rounded-xl bg-primary px-8 text-base font-bold text-white shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all hover:-translate-y-0.5">
-            Commencer l'essai
-          </button>
+         <button
+  routerLink="/user/"
+  class="flex h-14 min-w-[180px] items-center justify-center rounded-xl bg-primary px-8 text-base font-bold text-white shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all hover:-translate-y-0.5">
+  Commencer l'essai
+</button>
+
           <button class="flex h-14 min-w-[180px] items-center justify-center rounded-xl border-2 border-[#e6dad1] dark:border-[#3d2b1f] bg-transparent px-8 text-base font-bold text-[#1b130e] dark:text-[#f8f7f6] hover:bg-[#f3ece8] dark:hover:bg-[#3d2b1f] transition-all">
             Voir la démo
           </button>
@@ -83,10 +86,14 @@
           </div>
         </div>
 
-        <button class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
-          Voir les modèles
-          <span class="material-symbols-outlined text-base">arrow_forward</span>
-        </button>
+       <button
+  [routerLink]="['/user/templates-list']"
+  [queryParams]="{ category: category.slug }"
+  class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
+  Voir les modèles
+  <span class="material-symbols-outlined text-base">arrow_forward</span>
+</button>
+
       </div>
     </div>
 
@@ -128,9 +135,12 @@
           Rejoignez des milliers d'utilisateurs qui font confiance à notre expertise pour leur gestion documentaire.
         </p>
       </div>
-      <button class="flex h-16 min-w-[240px] items-center justify-center rounded-2xl bg-white px-10 text-lg font-black text-primary transition-all hover:bg-[#f5f5dc] active:scale-95 shadow-xl">
-        Créer un compte gratuit
-      </button>
+     <button
+  routerLink="/auth/register"
+  class="flex h-16 min-w-[240px] items-center justify-center rounded-2xl bg-white px-10 text-lg font-black text-primary transition-all hover:bg-[#f5f5dc] active:scale-95 shadow-xl">
+  Créer un compte gratuit
+</button>
+
     </div>
   </div>
 </section>
