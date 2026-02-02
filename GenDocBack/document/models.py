@@ -1,61 +1,168 @@
-import uuid
-import os
+# import uuid
+# import os
+# from django.db import models
+# from django.conf import settings
+# from apps.templates.models import TemplateVersion
+
 from django.db import models
-from django.conf import settings
-from apps.templates.models import TemplateVersion
 
-class Document(models.Model):
-    class Status(models.TextChoices):
-        PENDING = 'PENDING', 'En attente'
-        PROCESSING = 'PROCESSING', 'En cours de génération'
-        COMPLETED = 'COMPLETED', 'Terminé'
-        FAILED = 'FAILED', 'Échec'
-
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    
-    # Lien vers l'utilisateur (Django Auth)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='documents', on_delete=models.CASCADE)
-    
-    # CRITIQUE : On lie à une VERSION spécifique, pas juste au Template global.
-    # Cela garantit que si le template change demain, ce document reste intègre.
-    template_version = models.ForeignKey(TemplateVersion, related_name='generated_docs', on_delete=models.PROTECT)
-    
-    # Les réponses de l'utilisateur au formulaire (JSON)
-    # Ex: {"nom": "Dupont", "date": "2023-10-10"}
-    input_data = models.JSONField(default=dict)
-    
-    # Le résultat final
-    output_file = models.FileField(upload_to='documents/generated/%Y/%m/', null=True, blank=True)
-    
-    # Gestion de la File d'attente
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
-    error_log = models.TextField(blank=True, help_text="Message d'erreur technique si FAILED")
-    
-    # Métadonnées temporelles
-    created_at = models.DateTimeField(auto_now_add=True)
-    completed_at = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return f"Doc {self.uuid} - {self.status}"
-
-    @property
-    def filename(self):
-        return os.path.basename(self.output_file.name) if self.output_file else "generating..."
-
-class DocumentAuditLog(models.Model):
-    """
-    Traçabilité complète pour les entreprises (Compliance).
-    Enregistre chaque action sur un document.
-    """
-    document = models.ForeignKey(Document, related_name='audit_logs', on_delete=models.CASCADE)
-    actor = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
-    
-    action = models.CharField(max_length=50) # ex: 'CREATED', 'DOWNLOADED', 'REGENERATED'
-    timestamp = models.DateTimeField(auto_now_add=True)
-    
-    # Détails techniques (IP, User-Agent)
-    ip_address = models.GenericIPAddressField(null=True)
-    details = models.JSONField(null=True, blank=True) # Pour stocker des diffs ou infos extra
+# Create your models here.
+class CategorieTemplate(models.Model):
+    nom = models.CharField(max_length=150)
+    description = models.TextField(blank=True)
+    icone = models.CharField(max_length=50, blank=True)
+    image = models.ImageField(upload_to='categories/', blank=True, null=True)
 
     class Meta:
-        ordering = ['-timestamp']
+        verbose_name = "Catégorie de template"
+        verbose_name_plural = "Catégories de templates"
+
+    def __str__(self):
+        return self.nom
+
+
+class TemplateDocument(models.Model):
+    categorie = models.ForeignKey(
+        CategorieTemplate,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="templates"
+    )
+    nom = models.CharField(max_length=255)
+    fichier = models.FileField(upload_to='templates/')
+    date_add = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Template document'
+        verbose_name_plural = 'Templates documents'
+
+    def __str__(self):
+        return self.nom
+
+
+class Formulaire(models.Model):
+    template = models.ForeignKey(
+        TemplateDocument,
+        on_delete=models.CASCADE,
+        related_name="formulaires"
+    )
+    titre = models.CharField(max_length=255)
+    date_add = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Formulaire'
+        verbose_name_plural = 'Formulaires'
+
+    def __str__(self):
+        return self.titre
+
+
+class Question(models.Model):
+    TYPE_CHAMP_CHOICES = [
+        ('text', 'Texte'),
+        ('date', 'Date'),
+        ('number', 'Nombre'),
+        ('email', 'Email'),
+    ]
+
+    formulaire = models.ForeignKey(
+        Formulaire,
+        on_delete=models.CASCADE,
+        related_name='questions'
+    )
+    label = models.CharField(max_length=255)
+    variable = models.CharField(
+        max_length=100,
+        help_text="Nom de la variable utilisée dans le template Word"
+    )
+    type_champ = models.CharField(
+        max_length=50,
+        choices=TYPE_CHAMP_CHOICES
+    )
+    obligatoire = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Question'
+        verbose_name_plural = 'Questions'
+
+    def __str__(self):
+        return self.label
+
+
+class TypeDocument(models.Model):
+    nom = models.CharField(max_length=50)
+    extension = models.CharField(max_length=10)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Type de document'
+        verbose_name_plural = 'Types de documents'
+
+    def __str__(self):
+        return self.nom
+
+
+class DocumentGenere(models.Model):
+    PDF = 'pdf'
+    DOCX = 'docx'
+
+    FORMAT_CHOICES = [
+        (PDF, 'PDF'),
+        (DOCX, 'Word'),
+    ]
+
+    STATUS_CHOICES = [
+        ('pending', 'En attente'),
+        ('processing', 'En cours'),
+        ('done', 'Terminé'),
+        ('error', 'Erreur'),
+    ]
+
+    template = models.ForeignKey(
+        TemplateDocument,
+        on_delete=models.CASCADE,
+        related_name='documents_generes'
+    )
+    format = models.CharField(max_length=10, choices=FORMAT_CHOICES)
+    fichier = models.FileField(
+        upload_to='documents_generes/',
+        blank=True,
+        null=True
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+    date_generation = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Document généré'
+        verbose_name_plural = 'Documents générés'
+
+    def __str__(self):
+        return f"{self.template.nom} ({self.format})"
+
+
+class ReponseQuestion(models.Model):
+    document = models.ForeignKey(
+        DocumentGenere,
+        on_delete=models.CASCADE,
+        related_name="reponses"
+    )
+    question = models.ForeignKey(
+        Question,
+        on_delete=models.CASCADE,
+        related_name="reponses"
+    )
+    valeur = models.TextField()
+    date_add = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Réponse question'
+        verbose_name_plural = 'Réponses questions'
+
+    def __str__(self):
+        return f"{self.question.label} : {self.valeur}"
