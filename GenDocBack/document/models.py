@@ -2,7 +2,7 @@ import uuid
 import os
 from django.db import models
 from django.conf import settings
-from apps.templates.models import TemplateVersion
+from templates.models import TemplateVersion
 
 class Document(models.Model):
     class Status(models.TextChoices):
