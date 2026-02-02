@@ -16,6 +16,8 @@ yarn-error.log
 # Paramètres sensibles
 .venv
 .venv.*
+venv/
+*.pyc
 
 # IDEs and editors
 .idea/
