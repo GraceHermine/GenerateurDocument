@@ -2,7 +2,6 @@ from rest_framework import viewsets, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Category, Template, TemplateVersion
 from .serializers import (
@@ -26,8 +25,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['parent']
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'description']
     ordering_fields = ['name', 'created_at']
     ordering = ['name']
@@ -46,8 +44,7 @@ class TemplateViewSet(viewsets.ModelViewSet):
     """
     queryset = Template.objects.filter(is_active=True)
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['category', 'engine', 'is_active']
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'description']
     ordering_fields = ['title', 'created_at']
     ordering = ['-created_at']
@@ -96,8 +93,7 @@ class TemplateVersionViewSet(viewsets.ModelViewSet):
     queryset = TemplateVersion.objects.all()
     serializer_class = TemplateVersionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['template', 'is_active']
+    filter_backends = [filters.OrderingFilter]
     ordering_fields = ['version_number', 'created_at']
     ordering = ['-version_number']
 

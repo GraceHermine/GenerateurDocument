@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     # Third party
     'rest_framework',
     'rest_framework_simplejwt',
-    'django_filters',
     'corsheaders',  # Pour le CORS avec le frontend Angular
     'drf_spectacular',  # API Documentation (Swagger/OpenAPI)
     
@@ -183,7 +182,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
     'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
@@ -297,7 +295,6 @@ SPECTACULAR_SETTINGS = {
     ],
     'DEFAULTS': {
         'pagination_class': 'rest_framework.pagination.PageNumberPagination',
-        'filter_backends': ['django_filters.rest_framework.DjangoFilterBackend'],
     },
 }
 
