@@ -15,6 +15,9 @@ import { GenerationResult } from './generation-result/generation-result';
 import { DocumentPreview } from './document-preview/document-preview';
 import { Notifications } from './notifications/notifications';
 
+// 1. IMPORT DU COMPOSANT SETTINGS (Indispensable)
+import { SettingsComponent } from './settings/settings';
+
 const routes: Routes = [
   { path: '', component: User, children: [
       { path: '', component: Dashboard },
@@ -30,6 +33,9 @@ const routes: Routes = [
       { path: 'generation-result', component: GenerationResult },
       { path: 'document-preview', component: DocumentPreview },
       { path: 'notifications', component: Notifications },
+      
+      // 2. LA ROUTE SETTINGS (C'est elle qui fait le lien avec l'URL /user/settings)
+      { path: 'settings', component: SettingsComponent },
     ]
   }
 ];

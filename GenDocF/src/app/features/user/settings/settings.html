@@ -1,0 +1,237 @@
+<main class="flex-1 flex flex-col h-full bg-background-light dark:bg-background-dark transition-colors duration-300">
+  
+  <header class="flex items-center justify-between border-b border-warm-beige dark:border-wood-brown/20 px-8 py-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-10">
+    <div class="flex items-center gap-4 text-wood-brown dark:text-background-light">
+      <h2 class="text-lg font-bold tracking-tight">Paramètres de l'Application</h2>
+    </div>
+    
+    <div class="flex flex-1 justify-end gap-6 items-center">
+        <label class="relative flex min-w-40 max-w-xs w-full">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <span class="material-symbols-outlined text-soft-brown text-[20px]">search</span>
+            </div>
+            <input class="block w-full pl-10 pr-3 py-2 border-none bg-warm-beige dark:bg-wood-brown/30 rounded-lg text-sm placeholder-soft-brown focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-wood-brown/50 transition-all" placeholder="Rechercher..." type="text"/>
+        </label>
+        <div class="flex items-center gap-3">
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20" style='background-image: url("https://i.pravatar.cc/150?u=a042581f4e29026704d");'></div>
+        </div>
+    </div>
+  </header>
+
+  <div class="p-8 max-w-5xl mx-auto w-full flex flex-col gap-8 pb-20">
+    
+    <div class="flex flex-col gap-1">
+      <h3 class="text-2xl font-extrabold text-wood-brown dark:text-white">Configuration globale</h3>
+      <p class="text-soft-brown text-sm">Gérez les préférences de votre compte et de l'interface DocuWood.</p>
+    </div>
+
+    <nav>
+      <div class="flex border-b border-warm-beige dark:border-wood-brown/20 gap-8 overflow-x-auto cursor-pointer">
+        
+        <a (click)="switchTab('language')" 
+           [class.border-primary]="activeTab === 'language'"
+           [class.text-wood-brown]="activeTab === 'language'"
+           [class.dark:text-white]="activeTab === 'language'"
+           [class.border-transparent]="activeTab !== 'language'"
+           [class.text-soft-brown]="activeTab !== 'language'"
+           class="flex items-center gap-2 border-b-2 pb-4 pt-2 font-bold text-sm transition-all whitespace-nowrap hover:text-wood-brown dark:hover:text-white">
+          <span class="material-symbols-outlined text-[20px]">language</span>
+          Langue & Région
+        </a>
+
+        <a (click)="switchTab('theme')" 
+           [class.border-primary]="activeTab === 'theme'"
+           [class.text-wood-brown]="activeTab === 'theme'"
+           [class.dark:text-white]="activeTab === 'theme'"
+           [class.border-transparent]="activeTab !== 'theme'"
+           [class.text-soft-brown]="activeTab !== 'theme'"
+           class="flex items-center gap-2 border-b-2 pb-4 pt-2 font-bold text-sm transition-all whitespace-nowrap hover:text-wood-brown dark:hover:text-white">
+          <span class="material-symbols-outlined text-[20px]">palette</span>
+          Thème & Apparence
+        </a>
+
+        <a (click)="switchTab('notifications')" 
+           [class.border-primary]="activeTab === 'notifications'"
+           [class.text-wood-brown]="activeTab === 'notifications'"
+           [class.dark:text-white]="activeTab === 'notifications'"
+           [class.border-transparent]="activeTab !== 'notifications'"
+           [class.text-soft-brown]="activeTab !== 'notifications'"
+           class="flex items-center gap-2 border-b-2 pb-4 pt-2 font-bold text-sm transition-all whitespace-nowrap hover:text-wood-brown dark:hover:text-white">
+          <span class="material-symbols-outlined text-[20px]">mail_outline</span>
+          E-mails & Notifications
+        </a>
+
+        <a (click)="switchTab('integrations')" 
+           [class.border-primary]="activeTab === 'integrations'"
+           [class.text-wood-brown]="activeTab === 'integrations'"
+           [class.dark:text-white]="activeTab === 'integrations'"
+           [class.border-transparent]="activeTab !== 'integrations'"
+           [class.text-soft-brown]="activeTab !== 'integrations'"
+           class="flex items-center gap-2 border-b-2 pb-4 pt-2 font-bold text-sm transition-all whitespace-nowrap hover:text-wood-brown dark:hover:text-white">
+          <span class="material-symbols-outlined text-[20px]">extension</span>
+          Intégrations
+        </a>
+      </div>
+    </nav>
+
+    <div class="space-y-8">
+
+      <section *ngIf="activeTab === 'theme'" class="bg-white dark:bg-wood-brown/10 rounded-xl border border-warm-beige dark:border-wood-brown/20 p-6 animate-fade-in">
+        <h2 class="text-wood-brown dark:text-white text-lg font-bold mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined">palette</span> Thème de l'interface
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <button (click)="setTheme('light')" 
+                  [class.ring-2]="preferences.theme === 'light'"
+                  [class.ring-primary]="preferences.theme === 'light'"
+                  class="flex flex-col gap-3 p-4 rounded-xl border-2 border-transparent bg-warm-beige/50 dark:bg-wood-brown/40 text-left transition-all hover:bg-warm-beige/80">
+            <div class="w-full aspect-video bg-[#fcfaf8] border border-warm-beige rounded-md overflow-hidden relative">
+              <div class="absolute top-2 left-2 w-8 h-2 bg-warm-beige rounded"></div>
+              <div class="absolute top-6 left-2 w-12 h-2 bg-warm-beige/50 rounded"></div>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-wood-brown dark:text-white">Clair</p>
+              <p class="text-xs text-soft-brown">Esthétique bois clair</p>
+            </div>
+          </button>
+
+          <button (click)="setTheme('dark')" 
+                  [class.ring-2]="preferences.theme === 'dark'"
+                  [class.ring-primary]="preferences.theme === 'dark'"
+                  class="flex flex-col gap-3 p-4 rounded-xl border-2 border-transparent bg-white dark:bg-wood-brown/20 text-left transition-all hover:bg-wood-brown/30">
+            <div class="w-full aspect-video bg-[#211911] border border-wood-brown rounded-md overflow-hidden relative">
+              <div class="absolute top-2 left-2 w-8 h-2 bg-wood-brown rounded"></div>
+              <div class="absolute top-6 left-2 w-12 h-2 bg-wood-brown/50 rounded"></div>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-wood-brown dark:text-white">Sombre</p>
+              <p class="text-xs text-soft-brown">Nuit boisée</p>
+            </div>
+          </button>
+
+          <button (click)="setTheme('system')" 
+                  [class.ring-2]="preferences.theme === 'system'"
+                  [class.ring-primary]="preferences.theme === 'system'"
+                  class="flex flex-col gap-3 p-4 rounded-xl border-2 border-transparent bg-white dark:bg-wood-brown/20 text-left transition-all hover:bg-wood-brown/30">
+            <div class="w-full aspect-video bg-gradient-to-br from-background-light to-background-dark border border-warm-beige rounded-md overflow-hidden relative">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="material-symbols-outlined text-soft-brown opacity-40">devices</span>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-wood-brown dark:text-white">Système</p>
+              <p class="text-xs text-soft-brown">Selon votre appareil</p>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <section *ngIf="activeTab === 'language'" class="bg-white dark:bg-wood-brown/10 rounded-xl border border-warm-beige dark:border-wood-brown/20 p-6 animate-fade-in">
+        <h2 class="text-wood-brown dark:text-white text-lg font-bold mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined">language</span> Langue & Région
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-soft-brown uppercase tracking-wider">Langue de l'interface</label>
+            <select [(ngModel)]="preferences.language" class="w-full bg-warm-beige dark:bg-wood-brown/40 border-none rounded-lg text-sm p-3 text-wood-brown dark:text-white focus:ring-2 focus:ring-primary">
+              <option>Français (France)</option>
+              <option>English (UK)</option>
+              <option>Deutsch (Deutschland)</option>
+              <option>Italiano (Italia)</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-soft-brown uppercase tracking-wider">Format de date</label>
+            <select [(ngModel)]="preferences.dateFormat" class="w-full bg-warm-beige dark:bg-wood-brown/40 border-none rounded-lg text-sm p-3 text-wood-brown dark:text-white focus:ring-2 focus:ring-primary">
+              <option>JJ/MM/AAAA</option>
+              <option>MM/JJ/AAAA</option>
+              <option>AAAA-MM-JJ</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section *ngIf="activeTab === 'notifications'" class="bg-white dark:bg-wood-brown/10 rounded-xl border border-warm-beige dark:border-wood-brown/20 p-6 animate-fade-in">
+        <h2 class="text-wood-brown dark:text-white text-lg font-bold mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined">mail</span> Préférences d'emailing
+        </h2>
+        <div class="space-y-4">
+          
+          <div class="flex items-center justify-between p-3 rounded-lg hover:bg-warm-beige/30 transition-colors">
+            <div class="flex flex-col">
+              <p class="text-sm font-bold text-wood-brown dark:text-white">Rapports d'activité hebdomadaires</p>
+              <p class="text-xs text-soft-brown">Recevez un résumé de vos documents générés chaque lundi.</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" [(ngModel)]="preferences.notifications.weeklyReport" class="sr-only peer">
+              <div class="w-11 h-6 bg-soft-brown/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between p-3 rounded-lg hover:bg-warm-beige/30 transition-colors">
+            <div class="flex flex-col">
+              <p class="text-sm font-bold text-wood-brown dark:text-white">Alertes de sécurité</p>
+              <p class="text-xs text-soft-brown">Soyez prévenu en cas de nouvelle connexion sur votre compte.</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" [(ngModel)]="preferences.notifications.securityAlerts" class="sr-only peer">
+              <div class="w-11 h-6 bg-soft-brown/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between p-3 rounded-lg hover:bg-warm-beige/30 transition-colors">
+            <div class="flex flex-col">
+              <p class="text-sm font-bold text-wood-brown dark:text-white">Nouveautés et mises à jour</p>
+              <p class="text-xs text-soft-brown">Restez informé des nouvelles fonctionnalités de DocuWood.</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" [(ngModel)]="preferences.notifications.news" class="sr-only peer">
+              <div class="w-11 h-6 bg-soft-brown/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+
+        </div>
+      </section>
+
+      <section *ngIf="activeTab === 'integrations'" class="bg-white dark:bg-wood-brown/10 rounded-xl border border-warm-beige dark:border-wood-brown/20 p-6 animate-fade-in">
+        <h2 class="text-wood-brown dark:text-white text-lg font-bold mb-6 flex items-center gap-2">
+            <span class="material-symbols-outlined">extension</span> Intégrations tierces
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex items-center gap-4 p-4 border border-warm-beige dark:border-wood-brown/30 rounded-xl hover:bg-warm-beige/10">
+                <div class="size-10 bg-blue-50 dark:bg-blue-900/20 rounded flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-blue-600">cloud</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-wood-brown dark:text-white">Google Drive</p>
+                    <p class="text-[11px] text-soft-brown">Synchronisation auto</p>
+                </div>
+                <button class="text-xs font-bold text-primary hover:underline">Connecter</button>
+            </div>
+            <div class="flex items-center gap-4 p-4 border border-warm-beige dark:border-wood-brown/30 rounded-xl hover:bg-warm-beige/10">
+                <div class="size-10 bg-green-50 dark:bg-green-900/20 rounded flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-green-600">table_chart</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-wood-brown dark:text-white">Excel Online</p>
+                    <p class="text-[11px] text-soft-brown">Import de données</p>
+                </div>
+                <button class="text-xs font-bold text-soft-brown">Connecté</button>
+            </div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="flex items-center justify-end gap-4 pb-12 mt-8">
+      <button (click)="cancel()" class="px-6 py-2.5 rounded-lg text-sm font-bold text-soft-brown hover:bg-warm-beige dark:hover:bg-wood-brown/40 transition-all">
+        Annuler
+      </button>
+      <button (click)="saveSettings()" class="px-8 py-2.5 rounded-lg bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 transform">
+        Enregistrer les modifications
+      </button>
+    </div>
+
+  </div>
+</main>

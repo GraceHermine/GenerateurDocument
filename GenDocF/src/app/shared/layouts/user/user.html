@@ -1,9 +1,7 @@
 <div class="flex min-h-screen">
 
-  <!-- Sidebar -->
   <aside class="flex flex-col border-r border-white/10 shadow-2xl">
 
-    <!-- Logo / En-tête -->
     <div class="p-6">
       <div class="flex items-center gap-4">
         <div class="bg-primary rounded-xl p-3 flex items-center justify-center shadow-md">
@@ -16,13 +14,12 @@
       </div>
     </div>
 
-    <!-- Navigation principale -->
     <nav class="flex-1 px-5 py-4 space-y-2 overflow-y-auto">
       
       <a 
         routerLink="/user" 
         routerLinkActive="sidebar-active"
-        routerLinkActiveOptions="{ exact: true }"
+        [routerLinkActiveOptions]="{ exact: true }"
         class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
       >
         <span class="material-symbols-outlined text-2xl">dashboard</span>
@@ -79,7 +76,7 @@
       </div>
 
       <a 
-        routerLink="/user/document" 
+        routerLink="/user/settings" 
         routerLinkActive="sidebar-active"
         class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
       >
@@ -97,7 +94,6 @@
       </a>
     </nav>
 
-    <!-- Bouton déconnexion -->
     <div class="p-6 border-t border-white/10 mt-auto">
       <button 
         routerLink="/auth/logout"
@@ -109,7 +105,6 @@
     </div>
   </aside>
 
-  <!-- Zone principale -->
   <main class="flex-1 bg-bg-light overflow-hidden">
     <div class="h-full overflow-y-auto p-6">
       <router-outlet></router-outlet>

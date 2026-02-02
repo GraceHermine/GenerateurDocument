@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router'; // <--- 1. Import nécessaire
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [RouterLink, RouterOutlet],
+  imports: [CommonModule, RouterModule], // <--- 2. Ajout dans la liste des imports
   templateUrl: './user.html',
-  styleUrl: './user.scss',
+  styleUrls: ['./user.scss']
 })
 export class User {
-
+  // Pas besoin de logique complexe ici pour l'instant
 }

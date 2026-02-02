@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { Public } from '../../shared/layouts/public/public';
 import { Home } from './home/home';
 import { About } from './about/about';
@@ -8,14 +9,23 @@ import { Help } from './help/help';
 import { Faq } from './faq/faq';
 import { Guide } from './guide/guide';
 
+// 🔥 composant templates (même s’il est dans user/)
+import { TemplatesList } from '../user/templates-list/templates-list';
+
 const routes: Routes = [
-  { path: '', component: Public, children: [
+  {
+    path: '',
+    component: Public,
+    children: [
       { path: '', component: Home },
       { path: 'about', component: About },
       { path: 'contact', component: Contact },
       { path: 'help', component: Help },
       { path: 'faq', component: Faq },
       { path: 'guide', component: Guide },
+
+      // ✅ ROUTE PUBLIQUE POUR VOIR LES MODÈLES
+      { path: 'templates', component: TemplatesList }
     ]
   }
 ];
