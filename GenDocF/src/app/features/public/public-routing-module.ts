@@ -9,8 +9,9 @@ import { Help } from './help/help';
 import { Faq } from './faq/faq';
 import { Guide } from './guide/guide';
 
-// 🔥 composant templates (même s’il est dans user/)
+// 🔥 Import des composants User pour les rendre publics
 import { TemplatesList } from '../user/templates-list/templates-list';
+import { DocumentGeneration } from '../user/document-generation/document-generation';
 
 const routes: Routes = [
   {
@@ -24,8 +25,9 @@ const routes: Routes = [
       { path: 'faq', component: Faq },
       { path: 'guide', component: Guide },
 
-      // ✅ ROUTE PUBLIQUE POUR VOIR LES MODÈLES
-      { path: 'templates', component: TemplatesList }
+      // ✅ ROUTES PUBLIQUES (Accessibles sans connexion)
+      { path: 'templates', component: TemplatesList },
+      { path: 'generate', component: DocumentGeneration }
     ]
   }
 ];
