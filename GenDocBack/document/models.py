@@ -5,6 +5,9 @@
 # from apps.templates.models import TemplateVersion
 
 from django.db import models
+from django.conf import settings
+from templates.models import TemplateVersion
+
 
 # Create your models here.
 class CategorieTemplate(models.Model):
