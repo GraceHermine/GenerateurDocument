@@ -1,0 +1,100 @@
+<main class="flex flex-1 flex-col items-center py-8">
+  <div class="layout-content-container flex flex-col max-w-[1000px] w-full px-6 gap-6">
+
+    <!-- Breadcrumbs -->
+    <div class="flex flex-wrap gap-2 items-center">
+      <a routerLink="/templates" class="text-muted-brown text-sm font-medium leading-normal hover:text-primary">Modèles</a>
+      <span class="text-muted-brown text-sm material-symbols-outlined">chevron_right</span>
+      <span class="text-text-brown dark:text-white text-sm font-bold leading-normal">Nouveau Template</span>
+    </div>
+
+    <!-- Page Heading -->
+    <div class="flex flex-col gap-2">
+      <h1 class="text-text-brown dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Création de Nouveau Modèle</h1>
+      <p class="text-muted-brown dark:text-muted-brown/80 text-base font-normal leading-normal">
+        Configurez la structure et les détails de votre nouveau modèle de document avec notre éditeur visuel.
+      </p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-white dark:bg-background-dark/30 rounded-xl border border-border-brown">
+
+      <!-- Template Name Field -->
+      <div class="flex flex-col gap-2">
+        <label class="text-text-brown dark:text-white text-base font-semibold leading-normal">Nom du modèle</label>
+        <input  class="form-input flex w-full rounded-lg text-text-brown focus:ring-primary focus:border-primary border border-border-brown bg-background-light dark:bg-background-dark h-14 placeholder:text-muted-brown p-[15px] text-base font-normal leading-normal" placeholder="Ex: Contrat de prestation de services"/>
+      </div>
+
+      <!-- Category Field -->
+      <div class="flex flex-col gap-2">
+        <label class="text-text-brown dark:text-white text-base font-semibold leading-normal">Catégorie de document</label>
+        <div class="relative">
+          <select  class="form-select w-full rounded-lg text-text-brown focus:ring-primary focus:border-primary border border-border-brown bg-background-light dark:bg-background-dark h-14 p-[15px] text-base appearance-none cursor-pointer">
+            <option disabled value="">Sélectionner une catégorie</option>
+            <option value="legal">Juridique</option>
+            <option value="hr">Ressources Humaines</option>
+            <option value="sales">Ventes &amp; Devis</option>
+            <option value="internal">Notes Internes</option>
+          </select>
+          <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-brown">unfold_more</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editor Section -->
+    <div class="flex flex-col gap-4 mt-6">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold text-text-brown dark:text-white">Structure du Document</h3>
+        <div class="flex gap-2">
+          <button class="p-2 rounded hover:bg-border-brown/50 text-muted-brown" title="Ajouter une variable">
+            <span class="material-symbols-outlined">add_box</span>
+          </button>
+          <button routerLink="/templates/preview" class="p-2 rounded hover:bg-border-brown/50 text-muted-brown" title="Aperçu">
+            <span class="material-symbols-outlined">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Editor Controls -->
+      <div class="flex gap-1 p-2 bg-border-brown/20 rounded-t-lg border-x border-t border-border-brown border-b-0">
+        <button class="p-2 hover:bg-white rounded transition-colors" title="Gras"><span class="material-symbols-outlined">format_bold</span></button>
+        <button class="p-2 hover:bg-white rounded transition-colors" title="Italique"><span class="material-symbols-outlined">format_italic</span></button>
+        <button class="p-2 hover:bg-white rounded transition-colors" title="Liste à puces"><span class="material-symbols-outlined">format_list_bulleted</span></button>
+        <div class="w-px h-6 bg-border-brown mx-2 my-auto"></div>
+        <button class="p-2 hover:bg-white rounded transition-colors" title="Aligner à gauche"><span class="material-symbols-outlined">format_align_left</span></button>
+        <button class="p-2 hover:bg-white rounded transition-colors" title="Centrer"><span class="material-symbols-outlined">format_align_center</span></button>
+        <div class="w-px h-6 bg-border-brown mx-2 my-auto"></div>
+        <button class="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-lg text-sm font-bold hover:bg-primary/20 transition-colors">
+          <span class="material-symbols-outlined text-sm">variables</span>
+          Insérer Variable
+        </button>
+      </div>
+
+      <!-- Paper-like Editor Canvas -->
+      <div class="editor-canvas w-full bg-white dark:bg-[#fdfcfb] rounded-b-xl border border-border-brown p-12 overflow-y-auto">
+        <div class="max-w-[800px] mx-auto min-h-full outline-none text-gray-800 leading-relaxed" contenteditable="true" >
+          <h1 class="text-3xl font-bold mb-6 text-center">TITRE DU DOCUMENT</h1>
+          <p class="mb-4">Le présent document est établi entre <span class="bg-primary/10 text-primary px-1 rounded">[[Nom_Client]]</span> et la société <span class="bg-primary/10 text-primary px-1 rounded">[[Nom_Entreprise]]</span>.</p>
+          <p class="mb-4">Objet : <span class="text-muted-brown italic">Décrivez ici l'objet de votre modèle...</span></p>
+          <div class="h-24 border-2 border-dashed border-border-brown rounded-lg flex items-center justify-center text-muted-brown mb-6">
+            Glissez-déposez des éléments ici ou commencez à taper...
+          </div>
+          <p class="mb-4">Fait à <span class="bg-primary/10 text-primary px-1 rounded">[[Ville]]</span>, le <span class="bg-primary/10 text-primary px-1 rounded">[[Date_Signature]]</span>.</p>
+        </div>
+      </div>
+      <p class="text-xs text-muted-brown italic">Utilisez le format [[nom_variable]] pour créer des champs dynamiques.</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-end gap-4 mt-4 pb-12">
+      <button routerLink="/templates" class="px-6 h-12 rounded-lg border border-border-brown text-text-brown dark:text-white font-bold hover:bg-border-brown/20 transition-colors" >
+        Annuler
+      </button>
+      <button class="px-8 h-12 rounded-lg bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:brightness-110 active:scale-95 transition-all flex items-center gap-2" >
+        <span class="material-symbols-outlined">save</span>
+        Sauvegarder le modèle
+      </button>
+    </div>
+
+  </div>
+</main>

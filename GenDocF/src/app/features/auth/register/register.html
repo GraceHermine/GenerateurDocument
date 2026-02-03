@@ -1,0 +1,111 @@
+<main
+  class="flex-grow flex items-center justify-center p-6 bg-gradient-to-b from-background-light to-[#f4f4e7] dark:from-background-dark dark:to-background-dark min-h-[80vh]">
+
+  <div
+    class="w-full max-w-[520px] bg-white dark:bg-[#2d2d18] rounded-xl shadow-xl p-8 border border-soft-tan dark:border-woody-brown/20">
+
+    <!-- Titre -->
+    <div class="mb-8 text-center">
+      <h1 class="text-3xl font-bold tracking-tight text-woody-brown dark:text-white mb-2">
+        Créer un Compte
+      </h1>
+      <p class="text-woody-brown/70 dark:text-background-light/70 text-base">
+        Commencez à gérer vos documents efficacement dès aujourd'hui.
+      </p>
+    </div>
+
+    <!-- FORMULAIRE -->
+    <form class="space-y-5">
+
+      <!-- Nom -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-bold px-1">Nom complet</label>
+        <input
+          class="w-full rounded-lg border p-3.5"
+          placeholder="Jean Dupont"
+          type="text" />
+      </div>
+
+      <!-- Email -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-bold px-1">Email</label>
+        <input
+          class="w-full rounded-lg border p-3.5"
+          placeholder="jean.dupont@exemple.com"
+          type="email" />
+      </div>
+
+      <!-- Mot de passe -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-bold px-1">Mot de passe</label>
+        <input
+          class="w-full rounded-lg border p-3.5"
+          placeholder="••••••••"
+          type="password" />
+      </div>
+
+      <!-- Conditions -->
+      <div class="flex items-start gap-3 py-2">
+        <input type="checkbox" class="mt-1 size-4" />
+        <label class="text-xs leading-relaxed">
+          J'accepte les
+          <a routerLink="/terms" class="underline font-bold hover:text-primary">
+            Conditions d'utilisation
+          </a>
+          et la
+          <a routerLink="/privacy" class="underline font-bold hover:text-primary">
+            Politique de confidentialité
+          </a>.
+        </label>
+      </div>
+
+      <!-- Bouton -->
+      <button
+        routerLink="/user"
+        type="button"
+        class="w-full bg-primary text-white font-extrabold py-4 rounded-lg shadow-md">
+        Créer mon compte
+      </button>
+
+    </form>
+
+    <!-- Séparateur -->
+    <div class="relative my-8">
+      <div class="absolute inset-0 flex items-center">
+        <div class="w-full border-t"></div>
+      </div>
+      <div class="relative flex justify-center text-xs uppercase">
+        <span class="bg-white px-2 opacity-60">Ou continuer avec</span>
+      </div>
+    </div>
+
+    <!-- Boutons externes -->
+    <div class="grid grid-cols-2 gap-4 mb-8">
+      <button class="border rounded-lg py-2.5">Google</button>
+      <button class="border rounded-lg py-2.5">Apple ID</button>
+    </div>
+
+    <!-- Liens bas -->
+    <div class="text-center space-y-2">
+
+      <p class="text-sm">
+        Déjà inscrit ?
+        <a routerLink="/auth/login" class="font-bold underline">
+          Se connecter
+        </a>
+      </p>
+
+      <p class="text-xs">
+        <a routerLink="/" class="underline hover:text-primary">
+          Retour à l’accueil
+        </a>
+        ·
+        <a routerLink="/auth/forgot-password" class="underline hover:text-primary">
+          Mot de passe oublié
+        </a>
+      </p>
+
+    </div>
+
+  </div>
+</main>

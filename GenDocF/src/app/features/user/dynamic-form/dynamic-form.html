@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulaire Dynamique - Rapport Mensuel</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 30px 20px;
+      color: #333;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .header {
+      background: #f0f4ff;
+      padding: 20px 30px;
+      border-bottom: 1px solid #e0e7ff;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.55rem;
+      color: #574706;
+    }
+    .intro {
+      margin: 12px 0 0;
+      color: #555;
+      font-size: 0.97rem;
+    }
+
+    .section {
+      padding: 24px 30px;
+      border-bottom: 1px solid #eee;
+    }
+    .section:last-child {
+      border-bottom: none;
+    }
+    .section-title {
+      font-size: 1.18rem;
+      color: #38600b;
+      margin: 0 0 18px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0e7ff;
+    }
+
+    .progress-container {
+      margin: 12px 0 30px;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #555;
+    }
+    progress {
+      width: 100%;
+      height: 18px;
+      border-radius: 9px;
+    }
+    progress::-webkit-progress-bar {
+      background: #e5e7eb;
+      border-radius: 9px;
+    }
+    progress::-webkit-progress-value {
+      background: #3a5008;
+      border-radius: 9px;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: 500;
+      color: #444;
+    }
+    input[type="text"],
+    input[type="date"],
+    input[type="month"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .checkbox-group {
+      margin: 18px 0;
+    }
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+      font-weight: normal;
+    }
+    input[type="checkbox"],
+    input[type="radio"] {
+      margin-right: 10px;
+      width: 18px;
+      height: 18px;
+    }
+
+    .footer {
+      padding: 24px 30px;
+      background: #f8fafc;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    button {
+      padding: 12px 28px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-cancel {
+      background: #e5e7eb;
+      color: #444;
+    }
+    .btn-generate {
+      background: #67501a;
+      color: white;
+      font-weight: 500;
+    }
+    .btn-generate:hover {
+      background: #997e13;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>Formulaire Dynamique pour Rapport Mensuel</h1>
+    <p class="intro">
+      Veuillez remplir les champs ci-dessous pour générer votre document personnalisé.<br>
+      Les informations saisies seront utilisées pour peupler le modèle de rapport mensuel.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Progression de la Génération</h2>
+    <div class="progress-container">
+      <div class="progress-label">
+        <span>État actuel : En attente de données...</span>
+        <span>0% Complété</span>
+      </div>
+      <progress value="0" max="100"></progress>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Informations Générales</h2>
+    
+    <label>Nom du Document</label>
+    <input type="text" value="Rapport Mensuel Février 2024">
+
+    <label>Date de Génération</label>
+    <input type="date" value="2024-02-29">
+
+    <label>Auteur</label>
+    <input type="text" value="John Doe">
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Détails Spécifiques du Rapport</h2>
+    
+    <label>Type de Rapport</label>
+    <input type="text" value="Rapport Mensuel">
+
+    <label>Période Couvrante</label>
+    <input type="month" value="2024-02">
+
+    <label>Objectifs</label>
+    <textarea>Analyse approfondie des ventes mensuelles, identification des points d'arrangement et proposition de stratégies d'amélioration.</textarea>
+
+    <label>Défis Rencontrés et Solutions</label>
+    <textarea>Difficulté à agréger les données de plusieurs sources. Solution : implémentation d'un script d'automatisation.</textarea>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Options de Génération</h2>
+    
+    <div class="checkbox-group">
+      <label><input type="checkbox" checked> Inclure les graphiques analytiques</label>
+      <label><input type="radio" name="format" checked> Format Word (.docx)</label>
+      <label><input type="radio" name="format"> PDF (recommandé)</label>
+      <label><input type="radio" name="format"> HTML</label>
+    </div>
+
+    <label>
+      <input type="checkbox"> Envoyer par e-mail après génération
+    </label>
+  </div>
+
+  <div class="footer">
+    <button class="btn-cancel">Annuler</button>
+    <button class="btn-generate">Générer le Document</button>
+  </div>
+
+</div>
+
+</body>
+</html>
