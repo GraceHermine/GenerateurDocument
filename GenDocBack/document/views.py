@@ -6,7 +6,7 @@ Gère les endpoints de gestion des formulaires et documents générés.
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from django.http import FileResponse
@@ -42,7 +42,7 @@ class CategorieTemplateViewSet(viewsets.ModelViewSet):
     
     queryset = CategorieTemplate.objects.all()
     serializer_class = CategorieTemplateSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
 
 class TemplateDocumentViewSet(viewsets.ModelViewSet):
@@ -54,7 +54,7 @@ class TemplateDocumentViewSet(viewsets.ModelViewSet):
     
     queryset = TemplateDocument.objects.filter(status=True)
     serializer_class = TemplateDocumentListSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     
     def get_serializer_class(self):
         """Utilise un serializer détaillé pour retrieve."""
@@ -80,7 +80,7 @@ class FormulaireViewSet(viewsets.ModelViewSet):
     
     queryset = Formulaire.objects.all()
     serializer_class = FormulaireSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -92,7 +92,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     
     def get_queryset(self):
         """Filtre par formulaire si fourni."""
@@ -113,7 +113,7 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
     
     queryset = DocumentGenere.objects.all()
     serializer_class = DocumentGenereListSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     
     def get_serializer_class(self):
         """Utilise un serializer détaillé pour retrieve."""
@@ -147,12 +147,22 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
             )
         
         try:
+            # Déterminer l'extension et le Content-Type
+            extension = document.format.lower() if document.format else 'docx'
+            if extension == 'pdf':
+                content_type = 'application/pdf'
+            else:
+                content_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                extension = 'docx'
+
+            filename = f"{document.template.nom}_{document.id}.{extension}"
+
             response = FileResponse(
                 document.fichier.open('rb'),
                 as_attachment=True,
-                filename=f"{document.template.nom}_{document.id}.docx"
+                filename=filename
             )
-            response['Content-Type'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            response['Content-Type'] = content_type
             return response
         except Exception as e:
             return Response(
@@ -181,7 +191,7 @@ class ReponseQuestionViewSet(viewsets.ModelViewSet):
     
     queryset = ReponseQuestion.objects.all()
     serializer_class = ReponseQuestionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     
     def get_queryset(self):
         """Filtre par document si fourni."""

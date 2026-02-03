@@ -1,52 +1,44 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+# Django
+*.log
+local_settings.py
+db.sqlite3
+media
+staticfiles
 
+# Virtual Environment
+venv/
+.env
 
-
-# Node
-/node_modules
+# Node.js / Angular
+node_modules/
+dist/
+.angular/
 npm-debug.log
 yarn-error.log
-
-# Paramètres sensibles
-.venv
-.venv.*
-venv/
-*.pyc
-
-# IDEs and editors
 .idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
-
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
-__screenshots__/
-
-# System files
+.vscode/
+*.swp
 .DS_Store
-Thumbs.db
-.angular

@@ -80,12 +80,14 @@ class ReponseQuestionSerializer(serializers.ModelSerializer):
 class DocumentGenereListSerializer(serializers.ModelSerializer):
     """Serializer pour la liste des documents générés"""
     template_nom = serializers.CharField(source='template.nom', read_only=True)
+    categorie_nom = serializers.CharField(source='template.categorie.nom', read_only=True)
+    categorie_id = serializers.IntegerField(source='template.categorie.id', read_only=True)
 
     class Meta:
         model = DocumentGenere
         fields = [
-            'id', 'template', 'template_nom', 'format',
-            'status', 'date_generation', 'fichier'
+            'id', 'template', 'template_nom', 'categorie_nom', 'categorie_id',
+            'format', 'status', 'date_generation', 'fichier'
         ]
         read_only_fields = ['id', 'date_generation']
 
