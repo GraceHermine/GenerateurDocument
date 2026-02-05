@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import { Auth } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-public',
@@ -9,6 +10,8 @@ import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
   styleUrl: './public.scss',
 })
 export class Public {
+  private authService = inject(Auth);
+  isAuthenticated$ = this.authService.isAuthenticatedSubject;
   isMobileMenuOpen = false;
 
     toggleMobileMenu() {

@@ -44,6 +44,8 @@
         </a>
       </nav>
 
+
+
       <button class="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors" 
               (click)="toggleMobileMenu()"
               aria-label="Menu">
@@ -62,6 +64,14 @@
            class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
            (click)="closeMobileMenu()">
            Accueil
+        </a>
+
+        <a routerLink="/user/dashboard"
+           *ngIf="isAuthenticated$ | async"
+           routerLinkActive="text-primary font-semibold bg-primary/5"
+           class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
+           (click)="closeMobileMenu()">
+           Dashboard
         </a>
         
         <a routerLink="/templates" 
@@ -90,6 +100,8 @@
            (click)="closeMobileMenu()">
            Contact
         </a>
+
+
       </nav>
     </div>
   </header>
