@@ -6,26 +6,35 @@
     <p class="text-[#9a6c4c] dark:text-[#b08b72] mt-1">Choisissez parmi plus de 50 modèles professionnels pour vos besoins administratifs.</p>
   </div>
 
-  <!-- Filters -->
+  <!-- Filters (catégories dynamiques du backend) -->
   <div class="flex items-center gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
-    <button routerLink="/templates" class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-5 text-white shadow-sm">
+    <button 
+      [routerLink]="['/templates']"
+      [class.bg-primary]="currentCategory==='all'"
+      [class.text-white]="currentCategory==='all'"
+      class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full px-5 bg-[#f3ece7] dark:bg-[#3a2a1d] text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
       <span class="text-sm font-medium">Tous</span>
     </button>
-    <button routerLink="/templates?category=contracts" class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-[#f3ece7] dark:bg-[#3a2a1d] px-5 text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
-      <span class="text-sm font-medium">Contrats</span>
-      <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+
+    <button *ngFor="let c of categories"
+      [routerLink]="['/templates']"
+      [queryParams]="{ category: c.id }"
+      [class.bg-primary]="currentCategory===c.id"
+      [class.text-white]="currentCategory===c.id"
+      class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full px-5 bg-[#f3ece7] dark:bg-[#3a2a1d] text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
+      <span class="text-sm font-medium">{{ c.nom }}</span>
+      <span class="material-symbols-outlined text-sm" *ngIf="c.icone">{{ c.icone }}</span>
     </button>
-    <button routerLink="/templates?category=invoices" class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-[#f3ece7] dark:bg-[#3a2a1d] px-5 text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
-      <span class="text-sm font-medium">Factures</span>
-      <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
-    </button>
-    <!-- Ajoute les autres filtres ici -->
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="flex justify-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
   </div>
 
   <!-- Template Grid -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    <!-- Exemple de card -->
-    <div class="group flex flex-col rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] bg-white dark:bg-[#2d2116] overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all">
+  <div *ngIf="!isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div *ngFor="let t of templates" class="group flex flex-col rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] bg-white dark:bg-[#2d2116] overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all">
       <div class="relative aspect-[3/4] bg-[#f9f5f2] dark:bg-[#1e150d] p-6 border-b border-[#f3ece7] dark:border-[#3a2a1d]">
         <div class="w-full h-full bg-white dark:bg-[#221810] shadow-sm rounded p-4 flex flex-col gap-2 overflow-hidden opacity-80">
           <div class="w-3/4 h-2 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
@@ -40,16 +49,19 @@
       </div>
       <div class="p-4 flex flex-col gap-3">
         <div>
-          <h3 class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">Contrat de Prestation</h3>
-          <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72] mt-1">Juridique • 4 pages</p>
+          <h3 class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">{{ t.nom }}</h3>
+          <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72] mt-1">{{ t.categorie_nom || 'Non classé' }}</p>
         </div>
         <div class="flex gap-2 pt-2">
-          <button routerLink="/template-preview" class="flex-1 text-xs font-bold py-2 px-3 border border-[#f3ece7] dark:border-[#3a2a1d] rounded-lg hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d] transition-colors">Aperçu</button>
-          <button routerLink="/user/dynamic-form" class="flex-1 text-xs font-bold py-2 px-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">Utiliser</button>
+          <button [routerLink]="['/template-preview']" [queryParams]="{ template: t.id }" class="flex-1 text-xs font-bold py-2 px-3 border border-[#f3ece7] dark:border-[#3a2a1d] rounded-lg hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d] transition-colors">Aperçu</button>
+          <button [routerLink]="['/user/dynamic-form']" [queryParams]="{ template: t.id }" class="flex-1 text-xs font-bold py-2 px-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">Utiliser</button>
         </div>
       </div>
     </div>
-    <!-- Tu peux dupliquer les cards pour les autres templates -->
+  </div>
+
+  <div *ngIf="!isLoading && templates.length === 0" class="mt-6 text-center text-[#9a6c4c]">
+    Aucun template trouvé.
   </div>
 
   <!-- Load More / Pagination -->

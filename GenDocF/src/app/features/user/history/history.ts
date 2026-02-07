@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 interface DocumentGenere {
   id: number;
@@ -24,7 +25,7 @@ interface DocumentGenere {
 })
 export class History implements OnInit {
   private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl = 'http://127.0.0.1:8000/api/documents';
 
   documents: DocumentGenere[] = [];
   filteredDocuments: DocumentGenere[] = [];
@@ -38,10 +39,15 @@ export class History implements OnInit {
 
   fetchDocuments() {
     this.isLoading = true;
-    this.http.get<DocumentGenere[]>(`${this.apiUrl}/documents/`).subscribe({
-      next: (data) => {
-        this.documents = data;
-        this.filteredDocuments = data;
+    this.http
+      .get<any>(`${this.apiUrl}/documents/`)
+      .pipe(
+        map((resp) => (Array.isArray(resp) ? resp : (resp?.results ?? [])))
+      )
+      .subscribe({
+      next: (items: DocumentGenere[]) => {
+        this.documents = items;
+        this.filteredDocuments = items;
         this.extractCategories();
         this.isLoading = false;
       },
