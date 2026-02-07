@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+// Imports des composants
 import { User } from '../../shared/layouts/user/user';
 import { Dashboard } from './dashboard/dashboard';
 import { Profile } from './profile/profile';
@@ -14,12 +16,18 @@ import { DynamicForm } from './dynamic-form/dynamic-form';
 import { GenerationResult } from './generation-result/generation-result';
 import { DocumentPreview } from './document-preview/document-preview';
 import { Notifications } from './notifications/notifications';
-
-// 1. IMPORT DU COMPOSANT SETTINGS (Indispensable)
 import { SettingsComponent } from './settings/settings';
 
+// ✅ 1. IMPORT DU GUARD (Indispensable)
+import { authGuard } from '../../core/guards/auth.guard';
+
 const routes: Routes = [
-  { path: '', component: User, children: [
+  { 
+    path: '', 
+    component: User, 
+    // ✅ 2. SÉCURITÉ : On remet le gardien ici !
+    canActivate: [authGuard], 
+    children: [
       { path: '', component: Dashboard },
       { path: 'profile', component: Profile },
       { path: 'history', component: History },
@@ -33,8 +41,6 @@ const routes: Routes = [
       { path: 'generation-result', component: GenerationResult },
       { path: 'document-preview', component: DocumentPreview },
       { path: 'notifications', component: Notifications },
-      
-      // 2. LA ROUTE SETTINGS (C'est elle qui fait le lien avec l'URL /user/settings)
       { path: 'settings', component: SettingsComponent },
     ]
   }

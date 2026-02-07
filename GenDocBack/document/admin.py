@@ -1,33 +1,54 @@
 from django.contrib import admin
-from document.models import Document
+# On importe les vrais modèles qui existent dans ton models.py actuel
+from .models import (
+    CategorieTemplate, 
+    TemplateDocument, 
+    Formulaire, 
+    Question, 
+    TypeDocument, 
+    DocumentGenere, 
+    ReponseQuestion
+)
 
+# 1. Gestion des Catégories
+@admin.register(CategorieTemplate)
+class CategorieTemplateAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nom', 'description')
+    search_fields = ('nom',)
 
-# Register your models here.
-@admin.register(Document)
-class DocumentAdmin(admin.ModelAdmin):
-    list_display = (
-        'uuid',
-        'user',
-        'template_version',
-        'status',
-        'created_at',
-        'completed_at',
-    )
-    list_filter = (
-        'status',
-        'created_at',
-        'completed_at',
-    )
-    search_fields = ('uuid', 'user__username')
-    readonly_fields = ('uuid', 'created_at', 'completed_at')
-    fieldsets = (
-        ('Informations générales', {
-            'fields': ('uuid', 'user', 'template_version', 'status')
-        }),
-        ('Données', {
-            'fields': ('input_data', 'output_file', 'error_log')
-        }),
-        ('Dates', {
-            'fields': ('created_at', 'completed_at')
-        }),
-    )
+# 2. Gestion des Templates (Modèles Word/Excel)
+@admin.register(TemplateDocument)
+class TemplateDocumentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nom', 'categorie', 'status', 'date_add')
+    list_filter = ('status', 'categorie')
+    search_fields = ('nom',)
+
+# 3. Gestion des Formulaires associés aux templates
+@admin.register(Formulaire)
+class FormulaireAdmin(admin.ModelAdmin):
+    list_display = ('id', 'titre', 'template', 'date_add')
+    search_fields = ('titre',)
+
+# 4. Gestion des Questions
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'label', 'variable', 'type_champ', 'obligatoire', 'formulaire')
+    list_filter = ('type_champ', 'obligatoire')
+    search_fields = ('label', 'variable')
+
+# 5. Gestion des Types de documents (Extensions)
+@admin.register(TypeDocument)
+class TypeDocumentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nom', 'extension', 'status')
+
+# 6. Gestion des Documents Générés (C'est ton HISTORIQUE !)
+@admin.register(DocumentGenere)
+class DocumentGenereAdmin(admin.ModelAdmin):
+    list_display = ('id', 'template', 'format', 'status', 'date_generation')
+    list_filter = ('status', 'format', 'date_generation')
+    readonly_fields = ('date_generation',)
+
+# 7. Gestion des Réponses données par les utilisateurs
+@admin.register(ReponseQuestion)
+class ReponseQuestionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'document', 'question', 'valeur', 'date_add')
