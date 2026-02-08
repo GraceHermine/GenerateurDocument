@@ -87,25 +87,13 @@ import {
   provideImageKitLoader,
   provideImgixLoader,
   provideNetlifyLoader,
-  registerLocaleData
-} from "./chunk-SD4D4GHW.js";
-import {
-  BrowserPlatformLocation,
-  DomAdapter,
-  LOCATION_INITIALIZED,
-  PlatformLocation,
-  XhrFactory,
-  getDOM,
-  parseCookieValue,
+  registerLocaleData,
   setRootDomAdapter
-} from "./chunk-D3ZV2653.js";
+} from "./chunk-G6D4OZSU.js";
 import {
   DOCUMENT,
   IMAGE_CONFIG
-} from "./chunk-RZLISSYE.js";
-import "./chunk-3ZX642I5.js";
-import "./chunk-ONP5LV6Q.js";
-import "./chunk-AQT54UAN.js";
+} from "./chunk-O4G7Z7U7.js";
 import "./chunk-6DU2HRTW.js";
 export {
   APP_BASE_HREF,

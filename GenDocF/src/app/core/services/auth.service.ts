@@ -1,63 +1,160 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { TokenResponse, LoginRequest, RefreshTokenRequest } from '../models';
-import { API_BASE_URL } from '../base/api';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, of, switchMap, tap } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = `${API_BASE_URL}/auth`;
-  private tokenSubject = new BehaviorSubject<string | null>(this.getTokenFromStorage());
-  public token$ = this.tokenSubject.asObservable();
+  private apiUrl = environment.apiUrl; 
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
-  login(payload: LoginRequest): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>(`${this.apiUrl}/token/`, payload).pipe(
-      tap((response) => {
-        this.setTokens(response.access, response.refresh);
-      })
+  // 1. Connexion
+  login(credentials: any): Observable<any> {
+    // ✅ TRADUCTION : On transforme 'email' en 'username' pour Django
+    const payload = {
+      username: credentials.email, // On met l'email dans le champ username
+      password: credentials.password
+    };
+
+    console.log("Envoi au backend :", payload); // Pour vérifier
+
+    return this.http.post(`${this.apiUrl}/auth/token/`, payload).pipe(
+      tap((response: any) => {
+        if (response.access && isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('access_token', response.access);
+          if (response.refresh) {
+            localStorage.setItem('refresh_token', response.refresh);
+          }
+          const role = this.getRoleFromToken(response.access);
+          if (role) {
+            localStorage.setItem('user_role', role);
+          }
+        }
+      }),
+      switchMap(() =>
+        this.getCurrentUser().pipe(
+          tap((user: any) => {
+            if (isPlatformBrowser(this.platformId)) {
+              const role = this.getRoleFromUser(user);
+              if (role) {
+                localStorage.setItem('user_role', role);
+              }
+            }
+          }),
+          catchError(() => of(null))
+        )
+      )
     );
   }
 
-  refreshToken(payload: RefreshTokenRequest): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>(`${this.apiUrl}/token/refresh/`, payload).pipe(
-      tap((response) => {
-        this.setTokens(response.access, response.refresh);
-      })
-    );
+  // 1.b Inscription
+  register(payload: { firstName: string; lastName: string; email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/register/`, {
+      first_name: payload.firstName,
+      last_name: payload.lastName,
+      email: payload.email,
+      password: payload.password
+    });
   }
 
-  logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    this.tokenSubject.next(null);
+  getCurrentUser(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/auth/me/`, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  setTokens(accessToken: string, refreshToken?: string): void {
-    localStorage.setItem('access_token', accessToken);
-    if (refreshToken) {
-      localStorage.setItem('refresh_token', refreshToken);
-    }
-    this.tokenSubject.next(accessToken);
-  }
-
+  // 2. Récupérer le token
   getToken(): string | null {
-    return localStorage.getItem('access_token');
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('access_token');
+    }
+    return null;
   }
 
-  getRefreshToken(): string | null {
-    return localStorage.getItem('refresh_token');
-  }
-
+  // 3. Est-ce que l'utilisateur est connecté ?
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
 
-  private getTokenFromStorage(): string | null {
-    return localStorage.getItem('access_token');
+  getUserRole(): 'admin' | 'user' {
+    if (isPlatformBrowser(this.platformId)) {
+      const storedRole = localStorage.getItem('user_role');
+      if (storedRole === 'admin') {
+        return 'admin';
+      }
+    }
+    const token = this.getToken();
+    if (token) {
+      const role = this.getRoleFromToken(token);
+      return role === 'admin' ? 'admin' : 'user';
+    }
+    return 'user';
+  }
+
+  getDefaultRoute(): string {
+    return this.getUserRole() === 'admin' ? '/admin' : '/user';
+  }
+
+  private getRoleFromToken(token: string): 'admin' | 'user' | null {
+    try {
+      const payload = token.split('.')[1];
+      const decoded = JSON.parse(atob(payload));
+      if (decoded?.is_superuser || decoded?.is_staff || decoded?.role === 'admin') {
+        return 'admin';
+      }
+      return 'user';
+    } catch {
+      return null;
+    }
+  }
+
+  private getRoleFromUser(user: any): 'admin' | 'user' | null {
+    if (!user) {
+      return null;
+    }
+    if (user.is_superuser || user.is_staff || user.role === 'admin') {
+      return 'admin';
+    }
+    return 'user';
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    if (!token) {
+      return new HttpHeaders();
+    }
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
+
+  // 4. Déconnexion
+  logoutRequest(): Observable<any> {
+    const refresh = isPlatformBrowser(this.platformId)
+      ? localStorage.getItem('refresh_token')
+      : null;
+
+    return this.http.post(
+      `${this.apiUrl}/auth/logout/`,
+      { refresh },
+      { headers: this.getAuthHeaders() }
+    ).pipe(
+      catchError(() => of(null))
+    );
+  }
+
+  clearSession(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('user_role');
+    }
   }
 }

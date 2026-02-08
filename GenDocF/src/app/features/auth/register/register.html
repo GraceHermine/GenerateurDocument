@@ -25,36 +25,30 @@
     </div>
 
     <!-- FORMULAIRE -->
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+      <div *ngIf="errorMessage" class="p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm text-center">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Prenom -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-bold px-1">Prenom</label>
+        <input
+          class="w-full rounded-lg border p-3.5"
+          placeholder="Jean"
+          type="text"
+          formControlName="firstName" />
+      </div>
 
       <!-- Nom -->
       <div class="flex flex-col gap-1.5">
-        <label for="nom" class="text-sm font-bold px-1">Nom</label>
+        <label class="text-sm font-bold px-1">Nom</label>
         <input
-          id="nom"
-          formControlName="nom"
-          class="w-full rounded-lg border p-3.5 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-          [ngClass]="{'border-red-400': form.get('nom')?.touched && form.get('nom')?.invalid, 'border-soft-tan dark:border-woody-brown': !form.get('nom')?.invalid || !form.get('nom')?.touched}"
+          class="w-full rounded-lg border p-3.5"
           placeholder="Dupont"
-          type="text" />
-        <div *ngIf="form.get('nom')?.touched && form.get('nom')?.invalid" class="text-xs text-red-500 ml-1">
-          {{ getFieldError('nom') }}
-        </div>
-      </div>
-
-      <!-- Prénom -->
-      <div class="flex flex-col gap-1.5">
-        <label for="prenom" class="text-sm font-bold px-1">Prénom</label>
-        <input
-          id="prenom"
-          formControlName="prenom"
-          class="w-full rounded-lg border p-3.5 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-          [ngClass]="{'border-red-400': form.get('prenom')?.touched && form.get('prenom')?.invalid, 'border-soft-tan dark:border-woody-brown': !form.get('prenom')?.invalid || !form.get('prenom')?.touched}"
-          placeholder="Jean"
-          type="text" />
-        <div *ngIf="form.get('prenom')?.touched && form.get('prenom')?.invalid" class="text-xs text-red-500 ml-1">
-          {{ getFieldError('prenom') }}
-        </div>
+          type="text"
+          formControlName="lastName" />
       </div>
 
       <!-- Email -->
@@ -66,70 +60,24 @@
           class="w-full rounded-lg border p-3.5 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
           [ngClass]="{'border-red-400': form.get('email')?.touched && form.get('email')?.invalid, 'border-soft-tan dark:border-woody-brown': !form.get('email')?.invalid || !form.get('email')?.touched}"
           placeholder="jean.dupont@exemple.com"
-          type="email" />
-        <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="text-xs text-red-500 ml-1">
-          {{ getFieldError('email') }}
-        </div>
+          type="email"
+          formControlName="email" />
       </div>
 
       <!-- Mot de passe -->
       <div class="flex flex-col gap-1.5">
-        <label for="password" class="text-sm font-bold px-1">Mot de passe</label>
-        <div class="relative">
-          <input
-            id="password"
-            formControlName="password"
-            class="w-full rounded-lg border p-3.5 pr-10 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-            [ngClass]="{'border-red-400': form.get('password')?.touched && form.get('password')?.invalid, 'border-soft-tan dark:border-woody-brown': !form.get('password')?.invalid || !form.get('password')?.touched}"
-            [type]="showPassword ? 'text' : 'password'"
-            placeholder="••••••••" />
-          <button type="button" 
-                  (click)="togglePassword()"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 text-woody-brown dark:text-white hover:text-primary transition-colors">
-            <span class="material-symbols-outlined text-[20px]">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
-          </button>
-        </div>
-        <div class="text-xs text-woody-brown/70 dark:text-background-light/70 ml-1">
-          Au moins 8 caractères avec majuscules, minuscules et chiffres
-        </div>
-        <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="text-xs text-red-500 ml-1">
-          {{ getFieldError('password') }}
-        </div>
-      </div>
-
-      <!-- Confirm Password -->
-      <div class="flex flex-col gap-1.5">
-        <label for="confirmPassword" class="text-sm font-bold px-1">Confirmer le mot de passe</label>
-        <div class="relative">
-          <input
-            id="confirmPassword"
-            formControlName="confirmPassword"
-            class="w-full rounded-lg border p-3.5 pr-10 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-            [ngClass]="{'border-red-400': (form.get('confirmPassword')?.touched || passwordMismatch) && form.get('confirmPassword')?.invalid, 'border-soft-tan dark:border-woody-brown': (!form.get('confirmPassword')?.invalid || !form.get('confirmPassword')?.touched) && !passwordMismatch}"
-            [type]="showConfirmPassword ? 'text' : 'password'"
-            placeholder="••••••••" />
-          <button type="button" 
-                  (click)="toggleConfirmPassword()"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 text-woody-brown dark:text-white hover:text-primary transition-colors">
-            <span class="material-symbols-outlined text-[20px]">{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</span>
-          </button>
-        </div>
-        <div *ngIf="form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid" class="text-xs text-red-500 ml-1">
-          {{ getFieldError('confirmPassword') }}
-        </div>
-        <div *ngIf="passwordMismatch" class="text-xs text-red-500 ml-1">
-          Les mots de passe ne correspondent pas
-        </div>
+        <label class="text-sm font-bold px-1">Mot de passe</label>
+        <input
+          class="w-full rounded-lg border p-3.5"
+          placeholder="••••••••"
+          type="password"
+          formControlName="password" />
       </div>
 
       <!-- Conditions -->
       <div class="flex items-start gap-3 py-2">
-        <input 
-          type="checkbox" 
-          id="terms"
-          formControlName="terms"
-          class="mt-1 size-4 rounded cursor-pointer" />
-        <label for="terms" class="text-xs leading-relaxed cursor-pointer">
+        <input type="checkbox" class="mt-1 size-4" formControlName="acceptTerms" />
+        <label class="text-xs leading-relaxed">
           J'accepte les
           <a routerLink="/terms" class="underline font-bold hover:text-primary">
             Conditions d'utilisation
@@ -147,11 +95,10 @@
       <!-- Bouton -->
       <button
         type="submit"
-        [disabled]="form.invalid || loading"
-        class="w-full bg-primary hover:bg-primary/90 disabled:bg-primary/50 disabled:cursor-not-allowed text-white font-extrabold py-4 rounded-lg shadow-md transition-all flex items-center justify-center gap-2">
-        <span *ngIf="!loading">Créer mon compte</span>
-        <span *ngIf="loading">Inscription en cours...</span>
-        <span class="material-symbols-outlined text-[20px]" *ngIf="loading">refresh</span>
+        [disabled]="isLoading || registerForm.invalid"
+        class="w-full bg-primary text-white font-extrabold py-4 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+        <span *ngIf="!isLoading">Créer mon compte</span>
+        <span *ngIf="isLoading">Creation...</span>
       </button>
 
     </form>

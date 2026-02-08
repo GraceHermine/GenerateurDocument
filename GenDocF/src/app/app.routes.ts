@@ -1,9 +1,24 @@
 import { Routes } from '@angular/router';
+<<<<<<< HEAD
 import { authGuard } from './core/guards/auth.guard';
+=======
+import { authMatchGuard } from './core/guards/auth.guard';
+>>>>>>> fix-frontend-startup
 
 export const routes: Routes = [
+  // 👇 MODIFICATION MAJEURE : On redirige la racine ('') vers le Login
+  // Cela empêche la page blanche au démarrage
   {
     path: '',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
+
+  // --- TES MODULES (LAZY LOADING) ---
+  
+  {
+    // Si tu as une partie publique (Site vitrine), on peut y accéder via /public
+    path: '', 
     loadChildren: () => 
       import('./features/public/public-routing-module').then(m => m.PublicRoutingModule)
   },
@@ -16,7 +31,8 @@ export const routes: Routes = [
     path: 'user',
     canActivate: [authGuard],
     loadChildren: () => 
-      import('./features/user/user-routing-module').then(m => m.UserRoutingModule)
+      import('./features/user/user-routing-module').then(m => m.UserRoutingModule),
+    canMatch: [authMatchGuard]
   },
   {
     path: 'admin',
@@ -24,9 +40,12 @@ export const routes: Routes = [
     loadChildren: () => 
       import('./features/admin/admin-routing-module').then(m => m.AdminRoutingModule)
   },
-  // Redirection globale pour les URLs inconnues vers la racine (Public)
+
+  // --- GESTION DES ERREURS (404) ---
+  
+  // Si l'URL n'existe pas, on renvoie vers le login
   { 
     path: '**', 
-    redirectTo: '' 
+    redirectTo: 'public' 
   }
 ];

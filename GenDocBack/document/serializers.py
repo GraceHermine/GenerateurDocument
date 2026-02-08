@@ -1,6 +1,6 @@
 """
 Serializers pour l'API Documents.
-Gère la sérialisation des modèles Document et TemplateVersion.
+Gère la sérialisation des modèles DocumentGenere et TemplateDocument.
 """
 
 from rest_framework import serializers
@@ -126,7 +126,6 @@ class DocumentGenereCreateSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     "Chaque réponse doit contenir 'question' et 'valeur'"
                 )
-
         return value
 
     def validate(self, data):
@@ -140,12 +139,18 @@ class DocumentGenereCreateSerializer(serializers.ModelSerializer):
                 "Ce template n'a pas de formulaire associé"
             )
 
+        # On récupère les IDs des questions répondues
+        # On gère le cas où 'question' est un ID (int) ou un dict (si nested)
+        reponse_ids = []
+        for r in reponses:
+             # Si c'est juste l'ID qui arrive
+            reponse_ids.append(r['question'])
+
         for formulaire in formulaires:
             questions_obligatoires = formulaire.questions.filter(obligatoire=True)
-            questions_repondues = [int(r['question']) if isinstance(r['question'], str) else r['question'] for r in reponses]
-
+            
             for question in questions_obligatoires:
-                if question.id not in questions_repondues:
+                if question.id not in reponse_ids:
                     raise serializers.ValidationError(
                         f"La question '{question.label}' est obligatoire"
                     )

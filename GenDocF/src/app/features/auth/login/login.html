@@ -1,10 +1,7 @@
 <div class="flex min-h-screen flex-col">
   
-
-  <!-- Main Content -->
   <main class="flex-1 flex items-center justify-center p-6 bg-background-light dark:bg-background-dark">
     <div class="relative w-full max-w-md">
-      <!-- Form Card -->
       <div class="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-xl rounded-2xl p-8 border border-[#e6dad1] dark:border-[#3d2b1f] shadow-2xl">
         <div class="flex flex-col items-center mb-8">
           <div class="bg-primary/20 rounded-full w-20 h-20 flex items-center justify-center mb-4 shadow-lg">
@@ -17,38 +14,32 @@
         <h2 class="text-lg font-bold text-primary dark:text-[#d4a373] mb-4">Connexion à l'Espace Client</h2>
         <p class="text-sm text-[#956d50] dark:text-[#c5a38a] mb-6">Heureux de vous revoir parmi nous.</p>
 
-        <!-- Success Message -->
-        <div *ngIf="success" class="mb-6 p-4 bg-green-100 dark:bg-green-900/20 border border-green-400 dark:border-green-600 rounded-lg">
-          <p class="text-sm text-green-700 dark:text-green-300">✓ Connexion réussie ! Redirection en cours...</p>
-        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          
+           <div *ngIf="successMessage" class="p-3 bg-green-100 border border-green-400 text-green-700 rounded text-sm text-center">
+             {{ successMessage }}
+           </div>
 
-        <!-- Error Message -->
-        <div *ngIf="error" class="mb-6 p-4 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-600 rounded-lg">
-          <p class="text-sm text-red-700 dark:text-red-300">{{ error }}</p>
-        </div>
+          <div *ngIf="errorMessage" class="p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm text-center">
+             {{ errorMessage }}
+          </div>
 
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
-          <!-- Email -->
           <div class="space-y-2">
             <label for="email" class="text-xs font-bold text-[#956d50] dark:text-[#c5a38a] uppercase tracking-wider ml-1">Email</label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <span class="material-symbols-outlined text-[#956d50] dark:text-[#c5a38a] text-[20px]">mail</span>
               </div>
-              <input id="email" 
-                     formControlName="email"
-                     type="email" 
-                     placeholder="votre@email.fr"
-                     class="block w-full pl-10 pr-4 py-3 border rounded-xl bg-background-light dark:bg-background-dark text-sm placeholder-[#956d50]/60 text-[#1b130e] dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                     [ngClass]="{'border-red-400 dark:border-red-600': form.get('email')?.touched && form.get('email')?.invalid, 'border-[#e6dad1] dark:border-[#3d2b1f]': !form.get('email')?.invalid || !form.get('email')?.touched}"/>
-              <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="text-xs text-red-500 mt-1 ml-1">
-                {{ form.get('email')?.errors?.['required'] ? 'Email obligatoire' : '' }}
-                {{ form.get('email')?.errors?.['email'] ? 'Email invalide' : '' }}
-              </div>
+              <input 
+                id="email" 
+                type="email" 
+                formControlName="email" 
+                placeholder="votre@email.fr"
+                class="block w-full pl-10 pr-4 py-3 border border-[#e6dad1] dark:border-[#3d2b1f] rounded-xl bg-background-light dark:bg-background-dark text-sm placeholder-[#956d50]/60 text-[#1b130e] dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+              />
             </div>
           </div>
 
-          <!-- Password -->
           <div class="space-y-2">
             <div class="flex justify-between items-center px-1">
               <label for="password" class="text-xs font-bold text-[#956d50] dark:text-[#c5a38a] uppercase tracking-wider">Mot de passe</label>
@@ -58,25 +49,16 @@
               <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <span class="material-symbols-outlined text-[#956d50] dark:text-[#c5a38a] text-[20px]">lock</span>
               </div>
-              <input id="password" 
-                     formControlName="password"
-                     [type]="showPassword ? 'text' : 'password'" 
-                     placeholder="••••••••"
-                     class="block w-full pl-10 pr-12 py-3 border rounded-xl bg-background-light dark:bg-background-dark text-sm placeholder-[#956d50]/60 text-[#1b130e] dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                     [ngClass]="{'border-red-400 dark:border-red-600': form.get('password')?.touched && form.get('password')?.invalid, 'border-[#e6dad1] dark:border-[#3d2b1f]': !form.get('password')?.invalid || !form.get('password')?.touched}"/>
-              <button type="button" 
-                      (click)="togglePassword()" 
-                      class="absolute inset-y-0 right-0 flex items-center pr-3 text-[#956d50] dark:text-[#c5a38a] hover:text-primary transition-colors">
-                <span class="material-symbols-outlined text-[20px]">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
-              </button>
-              <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="text-xs text-red-500 mt-1 ml-1">
-                {{ form.get('password')?.errors?.['required'] ? 'Mot de passe obligatoire' : '' }}
-                {{ form.get('password')?.errors?.['minlength'] ? 'Au moins 6 caractères' : '' }}
-              </div>
+              <input 
+                id="password" 
+                type="password" 
+                formControlName="password" 
+                placeholder="••••••••"
+                class="block w-full pl-10 pr-4 py-3 border border-[#e6dad1] dark:border-[#3d2b1f] rounded-xl bg-background-light dark:bg-background-dark text-sm placeholder-[#956d50]/60 text-[#1b130e] dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+              />
             </div>
           </div>
 
-          <!-- Remember Me -->
           <div class="flex items-center gap-2 px-1">
             <input type="checkbox" 
                    id="remember" 
@@ -85,14 +67,13 @@
             <label for="remember" class="text-sm text-[#956d50] dark:text-[#c5a38a] cursor-pointer">Se souvenir de moi</label>
           </div>
 
-          <!-- Submit -->
-          <button type="submit" 
-                  [disabled]="form.invalid || loading"
-                  class="w-full py-3 px-4 bg-primary hover:bg-primary/90 disabled:bg-[#d4a373]/50 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
-            <span *ngIf="!loading">Se connecter</span>
-            <span *ngIf="loading">Connexion en cours...</span>
-            <span class="material-symbols-outlined text-[20px]" *ngIf="!loading">login</span>
-            <span class="material-symbols-outlined text-[20px] animate-spin" *ngIf="loading">refresh</span>
+          <button 
+            type="submit" 
+            [disabled]="isLoading || loginForm.invalid"
+            class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+              <span *ngIf="!isLoading">Se connecter</span>
+              <span *ngIf="isLoading">Connexion...</span>
+              <span *ngIf="!isLoading" class="material-symbols-outlined text-[20px]">login</span>
           </button>
         </form>
 
@@ -100,3 +81,16 @@
           <p class="text-sm text-[#956d50] dark:text-[#c5a38a]">
             Pas encore de compte ? 
             <a routerLink="/auth/register" class="text-primary font-bold hover:underline">S'inscrire</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-8 text-center">
+        <a routerLink="/help" class="inline-flex items-center gap-2 text-xs font-medium text-[#956d50] hover:text-primary transition-colors">
+          <span class="material-symbols-outlined text-[16px]">help_outline</span>
+          Besoin d'aide ou support technique ?
+        </a>
+      </div>
+    </div>
+  </main>
+</div>

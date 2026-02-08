@@ -81,6 +81,7 @@ import {
   withRouterConfig,
   withViewTransitions,
   ɵEmptyOutletComponent
+<<<<<<< HEAD
 } from "./chunk-5B46LURQ.js";
 import "./chunk-JCLW76RU.js";
 import "./chunk-KKRBOKP2.js";
@@ -90,6 +91,15 @@ import "./chunk-RZLISSYE.js";
 import "./chunk-3ZX642I5.js";
 import "./chunk-ONP5LV6Q.js";
 import "./chunk-AQT54UAN.js";
+=======
+} from "./chunk-CYS2ARJG.js";
+import "./chunk-CPE6ZTYN.js";
+import "./chunk-PEX3CVTO.js";
+import "./chunk-USDTQBXW.js";
+import "./chunk-YXGKJXIK.js";
+import "./chunk-TKZRXKRP.js";
+import "./chunk-6W3O5TNR.js";
+>>>>>>> fix-frontend-startup
 import "./chunk-6DU2HRTW.js";
 export {
   ActivatedRoute,

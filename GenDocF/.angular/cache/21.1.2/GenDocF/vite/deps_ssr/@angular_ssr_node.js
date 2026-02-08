@@ -1,10 +1,14 @@
 import { createRequire } from 'module';const require = createRequire(import.meta.url);
 import {
   AngularAppEngine,
-  InlineCriticalCssProcessor,
+  InlineCriticalCssProcessor
+} from "./chunk-RHCPM6GF.js";
+import "./chunk-CYS2ARJG.js";
+import {
   SERVER_CONTEXT,
   renderApplication,
   renderModule
+<<<<<<< HEAD
 } from "./chunk-6UYZCF4O.js";
 import "./chunk-5B46LURQ.js";
 import "./chunk-JCLW76RU.js";
@@ -15,6 +19,15 @@ import "./chunk-RZLISSYE.js";
 import "./chunk-3ZX642I5.js";
 import "./chunk-ONP5LV6Q.js";
 import "./chunk-AQT54UAN.js";
+=======
+} from "./chunk-VK4FPALQ.js";
+import "./chunk-CPE6ZTYN.js";
+import "./chunk-PEX3CVTO.js";
+import "./chunk-USDTQBXW.js";
+import "./chunk-YXGKJXIK.js";
+import "./chunk-TKZRXKRP.js";
+import "./chunk-6W3O5TNR.js";
+>>>>>>> fix-frontend-startup
 import {
   __spreadValues
 } from "./chunk-6DU2HRTW.js";

@@ -1,36 +1,51 @@
-from rest_framework import generics, permissions
+from rest_framework import status
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User
-from .serializers import RegisterSerializer, UserSerializer
-
-class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = RegisterSerializer
-    permission_classes = [permissions.AllowAny]
+from .serializers import RegisterSerializer, UserMeSerializer
 
 
-class LoginView(APIView):
-    permission_classes = [permissions.AllowAny]
+class RegisterAPIView(APIView):
+	permission_classes = [AllowAny]
 
-    def post(self, request):
-        email = request.data.get("email")
-        password = request.data.get("password")
+	def post(self, request, *args, **kwargs):
+		serializer = RegisterSerializer(data=request.data)
+		if not serializer.is_valid():
+			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return Response({"error": "Utilisateur introuvable"}, status=400)
+		user = serializer.save()
+		return Response(
+			{
+				"id": user.id,
+				"email": user.email,
+				"username": user.username
+			},
+			status=status.HTTP_201_CREATED
+		)
 
-        if not user.check_password(password):
-            return Response({"error": "Mot de passe incorrect"}, status=400)
 
-        refresh = RefreshToken.for_user(user)
+class MeAPIView(APIView):
+	permission_classes = [IsAuthenticated]
 
-        return Response({
-            "refresh": str(refresh),
-            "access": str(refresh.access_token),
-            "user": UserSerializer(user).data
-        })
+	def get(self, request, *args, **kwargs):
+		serializer = UserMeSerializer(request.user)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class LogoutAPIView(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def post(self, request, *args, **kwargs):
+		refresh_token = request.data.get("refresh")
+		if refresh_token:
+			try:
+				from rest_framework_simplejwt.tokens import RefreshToken
+				try:
+					RefreshToken(refresh_token).blacklist()
+				except AttributeError:
+					pass
+			except Exception:
+				pass
+
+		return Response(status=status.HTTP_204_NO_CONTENT)
