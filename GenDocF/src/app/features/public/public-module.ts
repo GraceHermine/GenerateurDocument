@@ -11,11 +11,17 @@ import { Help } from './help/help';
 import { Faq } from './faq/faq';
 import { Guide } from './guide/guide';
 
+// Importez CategoriesComponent
+import { CategoriesComponent } from './public/categories/categories.component';
+
 @NgModule({
+  declarations: [
+    // CategoriesComponent // <-- ajoute ici car il n'est pas standalone
+  ],
   imports: [
     CommonModule,
     PublicRoutingModule,
-    // On les met ici car ils sont Standalone !
+    // Standalone components
     Public, Home, About, Contact, Help, Faq, Guide 
   ]
 })

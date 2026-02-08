@@ -5,7 +5,8 @@ Configuration Django Admin pour les modèles de documents.
 from django.contrib import admin
 # On importe les vrais modèles qui existent dans ton models.py actuel
 from .models import (
-    CategorieTemplate, 
+    CategorieTemplate,
+    ChoixQuestion, 
     TemplateDocument, 
     Formulaire, 
     Question, 
@@ -27,11 +28,22 @@ class TemplateDocumentAdmin(admin.ModelAdmin):
     list_filter = ('status', 'categorie')
     search_fields = ('nom',)
 
+
+class QuestionInline(admin.TabularInline):
+    model = Question
+    extra = 1
+
 # 3. Gestion des Formulaires associés aux templates
 @admin.register(Formulaire)
 class FormulaireAdmin(admin.ModelAdmin):
     list_display = ('id', 'titre', 'template', 'date_add')
     search_fields = ('titre',)
+    inlines = [QuestionInline]
+
+
+class ChoixQuestionInline(admin.TabularInline):
+    model = ChoixQuestion
+    extra = 1
 
 # 4. Gestion des Questions
 @admin.register(Question)
@@ -39,6 +51,7 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'label', 'variable', 'type_champ', 'obligatoire', 'formulaire')
     list_filter = ('type_champ', 'obligatoire')
     search_fields = ('label', 'variable')
+    inlines = [ChoixQuestionInline]
 
 # 5. Gestion des Types de documents (Extensions)
 @admin.register(TypeDocument)

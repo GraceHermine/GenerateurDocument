@@ -1,29 +1,24 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { DocumentGenere, PaginatedResponse } from '../models/document.model';
-
+import { DocumentGenere, PaginatedResponse, DocumentHistory } from '../models/document.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-
-// ✅ Chemin vérifié : environment.ts existe bien ici
 import { environment } from '../../../environments/environment';
-
-// ✅ Correction ici : On pointe vers 'auth.service' et non 'auth'
-import { AuthService } from './auth.service'; 
-
-// ✅ Import du modèle
-// import { DocumentHistory } from '../models/document.model';
-
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class DocumentGenereService {
-  private readonly apiService = inject(ApiService);
-  private readonly endpoint = 'documents/documents';
 
+  private readonly apiService = inject(ApiService);
+  private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
+
+  private readonly endpoint = 'documents/documents';
+  private readonly apiUrl = `${environment.apiUrl}/documents/documents`;
+
+  // 📄 Liste paginée
   getDocuments(page: number = 1, statut?: string): Observable<PaginatedResponse<DocumentGenere>> {
     let url = `${this.endpoint}?page=${page}`;
     if (statut) {
@@ -32,53 +27,55 @@ export class DocumentGenereService {
     return this.apiService.get<PaginatedResponse<DocumentGenere>>(url);
   }
 
+  // 📄 Détail
   getDocument(id: number): Observable<DocumentGenere> {
     return this.apiService.get<DocumentGenere>(`${this.endpoint}/${id}`);
   }
 
+  // ➕ Création
   createDocument(document: Partial<DocumentGenere>): Observable<DocumentGenere> {
     return this.apiService.post<DocumentGenere>(this.endpoint, document);
   }
 
+  // ✏️ Update
   updateDocument(id: number, document: Partial<DocumentGenere>): Observable<DocumentGenere> {
     return this.apiService.put<DocumentGenere>(`${this.endpoint}/${id}`, document);
   }
 
+  // ❌ Delete
   deleteDocument(id: number): Observable<void> {
     return this.apiService.delete<void>(`${this.endpoint}/${id}`);
   }
 
+  // ✅ Finaliser
   finaliserDocument(id: number): Observable<DocumentGenere> {
     return this.apiService.post<DocumentGenere>(`${this.endpoint}/${id}/finaliser`, {});
   }
 
+  // 📦 Archiver
   archiverDocument(id: number): Observable<DocumentGenere> {
     return this.apiService.post<DocumentGenere>(`${this.endpoint}/${id}/archiver`, {});
   }
 
+  // 📜 Historique utilisateur
+  getUserDocuments(): Observable<DocumentHistory[]> {
+    return this.http.get<DocumentHistory[]>(`${this.apiUrl}/`, { headers: this.getHeaders() });
+  }
+
+  // ⬇️ Télécharger
   downloadDocument(id: number): Observable<Blob> {
-    return this.apiService.downloadFile(`${this.endpoint}/${id}/download`); // ✅
+    return this.http.get(`${this.apiUrl}/${id}/download/`, {
+      headers: this.getHeaders(),
+      responseType: 'blob'
+    });
+  }
 
-
-  // // Ajoute le token JWT dans l'en-tête pour prouver qu'on est connecté
-  // private getHeaders(): HttpHeaders {
-  //   const token = this.authService.getToken();
-  //   return new HttpHeaders({
-  //     'Authorization': `Bearer ${token}`,
-  //     'Content-Type': 'application/json'
-  //   });
-  // }
-
-  // // 1. Récupérer l'historique (GET)
-  // getUserDocuments(): Observable<DocumentHistory[]> {
-  //   return this.http.get<DocumentHistory[]>(`${this.apiUrl}/`, { headers: this.getHeaders() });
-  // }
-
-  // // 2. Télécharger un document (GET Blob)
-  // downloadDocument(id: number): Observable<Blob> {
-  //   return this.http.get(`${this.apiUrl}/${id}/download/`, {
-  //     headers: this.getHeaders(),
-  //     responseType: 'blob' // Indispensable pour dire à Angular que c'est un fichier
-  //   });
+  // 🔐 Header JWT
+  private getHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
   }
 }

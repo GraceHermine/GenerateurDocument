@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Indispensable pour *ngFor et DatePipe
-import { DocumentService } from '../../../core/services/document.service';
+import { DocumentGenereService } from '../../../core/services/document.service';
 import { DocumentHistory } from '../../../core/models/document.model';
 
 @Component({
@@ -18,7 +18,7 @@ export class History implements OnInit {
   isLoading: boolean = true;
   errorMessage: string | null = null;
 
-  constructor(private documentService: DocumentService) {}
+  constructor(private documentService: DocumentGenereService) {}
 
   // Cette fonction se lance automatiquement au chargement de la page
   ngOnInit(): void {
@@ -27,12 +27,12 @@ export class History implements OnInit {
 
   loadHistory(): void {
     this.documentService.getUserDocuments().subscribe({
-      next: (data) => {
+      next: (data: DocumentHistory[]) => {
         console.log('Documents reçus :', data); // Pour le débogage
         this.documents = data;
         this.isLoading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Erreur API :', err);
         this.errorMessage = "Impossible de charger l'historique.";
         this.isLoading = false;
@@ -47,7 +47,7 @@ export class History implements OnInit {
     // Dans le doute, on laisse l'utilisateur cliquer.
     
     this.documentService.downloadDocument(doc.id).subscribe({
-      next: (blob) => {
+      next: (blob: Blob | MediaSource) => {
         // Astuce pour déclencher le téléchargement du fichier reçu
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -57,7 +57,7 @@ export class History implements OnInit {
         link.click();
         window.URL.revokeObjectURL(url);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Erreur téléchargement', err);
         alert("Erreur lors du téléchargement du fichier.");
       }

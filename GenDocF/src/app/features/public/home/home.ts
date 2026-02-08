@@ -1,53 +1,59 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { ApiService } from '../../../core/services/api.service';
+import { CategorieTemplate, PaginatedResponse } from '../../../core/models/document.model';
 
-@Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './home.html',
-  styleUrls: ['./home.scss'],
+@Injectable({
+  providedIn: 'root'
 })
 export class Home {
+  private readonly apiService = inject(ApiService);
+  
+  // ESSAYEZ CES ENDPOINTS DIFFÉRENTS :
+  // private readonly endpoint = 'documents/categories'; // Votre endpoint actuel
+  // private readonly endpoint = 'api/categories/';      // Peut-être avec api/
+  // private readonly endpoint = 'categories/';          // Simple
+  // private readonly endpoint = 'template-categories/'; // Spécifique aux templates
+  private readonly endpoint = 'categories/'; // Commencez par celui-ci
 
-  categories = [
-    {
-      title: 'Attestations & Déclarations',
-      slug: 'attestations-declarations',
-      description: 'Attestation sur l’honneur, hébergement, domicile, etc.',
-      icon: 'description'
-    },
-    {
-      title: 'Résiliations & Contrats',
-      slug: 'resiliations-contrats',
-      description: 'Assurance, abonnement, logement, services.',
-      icon: 'assignment_return'
-    },
-    {
-      title: 'Réclamations & Litiges',
-      slug: 'reclamations-litiges',
-      description: 'Courriers de plainte, contestation et mise en demeure.',
-      icon: 'gavel'
-    },
-    {
-      title: 'Travail & Études',
-      slug: 'travail-et-etudes',
-      description: 'Demande de stage, congé, attestation employeur.',
-      icon: 'school'
-    },
-    {
-      title: 'Vie quotidienne',
-      slug: 'vie-quotidienne',
-      description: 'Courriers administratifs et démarches personnelles.',
-      icon: 'home'
-    },
-    {
-      title: 'Autres documents',
-      slug: 'autres',
-      description: 'Modèles personnalisables selon vos besoins.',
-      icon: 'folder'
-    }
-  ];
-
+  getAllCategories(): Observable<CategorieTemplate[]> {
+    console.log('🔍 Appel API à:', this.endpoint);
+    
+    return this.apiService.get<any>(this.endpoint).pipe(
+      map(response => {
+        console.log('🔍 Réponse API brute:', response);
+        
+        // Gestion de différents formats de réponse
+        if (Array.isArray(response)) {
+          return response;
+        } else if (response && Array.isArray(response.results)) {
+          return response.results;
+        } else if (response && Array.isArray(response.data)) {
+          return response.data;
+        } else if (response && typeof response === 'object') {
+          // Essayez de convertir l'objet en tableau
+          const arr = Object.values(response);
+          return Array.isArray(arr) ? arr : [];
+        } else {
+          console.warn('Format de réponse inattendu:', response);
+          return [];
+        }
+      }),
+      catchError(error => {
+        console.error('❌ Erreur API catégories:', error);
+        
+        // Retournez des données mockées pour développement
+        const mockData: CategorieTemplate[] = [
+          { id: 1, nom: 'TEST - Attestations', description: 'Description test 1' },
+          { id: 2, nom: 'TEST - Travail', description: 'Description test 2' },
+          { id: 3, nom: 'TEST - Vie quotidienne', description: 'Description test 3' }
+        ];
+        
+        return of(mockData);
+      })
+    );
+  }
+  
+  // ... autres méthodes
 }

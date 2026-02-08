@@ -1,221 +1,316 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Formulaire Dynamique - Rapport Mensuel</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f8f9fa;
-      margin: 0;
-      padding: 30px 20px;
-      color: #333;
-      line-height: 1.5;
-    }
-    .container {
-      max-width: 780px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-      overflow: hidden;
-    }
-    .header {
-      background: #f0f4ff;
-      padding: 20px 30px;
-      border-bottom: 1px solid #e0e7ff;
-    }
-    h1 {
-      margin: 0;
-      font-size: 1.55rem;
-      color: #574706;
-    }
-    .intro {
-      margin: 12px 0 0;
-      color: #555;
-      font-size: 0.97rem;
-    }
-
-    .section {
-      padding: 24px 30px;
-      border-bottom: 1px solid #eee;
-    }
-    .section:last-child {
-      border-bottom: none;
-    }
-    .section-title {
-      font-size: 1.18rem;
-      color: #38600b;
-      margin: 0 0 18px 0;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #e0e7ff;
-    }
-
-    .progress-container {
-      margin: 12px 0 30px;
-    }
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-      margin-bottom: 6px;
-      color: #555;
-    }
-    progress {
-      width: 100%;
-      height: 18px;
-      border-radius: 9px;
-    }
-    progress::-webkit-progress-bar {
-      background: #e5e7eb;
-      border-radius: 9px;
-    }
-    progress::-webkit-progress-value {
-      background: #3a5008;
-      border-radius: 9px;
-    }
-
-    label {
-      display: block;
-      margin: 14px 0 6px;
-      font-weight: 500;
-      color: #444;
-    }
-    input[type="text"],
-    input[type="date"],
-    input[type="month"],
-    textarea,
-    select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      box-sizing: border-box;
-    }
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .checkbox-group {
-      margin: 18px 0;
-    }
-    .checkbox-group label {
-      display: flex;
-      align-items: center;
-      margin: 10px 0;
-      font-weight: normal;
-    }
-    input[type="checkbox"],
-    input[type="radio"] {
-      margin-right: 10px;
-      width: 18px;
-      height: 18px;
-    }
-
-    .footer {
-      padding: 24px 30px;
-      background: #f8fafc;
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-    }
-    button {
-      padding: 12px 28px;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      border: none;
-    }
-    .btn-cancel {
-      background: #e5e7eb;
-      color: #444;
-    }
-    .btn-generate {
-      background: #67501a;
-      color: white;
-      font-weight: 500;
-    }
-    .btn-generate:hover {
-      background: #997e13;
-    }
-  </style>
-</head>
-<body>
-
-<div class="container">
-
-  <div class="header">
-    <h1>Formulaire Dynamique pour Rapport Mensuel</h1>
-    <p class="intro">
-      Veuillez remplir les champs ci-dessous pour générer votre document personnalisé.<br>
-      Les informations saisies seront utilisées pour peupler le modèle de rapport mensuel.
-    </p>
-  </div>
-
-  <div class="section">
-    <h2 class="section-title">Progression de la Génération</h2>
-    <div class="progress-container">
-      <div class="progress-label">
-        <span>État actuel : En attente de données...</span>
-        <span>0% Complété</span>
+<!-- dynamic-form.html -->
+<main class="flex-1 p-4 md:p-8 bg-gray-50 dark:bg-gray-900">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center gap-3 mb-4">
+        <button 
+          (click)="cancelForm()"
+          class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+          {{ template?.titre || 'Formulaire' }}
+        </h1>
       </div>
-      <progress value="0" max="100"></progress>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2 class="section-title">Informations Générales</h2>
-    
-    <label>Nom du Document</label>
-    <input type="text" value="Rapport Mensuel Février 2024">
-
-    <label>Date de Génération</label>
-    <input type="date" value="2024-02-29">
-
-    <label>Auteur</label>
-    <input type="text" value="John Doe">
-  </div>
-
-  <div class="section">
-    <h2 class="section-title">Détails Spécifiques du Rapport</h2>
-    
-    <label>Type de Rapport</label>
-    <input type="text" value="Rapport Mensuel">
-
-    <label>Période Couvrante</label>
-    <input type="month" value="2024-02">
-
-    <label>Objectifs</label>
-    <textarea>Analyse approfondie des ventes mensuelles, identification des points d'arrangement et proposition de stratégies d'amélioration.</textarea>
-
-    <label>Défis Rencontrés et Solutions</label>
-    <textarea>Difficulté à agréger les données de plusieurs sources. Solution : implémentation d'un script d'automatisation.</textarea>
-  </div>
-
-  <div class="section">
-    <h2 class="section-title">Options de Génération</h2>
-    
-    <div class="checkbox-group">
-      <label><input type="checkbox" checked> Inclure les graphiques analytiques</label>
-      <label><input type="radio" name="format" checked> Format Word (.docx)</label>
-      <label><input type="radio" name="format"> PDF (recommandé)</label>
-      <label><input type="radio" name="format"> HTML</label>
+      <p class="text-gray-600 dark:text-gray-400">
+        {{ template?.description || 'Remplissez les champs ci-dessous pour générer votre document' }}
+      </p>
     </div>
 
-    <label>
-      <input type="checkbox"> Envoyer par e-mail après génération
-    </label>
+    <!-- Progress -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-8 border border-gray-200 dark:border-gray-700">
+      <div class="flex justify-between items-center mb-2">
+        <span class="font-medium text-gray-700 dark:text-gray-300">Progression</span>
+        <span class="font-bold text-primary">{{ progress }}%</span>
+      </div>
+      <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div class="h-full bg-primary rounded-full transition-all duration-300" [style.width]="progress + '%'"></div>
+      </div>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        {{ getAnsweredCount() }} sur {{ questions.length }} questions répondues
+      </p>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="generateDocument()" #dynamicForm="ngForm">
+      <div class="space-y-6">
+        <!-- Section Informations Générales -->
+        <div *ngIf="template" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 pb-2 border-b">
+            Informations Générales
+          </h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Template Info -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Template
+              </label>
+              <input 
+                type="text" 
+                [value]="template.titre" 
+                disabled
+                class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-700 dark:text-gray-300">
+            </div>
+            
+            <!-- Titre du Document -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Titre du document *
+              </label>
+              <input 
+                type="text" 
+                [(ngModel)]="documentTitle"
+                name="documentTitle"
+                required
+                placeholder="Ex: Contrat de travail 2024"
+                class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+          </div>
+        </div>
+
+        <!-- Questions -->
+        <div *ngFor="let question of questions; let i = index" 
+             class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+          
+          <!-- Question Header -->
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  Question {{ i + 1 }}
+                </span>
+                <span *ngIf="question.obligatoire" class="text-xs text-red-500">* Obligatoire</span>
+              </div>
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+                {{ question.texte }}
+              </h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Type: {{ getQuestionTypeLabel(question.type_question) }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Réponses selon le type -->
+          <div class="mt-4">
+            <!-- Texte -->
+            <div *ngIf="question.type_question === 'text'">
+              <textarea
+                [(ngModel)]="responses[question.id]"
+                (ngModelChange)="onResponseChange(question.id)"
+                [name]="'question_' + question.id"
+                [required]="question.obligatoire"
+                rows="3"
+                placeholder="Votre réponse..."
+                class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+            </div>
+
+            <!-- Nombre -->
+            <div *ngIf="question.type_question === 'number'">
+              <input
+                type="number"
+                [(ngModel)]="responses[question.id]"
+                (ngModelChange)="onResponseChange(question.id)"
+                [name]="'question_' + question.id"
+                [required]="question.obligatoire"
+                placeholder="Entrez un nombre"
+                class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+
+            <!-- Date -->
+            <div *ngIf="question.type_question === 'date'">
+              <input
+                type="date"
+                [(ngModel)]="responses[question.id]"
+                (ngModelChange)="onResponseChange(question.id)"
+                [name]="'question_' + question.id"
+                [required]="question.obligatoire"
+                class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+
+            <!-- Choix unique -->
+            <div *ngIf="question.type_question === 'choice' && question.options">
+              <div class="space-y-2">
+                <label *ngFor="let option of question.options; let j = index" 
+                       class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    [(ngModel)]="responses[question.id]"
+                    (ngModelChange)="onResponseChange(question.id)"
+                    [name]="'question_' + question.id"
+                    [value]="option"
+                    [required]="question.obligatoire"
+                    class="mr-3">
+                  <span>{{ option }}</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Choix multiple -->
+            <div *ngIf="question.type_question === 'multiple_choice' && question.options">
+              <div class="space-y-2">
+                <label *ngFor="let option of question.options; let j = index" 
+                       class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    [checked]="isOptionSelected(question.id, option)"
+                    (change)="toggleMultipleChoice(question.id, option)"
+                    class="mr-3">
+                  <span>{{ option }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Help text -->
+          <div *ngIf="question.obligatoire" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            <span class="material-symbols-outlined align-text-bottom text-xs mr-1">info</span>
+            Ce champ est obligatoire
+          </div>
+        </div>
+
+        <!-- Options de Génération -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 pb-2 border-b">
+            Options de Génération
+          </h2>
+          
+          <div class="space-y-4">
+            <!-- Format -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Format de sortie
+              </label>
+              <div class="flex flex-wrap gap-3">
+                <label class="inline-flex items-center">
+                  <input
+                    type="radio"
+                    [(ngModel)]="outputFormat"
+                    name="outputFormat"
+                    value="pdf"
+                    checked
+                    class="mr-2">
+                  <span>PDF (recommandé)</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input
+                    type="radio"
+                    [(ngModel)]="outputFormat"
+                    name="outputFormat"
+                    value="docx"
+                    class="mr-2">
+                  <span>Word (.docx)</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input
+                    type="radio"
+                    [(ngModel)]="outputFormat"
+                    name="outputFormat"
+                    value="html"
+                    class="mr-2">
+                  <span>HTML</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Options supplémentaires -->
+            <div class="space-y-2">
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="includeWatermark"
+                  name="includeWatermark"
+                  class="mr-2">
+                <span>Inclure un filigrane</span>
+              </label>
+              
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="sendEmail"
+                  name="sendEmail"
+                  class="mr-2">
+                <span>Envoyer par email après génération</span>
+              </label>
+              
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="saveAsTemplate"
+                  name="saveAsTemplate"
+                  class="mr-2">
+                <span>Sauvegarder les réponses comme template</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row justify-between gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <button
+            type="button"
+            (click)="cancelForm()"
+            class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium">
+            Annuler
+          </button>
+          
+          <div class="flex gap-4">
+            <button
+              type="button"
+              (click)="saveAsDraft()"
+              class="px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-medium">
+              Enregistrer comme brouillon
+            </button>
+            
+            <button
+              type="submit"
+              [disabled]="!isFormValid()"
+              class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium flex items-center gap-2">
+              <span class="material-symbols-outlined">rocket_launch</span>
+              Générer le document
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Sidebar Info (sur desktop) -->
+    <div class="hidden lg:block fixed right-8 top-24 w-64">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+        <h3 class="font-bold text-gray-900 dark:text-white mb-4">Résumé</h3>
+        
+        <div class="space-y-4">
+          <div>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Template</p>
+            <p class="font-medium">{{ template?.titre || 'Non spécifié' }}</p>
+          </div>
+          
+          <div>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Questions</p>
+            <p class="font-medium">{{ questions.length }} questions</p>
+          </div>
+          
+          <div>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Statut</p>
+            <p class="font-medium">
+              <span [class]="progress === 100 ? 'text-green-600' : 'text-yellow-600'">
+                {{ progress === 100 ? 'Complet' : 'En cours' }}
+              </span>
+            </p>
+          </div>
+          
+          <div *ngIf="template?.variables?.length" class="pt-4 border-t">
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Variables détectées</p>
+            <div class="flex flex-wrap gap-1">
+              <span *ngFor="let variable of template.variables" 
+                    class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs rounded">
+                {{ variable }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="footer">
-    <button class="btn-cancel">Annuler</button>
-    <button class="btn-generate">Générer le Document</button>
-  </div>
-
-</div>
-
-</body>
-</html>
+</main>

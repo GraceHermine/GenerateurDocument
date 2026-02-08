@@ -1,8 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-# On importe uniquement les ViewSets qui existent dans notre views.py corrigé
-from .views import (
+from .viewset import (
+
     CategorieTemplateViewSet,
     TemplateDocumentViewSet,
     FormulaireViewSet,
