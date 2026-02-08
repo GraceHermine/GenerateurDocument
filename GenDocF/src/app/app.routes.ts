@@ -1,30 +1,45 @@
 import { Routes } from '@angular/router';
+import { authMatchGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  // 1. D'abord les routes spécifiques (Auth, User, Admin)
-  {
-    path: 'auth',
-    loadChildren: () => import('./features/auth/auth-routing-module').then(m => m.AuthRoutingModule)
-  },
-  {
-    path: 'user', // Espace connecté
-    loadChildren: () => import('./features/user/user-routing-module').then(m => m.UserRoutingModule)
-  },
-  {
-    path: 'admin', // Espace admin
-    loadChildren: () => import('./features/admin/admin-routing-module').then(m => m.AdminRoutingModule)
-  },
-
-  // 2. ENFIN, la route par défaut (Le Site Public)
-  // On charge le module Public pour la racine '' (l'accueil) et tout ce qui suit (/about, /contact...)
+  // 👇 MODIFICATION MAJEURE : On redirige la racine ('') vers le Login
+  // Cela empêche la page blanche au démarrage
   {
     path: '',
-    loadChildren: () => import('./features/public/public-routing-module').then(m => m.PublicRoutingModule)
+    redirectTo: '',
+    pathMatch: 'full'
   },
 
-  // 3. Sécurité (Wildcard) : Si vraiment aucune route ne matche, retour à l'accueil
+  // --- TES MODULES (LAZY LOADING) ---
+  
   {
-    path: '**',
-    redirectTo: ''
+    // Si tu as une partie publique (Site vitrine), on peut y accéder via /public
+    path: '', 
+    loadChildren: () => 
+      import('./features/public/public-routing-module').then(m => m.PublicRoutingModule)
+  },
+  {
+    path: 'auth',
+    loadChildren: () => 
+      import('./features/auth/auth-routing-module').then(m => m.AuthRoutingModule)
+  },
+  {
+    path: 'user',
+    loadChildren: () => 
+      import('./features/user/user-routing-module').then(m => m.UserRoutingModule),
+    canMatch: [authMatchGuard]
+  },
+  {
+    path: 'admin',
+    loadChildren: () => 
+      import('./features/admin/admin-routing-module').then(m => m.AdminRoutingModule)
+  },
+
+  // --- GESTION DES ERREURS (404) ---
+  
+  // Si l'URL n'existe pas, on renvoie vers le login
+  { 
+    path: '**', 
+    redirectTo: 'public' 
   }
 ];

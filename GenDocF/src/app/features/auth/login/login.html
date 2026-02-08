@@ -16,6 +16,10 @@
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
           
+           <div *ngIf="successMessage" class="p-3 bg-green-100 border border-green-400 text-green-700 rounded text-sm text-center">
+             {{ successMessage }}
+           </div>
+
           <div *ngIf="errorMessage" class="p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm text-center">
              {{ errorMessage }}
           </div>
@@ -73,7 +77,7 @@
         <div class="mt-8 pt-6 border-t border-[#e6dad1] dark:border-[#3d2b1f] text-center">
           <p class="text-sm text-[#956d50] dark:text-[#c5a38a]">
             Pas encore de compte ? 
-            <a routerLink="/register" class="text-primary font-bold hover:underline">S'inscrire</a>
+            <a routerLink="/auth/register" class="text-primary font-bold hover:underline">S'inscrire</a>
           </p>
         </div>
       </div>
