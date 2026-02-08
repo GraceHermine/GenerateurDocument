@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export interface CategorieTemplate {
   id: number;
   nom: string;
@@ -70,4 +71,13 @@ export interface PaginatedResponse<T> {
   next: string | null;
   previous: string | null;
   results: T[];
+=======
+export interface DocumentHistory {
+  id: number;
+  template_nom: string;
+  format: 'pdf' | 'docx';
+  status: 'pending' | 'processing' | 'done' | 'error';
+  date_generation: string;
+  fichier: string | null;
+>>>>>>> ebbfb2a6c04bf9e3ea352244f444ff87e7aa8d06
 }

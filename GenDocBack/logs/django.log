@@ -1,0 +1,614 @@
+ERROR 2026-02-02 03:12:57,853 log 34524 42036 Internal Server Error: /api/schema/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 84, in get
+    return self._get_schema_response(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 92, in _get_schema_response
+    data=generator.get_schema(request=request, public=self.serve_public),
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 281, in get_schema
+    paths=self.parse(request, public),
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 202, in parse
+    endpoints = self._get_paths_and_endpoints()
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 192, in _get_paths_and_endpoints
+    view = self.create_view(callback, method)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 176, in create_view
+    action_schema_class = type('ExtendedRearrangedSchema', mro, {})
+TypeError: type 'function' is not an acceptable base type
+ERROR 2026-02-02 03:12:57,868 basehttp 34524 42036 "GET /api/schema/ HTTP/1.1" 500 136119
+ERROR 2026-02-02 03:12:58,014 log 34524 42036 Internal Server Error: /api/schema/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 84, in get
+    return self._get_schema_response(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 92, in _get_schema_response
+    data=generator.get_schema(request=request, public=self.serve_public),
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 281, in get_schema
+    paths=self.parse(request, public),
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 202, in parse
+    endpoints = self._get_paths_and_endpoints()
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 192, in _get_paths_and_endpoints
+    view = self.create_view(callback, method)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 176, in create_view
+    action_schema_class = type('ExtendedRearrangedSchema', mro, {})
+TypeError: type 'function' is not an acceptable base type
+ERROR 2026-02-02 03:12:58,025 basehttp 34524 42036 "GET /api/schema/ HTTP/1.1" 500 136119
+ERROR 2026-02-02 03:13:43,979 log 30076 23860 Internal Server Error: /api/schema/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 84, in get
+    return self._get_schema_response(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 92, in _get_schema_response
+    data=generator.get_schema(request=request, public=self.serve_public),
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 281, in get_schema
+    paths=self.parse(request, public),
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 246, in parse
+    assert isinstance(view.schema, AutoSchema), (
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Incompatible AutoSchema used on View <class 'templates.views.TemplateViewSet'>. Is DRF's DEFAULT_SCHEMA_CLASS pointing to "drf_spectacular.openapi.AutoSchema" or any other drf-spectacular compatible AutoSchema?
+ERROR 2026-02-02 03:13:44,001 basehttp 30076 23860 "GET /api/schema/ HTTP/1.1" 500 134019
+ERROR 2026-02-02 03:13:44,163 log 30076 23860 Internal Server Error: /api/schema/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 84, in get
+    return self._get_schema_response(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 92, in _get_schema_response
+    data=generator.get_schema(request=request, public=self.serve_public),
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 281, in get_schema
+    paths=self.parse(request, public),
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 246, in parse
+    assert isinstance(view.schema, AutoSchema), (
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Incompatible AutoSchema used on View <class 'templates.views.TemplateViewSet'>. Is DRF's DEFAULT_SCHEMA_CLASS pointing to "drf_spectacular.openapi.AutoSchema" or any other drf-spectacular compatible AutoSchema?
+ERROR 2026-02-02 03:13:44,172 basehttp 30076 23860 "GET /api/schema/ HTTP/1.1" 500 134019
+ERROR 2026-02-02 03:15:21,429 log 38584 35168 Internal Server Error: /api/schema/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 84, in get
+    return self._get_schema_response(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 92, in _get_schema_response
+    data=generator.get_schema(request=request, public=self.serve_public),
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 281, in get_schema
+    paths=self.parse(request, public),
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 246, in parse
+    assert isinstance(view.schema, AutoSchema), (
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Incompatible AutoSchema used on View <class 'templates.views.TemplateViewSet'>. Is DRF's DEFAULT_SCHEMA_CLASS pointing to "drf_spectacular.openapi.AutoSchema" or any other drf-spectacular compatible AutoSchema?
+ERROR 2026-02-02 03:15:21,448 basehttp 38584 35168 "GET /api/schema/ HTTP/1.1" 500 134019
+ERROR 2026-02-02 03:15:21,644 log 38584 35168 Internal Server Error: /api/schema/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 84, in get
+    return self._get_schema_response(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 92, in _get_schema_response
+    data=generator.get_schema(request=request, public=self.serve_public),
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 281, in get_schema
+    paths=self.parse(request, public),
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 246, in parse
+    assert isinstance(view.schema, AutoSchema), (
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Incompatible AutoSchema used on View <class 'templates.views.TemplateViewSet'>. Is DRF's DEFAULT_SCHEMA_CLASS pointing to "drf_spectacular.openapi.AutoSchema" or any other drf-spectacular compatible AutoSchema?
+ERROR 2026-02-02 03:15:21,657 basehttp 38584 35168 "GET /api/schema/ HTTP/1.1" 500 134019
+ERROR 2026-02-02 03:17:03,279 log 13064 2696 Internal Server Error: /api/schema/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 84, in get
+    return self._get_schema_response(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 92, in _get_schema_response
+    data=generator.get_schema(request=request, public=self.serve_public),
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 281, in get_schema
+    paths=self.parse(request, public),
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 246, in parse
+    assert isinstance(view.schema, AutoSchema), (
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Incompatible AutoSchema used on View <class 'templates.views.TemplateViewSet'>. Is DRF's DEFAULT_SCHEMA_CLASS pointing to "drf_spectacular.openapi.AutoSchema" or any other drf-spectacular compatible AutoSchema?
+ERROR 2026-02-02 03:17:03,299 basehttp 13064 2696 "GET /api/schema/ HTTP/1.1" 500 134019
+ERROR 2026-02-02 03:17:03,456 log 13064 2696 Internal Server Error: /api/schema/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 84, in get
+    return self._get_schema_response(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 92, in _get_schema_response
+    data=generator.get_schema(request=request, public=self.serve_public),
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 281, in get_schema
+    paths=self.parse(request, public),
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 246, in parse
+    assert isinstance(view.schema, AutoSchema), (
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Incompatible AutoSchema used on View <class 'templates.views.TemplateViewSet'>. Is DRF's DEFAULT_SCHEMA_CLASS pointing to "drf_spectacular.openapi.AutoSchema" or any other drf-spectacular compatible AutoSchema?
+ERROR 2026-02-02 03:17:03,463 basehttp 13064 2696 "GET /api/schema/ HTTP/1.1" 500 134019
+ERROR 2026-02-02 03:17:24,601 log 20144 42896 Internal Server Error: /api/schema/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 84, in get
+    return self._get_schema_response(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 92, in _get_schema_response
+    data=generator.get_schema(request=request, public=self.serve_public),
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 281, in get_schema
+    paths=self.parse(request, public),
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 246, in parse
+    assert isinstance(view.schema, AutoSchema), (
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Incompatible AutoSchema used on View <class 'templates.views.TemplateViewSet'>. Is DRF's DEFAULT_SCHEMA_CLASS pointing to "drf_spectacular.openapi.AutoSchema" or any other drf-spectacular compatible AutoSchema?
+ERROR 2026-02-02 03:17:24,616 basehttp 20144 42896 "GET /api/schema/ HTTP/1.1" 500 134019
+ERROR 2026-02-02 03:17:24,770 log 20144 42896 Internal Server Error: /api/schema/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 84, in get
+    return self._get_schema_response(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\views.py", line 92, in _get_schema_response
+    data=generator.get_schema(request=request, public=self.serve_public),
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 281, in get_schema
+    paths=self.parse(request, public),
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\venv\Lib\site-packages\drf_spectacular\generators.py", line 246, in parse
+    assert isinstance(view.schema, AutoSchema), (
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Incompatible AutoSchema used on View <class 'templates.views.TemplateViewSet'>. Is DRF's DEFAULT_SCHEMA_CLASS pointing to "drf_spectacular.openapi.AutoSchema" or any other drf-spectacular compatible AutoSchema?
+ERROR 2026-02-02 03:17:24,779 basehttp 20144 42896 "GET /api/schema/ HTTP/1.1" 500 134019
+ERROR 2026-02-08 01:43:44,195 log 12792 22040 Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: auth_user
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\contrib\admin\sites.py", line 449, in login
+    return LoginView.as_view(**defaults)(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\decorators\debug.py", line 143, in sensitive_post_parameters_wrapper
+    return view(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\contrib\auth\views.py", line 89, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\generic\edit.py", line 150, in post
+    if form.is_valid():
+       ~~~~~~~~~~~~~^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\forms\forms.py", line 206, in is_valid
+    return self.is_bound and not self.errors
+                                 ^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\forms\forms.py", line 201, in errors
+    self.full_clean()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\forms\forms.py", line 338, in full_clean
+    self._clean_form()
+    ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\forms\forms.py", line 354, in _clean_form
+    cleaned_data = self.clean()
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\decorators\debug.py", line 75, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\contrib\auth\forms.py", line 366, in clean
+    self.user_cache = authenticate(
+                      ~~~~~~~~~~~~^
+        self.request, username=username, password=password
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\decorators\debug.py", line 75, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\contrib\auth\__init__.py", line 114, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\contrib\auth\backends.py", line 65, in authenticate
+    user = UserModel._default_manager.get_by_natural_key(username)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\contrib\auth\base_user.py", line 37, in get_by_natural_key
+    return self.get(**{self.model.USERNAME_FIELD: username})
+           ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\query.py", line 631, in get
+    num = len(clone)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\query.py", line 368, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\query.py", line 1954, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\query.py", line 93, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such table: auth_user
+ERROR 2026-02-08 01:43:44,238 basehttp 12792 22040 "POST /admin/login/?next=/admin/ HTTP/1.1" 500 266164
+ERROR 2026-02-08 03:20:02,983 log 8060 17508 Internal Server Error: /api/auth/register/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: user_user
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\GenDocBack\user\views.py", line 14, in post
+    if not serializer.is_valid():
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\serializers.py", line 227, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\serializers.py", line 426, in run_validation
+    value = self.to_internal_value(data)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\serializers.py", line 485, in to_internal_value
+    validated_value = validate_method(validated_value)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\GenDocBack\user\serializers.py", line 15, in validate_email
+    if User.objects.filter(email__iexact=value).exists():
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\query.py", line 1298, in exists
+    return self.query.has_results(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\sql\query.py", line 674, in has_results
+    return compiler.has_results()
+           ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1591, in has_results
+    return bool(self.execute_sql(SINGLE))
+                ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such table: user_user
+ERROR 2026-02-08 03:20:03,010 basehttp 8060 17508 "POST /api/auth/register/ HTTP/1.1" 500 185959
+ERROR 2026-02-08 03:20:42,330 log 34272 5068 Internal Server Error: /api/auth/register/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\GenDocBack\user\views.py", line 17, in post
+    user = serializer.save()
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+                    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\GenDocBack\user\serializers.py", line 25, in create
+    user = User.objects.create_user(
+        username=email,
+    ...<3 lines>...
+        password=password
+    )
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\GenDocBack\user\models.py", line 10, in create_user
+    user = self.model(email=email, **extra_fields)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\db\models\base.py", line 569, in __init__
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: User() got unexpected keyword arguments: 'username', 'first_name', 'last_name'
+ERROR 2026-02-08 03:20:42,345 basehttp 34272 5068 "POST /api/auth/register/ HTTP/1.1" 500 126278
+ERROR 2026-02-08 03:22:20,520 log 36936 25840 Internal Server Error: /api/auth/register/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Desktop\projet-agile\GenerateurDocument\GenDocBack\user\views.py", line 22, in post
+    "username": user.username
+                ^^^^^^^^^^^^^
+AttributeError: 'User' object has no attribute 'username'
+ERROR 2026-02-08 03:22:20,541 basehttp 36936 25840 "POST /api/auth/register/ HTTP/1.1" 500 105137

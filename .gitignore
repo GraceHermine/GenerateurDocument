@@ -62,3 +62,7 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 .angular
+
+venv/
+
+*.sqlite3

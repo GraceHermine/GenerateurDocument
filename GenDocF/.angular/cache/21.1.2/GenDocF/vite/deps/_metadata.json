@@ -1,0 +1,70 @@
+{
+  "hash": "89b0104d",
+  "configHash": "1bf44e9b",
+  "lockfileHash": "830f572b",
+  "browserHash": "33986adb",
+  "optimized": {
+    "@angular/common": {
+      "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
+      "file": "@angular_common.js",
+      "fileHash": "925568db",
+      "needsInterop": false
+    },
+    "@angular/common/http": {
+      "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
+      "file": "@angular_common_http.js",
+      "fileHash": "48ea78ac",
+      "needsInterop": false
+    },
+    "@angular/core": {
+      "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
+      "file": "@angular_core.js",
+      "fileHash": "1119ff8b",
+      "needsInterop": false
+    },
+    "@angular/forms": {
+      "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
+      "file": "@angular_forms.js",
+      "fileHash": "5d97bcda",
+      "needsInterop": false
+    },
+    "@angular/platform-browser": {
+      "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
+      "file": "@angular_platform-browser.js",
+      "fileHash": "66a7a20a",
+      "needsInterop": false
+    },
+    "@angular/router": {
+      "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
+      "file": "@angular_router.js",
+      "fileHash": "570ae769",
+      "needsInterop": false
+    },
+    "rxjs": {
+      "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
+      "file": "rxjs.js",
+      "fileHash": "f3f7f68e",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-4GT73CS3": {
+      "file": "chunk-4GT73CS3.js"
+    },
+    "chunk-YEE3DMYA": {
+      "file": "chunk-YEE3DMYA.js"
+    },
+    "chunk-E655LQOM": {
+      "file": "chunk-E655LQOM.js"
+    },
+    "chunk-YPFFQLUF": {
+      "file": "chunk-YPFFQLUF.js"
+    },
+    "chunk-GN7CNC2J": {
+      "file": "chunk-GN7CNC2J.js"
+    },
+    "chunk-GMLBTAPW": {
+      "file": "chunk-GMLBTAPW.js"
+    }
+  }
+}

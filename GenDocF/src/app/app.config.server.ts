@@ -1,11 +1,10 @@
 import { mergeApplicationConfig, ApplicationConfig } from '@angular/core';
-import { provideServerRendering, withRoutes } from '@angular/ssr';
-import { appConfig } from './app.config';
-import { serverRoutes } from './app.routes.server';
+import { provideServerRendering } from '@angular/platform-server';
+import { appConfig } from './app.config'; // ✅ Il importe le fichier de l'étape 1
 
 const serverConfig: ApplicationConfig = {
   providers: [
-    provideServerRendering(withRoutes(serverRoutes))
+    provideServerRendering() // ⚡ C'EST LA CLÉ ANTI-ERREUR NG0401
   ]
 };
 

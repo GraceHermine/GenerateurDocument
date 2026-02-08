@@ -14,23 +14,42 @@
       </p>
     </div>
 
+
     <!-- FORMULAIRE -->
-    <form class="space-y-5">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+      <div *ngIf="errorMessage" class="p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm text-center">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Prenom -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-bold px-1">Prenom</label>
+        <input
+          class="w-full rounded-lg border p-3.5"
+          placeholder="Jean"
+          type="text"
+          formControlName="firstName" />
+      </div>
 
       <!-- Nom -->
       <div class="flex flex-col gap-1.5">
-        <label class="text-sm font-bold px-1">Nom complet</label>
+        <label class="text-sm font-bold px-1">Nom</label>
         <input
           class="w-full rounded-lg border p-3.5"
-          placeholder="Jean Dupont"
-          type="text" />
+          placeholder="Dupont"
+          type="text"
+          formControlName="lastName" />
       </div>
 
       <!-- Email -->
       <div class="flex flex-col gap-1.5">
-        <label class="text-sm font-bold px-1">Email</label>
+        <label for="email" class="text-sm font-bold px-1">Email</label>
         <input
-          class="w-full rounded-lg border p-3.5"
+          id="email"
+          formControlName="email"
+          class="w-full rounded-lg border p-3.5 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+          [ngClass]="{'border-red-400': registerForm.get('email')?.touched && registerForm.get('email')?.invalid, 'border-soft-tan dark:border-woody-brown': !registerForm.get('email')?.invalid || !registerForm.get('email')?.touched}"
           placeholder="jean.dupont@exemple.com"
           type="email" />
       </div>
@@ -41,12 +60,13 @@
         <input
           class="w-full rounded-lg border p-3.5"
           placeholder="••••••••"
-          type="password" />
+          type="password"
+          formControlName="password" />
       </div>
 
       <!-- Conditions -->
       <div class="flex items-start gap-3 py-2">
-        <input type="checkbox" class="mt-1 size-4" />
+        <input type="checkbox" class="mt-1 size-4" formControlName="acceptTerms" />
         <label class="text-xs leading-relaxed">
           J'accepte les
           <a routerLink="/terms" class="underline font-bold hover:text-primary">
@@ -58,13 +78,17 @@
           </a>.
         </label>
       </div>
+      <div *ngIf="registerForm.get('acceptTerms')?.touched && registerForm.get('acceptTerms')?.invalid" class="text-xs text-red-500 ml-1">
+        Vous devez accepter les conditions d'utilisation
+      </div>
 
       <!-- Bouton -->
       <button
-        routerLink="/user"
-        type="button"
-        class="w-full bg-primary text-white font-extrabold py-4 rounded-lg shadow-md">
-        Créer mon compte
+        type="submit"
+        [disabled]="isLoading || registerForm.invalid"
+        class="w-full bg-primary text-white font-extrabold py-4 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+        <span *ngIf="!isLoading">Créer mon compte</span>
+        <span *ngIf="isLoading">Creation...</span>
       </button>
 
     </form>
@@ -75,14 +99,14 @@
         <div class="w-full border-t"></div>
       </div>
       <div class="relative flex justify-center text-xs uppercase">
-        <span class="bg-white px-2 opacity-60">Ou continuer avec</span>
+        <span class="bg-white dark:bg-[#2d2d18] px-2 opacity-60">Ou continuer avec</span>
       </div>
     </div>
 
-    <!-- Boutons externes -->
+    <!-- Boutons externes (désactivés) -->
     <div class="grid grid-cols-2 gap-4 mb-8">
-      <button class="border rounded-lg py-2.5">Google</button>
-      <button class="border rounded-lg py-2.5">Apple ID</button>
+      <button disabled type="button" class="border rounded-lg py-2.5 opacity-50 cursor-not-allowed hover:opacity-50">Google</button>
+      <button disabled type="button" class="border rounded-lg py-2.5 opacity-50 cursor-not-allowed hover:opacity-50">Apple ID</button>
     </div>
 
     <!-- Liens bas -->
@@ -90,7 +114,7 @@
 
       <p class="text-sm">
         Déjà inscrit ?
-        <a routerLink="/auth/login" class="font-bold underline">
+        <a routerLink="/auth/login" class="font-bold underline hover:text-primary">
           Se connecter
         </a>
       </p>
