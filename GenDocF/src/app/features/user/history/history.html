@@ -1,118 +1,167 @@
-<!-- Main Content -->
-<main class="flex-1 flex flex-col overflow-y-auto">
-  <!-- Top Navigation -->
-  <header class="sticky top-0 z-10 flex items-center justify-between border-b border-[#f3ece7] dark:border-[#3a2a1d] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-8 py-4">
+<main class="flex-1 flex flex-col overflow-y-auto h-full">
+  
+  <header class="sticky top-0 z-10 flex items-center justify-between border-b border-[#f3ece7] dark:border-[#3a2a1d] bg-white/90 dark:bg-[#1b130d]/90 backdrop-blur-md px-8 py-4">
     <div class="flex items-center gap-8 flex-1 max-w-2xl">
-      <label class="flex flex-col flex-1 h-10">
-        <div class="flex w-full flex-1 items-stretch rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d]">
-          <div class="text-[#9a6c4c] flex items-center justify-center pl-4">
-            <span class="material-symbols-outlined">search</span>
-          </div>
-          <input class="w-full border-none bg-transparent focus:ring-0 text-[#1b130d] dark:text-[#fcfaf8] placeholder-[#9a6c4c] px-4 text-base" placeholder="Rechercher un document..." value=""/>
-        </div>
-      </label>
+      <div class="flex w-full max-w-md items-center rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d] px-3 py-2">
+        <span class="material-symbols-outlined text-[#9a6c4c]">search</span>
+        <input type="text" placeholder="Rechercher..." class="ml-2 w-full bg-transparent border-none focus:outline-none text-sm text-[#1b130d] dark:text-[#fcfaf8] placeholder-[#9a6c4c]">
+      </div>
     </div>
+    
     <div class="flex items-center gap-4 ml-4">
-      <button class="p-2 rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d] text-[#1b130d] dark:text-[#fcfaf8] hover:bg-primary/20 transition-colors">
-        <span class="material-symbols-outlined">notifications</span>
+      <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#3a2a1d] transition-colors">
+        <span class="material-symbols-outlined text-[#1b130d] dark:text-[#fcfaf8]">notifications</span>
       </button>
-      <div class="h-8 w-[1px] bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
-      <button class="flex items-center gap-2 p-1 pr-3 rounded-full bg-[#f3ece7] dark:bg-[#3a2a1d] text-[#1b130d] dark:text-[#fcfaf8]">
-        <div class="size-8 rounded-full bg-cover bg-center" data-alt="Photo de profil de l'utilisateur" style="background-image: url('https://lh3.googleusercontent.com/...');"></div>
-        <span class="text-sm font-medium">M. Lefebvre</span>
+      <div class="h-6 w-[1px] bg-gray-300 dark:bg-[#3a2a1d]"></div>
+      <button class="flex items-center gap-2">
+        <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+           <span class="material-symbols-outlined text-lg">person</span>
+        </div>
+        <span class="text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8]">Mon Compte</span>
       </button>
     </div>
   </header>
 
-  <!-- Page Content -->
-  <div class="p-8 max-w-6xl mx-auto w-full">
-    <!-- Heading -->
+  <div class="p-8 max-w-7xl mx-auto w-full">
+    
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
       <div>
         <h2 class="text-3xl font-extrabold text-[#1b130d] dark:text-[#fcfaf8] tracking-tight">Historique des Documents</h2>
         <p class="text-[#9a6c4c] dark:text-[#b08b72] mt-1">Gérez et téléchargez vos documents précédemment générés.</p>
       </div>
-      <button routerLink="/documents/new" class="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20">
+      <button routerLink="/user/document-generation" class="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20">
         <span class="material-symbols-outlined">add</span>
         Nouveau Document
       </button>
     </div>
 
-    <!-- Filters -->
-    <div class="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
-      <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-primary text-white px-4 text-sm font-semibold">Tous</button>
-      <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d] px-4 text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
-        Factures <span class="material-symbols-outlined text-lg">expand_more</span>
-      </button>
-      <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d] px-4 text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
-        Contrats <span class="material-symbols-outlined text-lg">expand_more</span>
-      </button>
-      <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d] px-4 text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
-        Rapports <span class="material-symbols-outlined text-lg">expand_more</span>
-      </button>
+    <div *ngIf="isLoading" class="flex flex-col items-center justify-center py-20 text-[#9a6c4c]">
+      <span class="material-symbols-outlined animate-spin text-4xl mb-3">sync</span>
+      <p>Chargement de l'historique...</p>
     </div>
 
-    <!-- Documents Table -->
-    <div class="bg-white dark:bg-[#2d2116] rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] overflow-hidden shadow-sm">
+    <div *ngIf="errorMessage" class="bg-red-50 text-red-700 p-4 rounded-lg mb-6 border border-red-200 flex items-center gap-3">
+      <span class="material-symbols-outlined">error</span>
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage" class="bg-white dark:bg-[#2d2116] rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] overflow-hidden shadow-sm">
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="bg-[#f3ece7] dark:bg-[#3a2a1d] border-b border-[#f3ece7] dark:border-[#3a2a1d]">
-            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Nom du Document</th>
-            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Date de création</th>
-            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Type</th>
-            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-right">Actions</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#9a6c4c]">Nom du Document</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#9a6c4c]">Date</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#9a6c4c]">Format</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#9a6c4c]">Statut</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-right text-[#9a6c4c]">Actions</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-[#f3ece7] dark:divide-[#3a2a1d]">
-          <!-- Exemple Row -->
-          <tr class="hover:bg-[#f3ece7]/50 transition-colors">
+          
+          <tr *ngFor="let doc of documents" class="hover:bg-[#f3ece7]/30 transition-colors group">
+            
             <td class="px-6 py-4">
               <div class="flex items-center gap-3">
-                <div class="size-9 bg-primary/10 rounded flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                  <span class="material-symbols-outlined">picture_as_pdf</span>
+                <div class="size-10 bg-primary/5 rounded-lg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                  <span class="material-symbols-outlined">description</span>
                 </div>
                 <div>
-                  <p class="text-sm font-bold">Facture_Q4_Apple_Inc.pdf</p>
-                  <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72]">2.4 MB</p>
+                  <p class="text-sm font-bold text-[#1b130d] dark:text-[#fcfaf8]">{{ doc.template_nom }}</p>
+                  <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72]">Ref: DOC-{{ doc.id }}</p>
                 </div>
               </div>
             </td>
-            <td class="px-6 py-4"><p class="text-sm text-[#1b130d] dark:text-[#fcfaf8]">12 Oct 2023</p></td>
+
             <td class="px-6 py-4">
-              <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide bg-accent-yellow/10 text-accent-yellow border border-accent-yellow/20">Facture</span>
+              <p class="text-sm text-[#1b130d] dark:text-[#fcfaf8]">
+                {{ doc.date_generation | date:'dd MMM yyyy' }}
+              </p>
+              <p class="text-xs text-[#9a6c4c]">
+                {{ doc.date_generation | date:'HH:mm' }}
+              </p>
             </td>
+
+            <td class="px-6 py-4">
+              <span class="uppercase px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide bg-gray-100 text-gray-600 border border-gray-200">
+                {{ doc.format }}
+              </span>
+            </td>
+
+            <td class="px-6 py-4">
+              <span [ngClass]="{
+                'bg-green-100 text-green-700 border-green-200': doc.status === 'completed' || doc.status === 'done',
+                'bg-yellow-100 text-yellow-700 border-yellow-200': doc.status === 'pending' || doc.status === 'processing',
+                'bg-red-100 text-red-700 border-red-200': doc.status === 'error'
+              }" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide border flex w-fit items-center gap-1">
+                <span class="size-1.5 rounded-full" [ngClass]="{
+                    'bg-green-600': doc.status === 'completed' || doc.status === 'done',
+                    'bg-yellow-600': doc.status === 'pending' || doc.status === 'processing',
+                    'bg-red-600': doc.status === 'error'
+                }"></span>
+                {{ doc.status }}
+              </span>
+            </td>
+
             <td class="px-6 py-4 text-right">
               <div class="flex justify-end gap-2">
-                <button routerLink="/document-preview" class="p-2 hover:bg-primary/10 rounded-lg transition-all">
-                  <span class="material-symbols-outlined">visibility</span>
-                </button>
-                <button class="p-2 hover:bg-primary/10 rounded-lg transition-all">
-                  <span class="material-symbols-outlined">download</span>
+                
+                <ng-container *ngIf="doc.fichier">
+                  <button 
+                    (click)="onPreview(doc)"
+                    class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-all tooltip-trigger"
+                    title="Visualiser">
+                    <span class="material-symbols-outlined">visibility</span>
+                  </button>
+
+                  <button 
+                    (click)="onDownload(doc)"
+                    class="p-2 hover:bg-green-50 text-green-600 rounded-lg transition-all tooltip-trigger"
+                    title="Télécharger">
+                    <span class="material-symbols-outlined">download</span>
+                  </button>
+                </ng-container>
+
+                <span *ngIf="!doc.fichier && (doc.status === 'pending' || doc.status === 'processing')" class="text-xs text-yellow-600 italic py-2 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+                  Génération...
+                </span>
+                
+                <span *ngIf="!doc.fichier && (doc.status === 'done' || doc.status === 'completed')" class="text-xs text-gray-400 italic py-2">
+                  Fichier introuvable
+                </span>
+
+                <span *ngIf="doc.status === 'error'" class="text-xs text-red-600 italic py-2">
+                  Échec
+                </span>
+
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="documents.length === 0">
+            <td colspan="5" class="px-6 py-16 text-center">
+              <div class="flex flex-col items-center justify-center text-[#9a6c4c]">
+                <div class="bg-[#f3ece7] dark:bg-[#3a2a1d] p-4 rounded-full mb-3">
+                    <span class="material-symbols-outlined text-3xl">folder_off</span>
+                </div>
+                <p class="text-lg font-medium text-[#1b130d] dark:text-[#fcfaf8]">Aucun document</p>
+                <p class="text-sm mb-4">Vous n'avez pas encore généré de documents.</p>
+                <button routerLink="/user/document-generation" class="text-primary hover:underline text-sm font-bold flex items-center gap-1">
+                  Créer mon premier document <span class="material-symbols-outlined text-sm">arrow_forward</span>
                 </button>
               </div>
             </td>
           </tr>
-          <!-- Tu peux dupliquer Row ici pour plus de documents -->
+
         </tbody>
       </table>
-
-      <!-- Pagination -->
-      <div class="px-6 py-4 border-t border-[#f3ece7] flex items-center justify-between">
-        <p class="text-sm text-[#9a6c4c] dark:text-[#b08b72]">
-          Affichage de <span class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">1</span> à <span class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">10</span> sur <span class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">150</span> documents
+      
+      <div *ngIf="documents.length > 0" class="px-6 py-3 border-t border-[#f3ece7] dark:border-[#3a2a1d] bg-gray-50/50 dark:bg-[#2d2116]">
+        <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72]">
+          Total : <span class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">{{ documents.length }}</span> documents archivés.
         </p>
-        <div class="flex items-center gap-2">
-          <button class="px-3 py-1.5 rounded border border-[#f3ece7] dark:border-[#3a2a1d] text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] disabled:opacity-50" disabled>Précédent</button>
-          <div class="flex items-center gap-1">
-            <button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-white text-sm font-bold shadow-sm">1</button>
-            <button class="w-8 h-8 flex items-center justify-center rounded text-[#1b130d] dark:text-[#fcfaf8] text-sm font-medium hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">2</button>
-            <button class="w-8 h-8 flex items-center justify-center rounded text-[#1b130d] dark:text-[#fcfaf8] text-sm font-medium hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">3</button>
-            <span class="px-1 text-[#9a6c4c] dark:text-[#b08b72]">...</span>
-            <button class="w-8 h-8 flex items-center justify-center rounded text-[#1b130d] dark:text-[#fcfaf8] text-sm font-medium hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">15</button>
-          </div>
-          <button class="px-3 py-1.5 rounded border border-[#f3ece7] dark:border-[#3a2a1d] text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">Suivant</button>
-        </div>
       </div>
+
     </div>
   </div>
 </main>
