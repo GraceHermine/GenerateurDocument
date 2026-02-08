@@ -1,19 +1,19 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideClientHydration } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { routes } from './app.routes';
-import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+// ❌ On ne retire QUE provideClientHydration
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    // ✅ On garde Zoneless car c'est ce qui marche chez toi
+    provideZonelessChangeDetection(),
+    
     provideRouter(routes),
-    provideClientHydration(),
-    provideHttpClient(withFetch(), withInterceptorsFromDi()),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
+    
+    // ❌ ON SUPPRIME la ligne 'provideClientHydration()'
+    // C'est elle qui crée l'erreur rouge NG0505 car on a désactivé le SSR.
+    
+    provideHttpClient(withFetch(), withInterceptorsFromDi())
   ]
 };
