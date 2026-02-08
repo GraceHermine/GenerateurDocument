@@ -8,7 +8,7 @@ import { DocumentGenere, PaginatedResponse } from '../models/document.model';
 })
 export class DocumentGenereService {
   private readonly apiService = inject(ApiService);
-  private readonly endpoint = 'documents/documents';
+  private readonly endpoint = 'api/documents/documents/';
 
   getDocuments(page: number = 1, statut?: string): Observable<PaginatedResponse<DocumentGenere>> {
     let url = `${this.endpoint}?page=${page}`;
@@ -19,7 +19,7 @@ export class DocumentGenereService {
   }
 
   getDocument(id: number): Observable<DocumentGenere> {
-    return this.apiService.get<DocumentGenere>(`${this.endpoint}/${id}`);
+    return this.apiService.get<DocumentGenere>(`${this.endpoint}${id}`);
   }
 
   createDocument(document: Partial<DocumentGenere>): Observable<DocumentGenere> {
@@ -27,23 +27,23 @@ export class DocumentGenereService {
   }
 
   updateDocument(id: number, document: Partial<DocumentGenere>): Observable<DocumentGenere> {
-    return this.apiService.put<DocumentGenere>(`${this.endpoint}/${id}`, document);
+    return this.apiService.put<DocumentGenere>(`${this.endpoint}${id}/`, document);
   }
 
   deleteDocument(id: number): Observable<void> {
-    return this.apiService.delete<void>(`${this.endpoint}/${id}`);
+    return this.apiService.delete<void>(`${this.endpoint}${id}/`);
   }
 
   finaliserDocument(id: number): Observable<DocumentGenere> {
-    return this.apiService.post<DocumentGenere>(`${this.endpoint}/${id}/finaliser`, {});
+    return this.apiService.post<DocumentGenere>(`${this.endpoint}${id}/finaliser/`, {});
   }
 
   archiverDocument(id: number): Observable<DocumentGenere> {
-    return this.apiService.post<DocumentGenere>(`${this.endpoint}/${id}/archiver`, {});
+    return this.apiService.post<DocumentGenere>(`${this.endpoint}${id}/archiver/`, {});
   }
 
   // CORRIGÉ : Utiliser downloadFile au lieu de get
   downloadDocument(id: number): Observable<Blob> {
-    return this.apiService.downloadFile(`${this.endpoint}/${id}/download`);
+    return this.apiService.downloadFile(`${this.endpoint}${id}/download/`);
   }
 }

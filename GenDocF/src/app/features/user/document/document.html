@@ -57,7 +57,7 @@
     <h2>Templates disponibles</h2>
     <div class="templates-grid">
       <div *ngFor="let template of templates" class="template-card">
-        <h3>{{ template.titre }}</h3>
+        <h3>{{ template.nom }}</h3>
         <p>{{ template.description }}</p>
         <button routerLink="/dynamic-form/{{ template.id }}">
           Utiliser ce template

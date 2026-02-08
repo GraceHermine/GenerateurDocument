@@ -74,7 +74,7 @@ export class GenerationResult implements OnInit {
   }
 
   get templateName(): string {
-    return this.document?.template_details?.titre || 
+    return this.document?.template_details?.nom || 
            this.document?.template?.toString() || 
            'Template inconnu';
   }

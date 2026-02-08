@@ -69,7 +69,7 @@ export class DocumentPreview implements OnInit {
   }
 
   get templateName(): string {
-    return this.document?.template_details?.titre || 'Template';
+    return this.document?.template_details?.nom || 'Template';
   }
 
   get hasReponses(): boolean {

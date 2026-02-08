@@ -15,7 +15,7 @@ export class DocumentGenereService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
 
-  private readonly endpoint = 'documents/documents';
+  private readonly endpoint = 'api/documents/documents';
   private readonly apiUrl = `${environment.apiUrl}/documents/documents`;
 
   // 📄 Liste paginée

@@ -1,17 +1,14 @@
-// dynamic-form.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TemplateService } from '../../../core/services/template.service';
 import { FormulaireService } from '../../../core/services/formulaire.service';
-import { QuestionService } from '../../../core/services/question.service';
 import { DocumentGenereService } from '../../../core/services/document-genere.service';
-import { ReponseService } from '../../../core/services/reponse.service';
-import { DocumentGenere } from '../../../core/models/document.model';
 
 @Component({
   selector: 'app-dynamic-form',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './dynamic-form.html',
   styleUrl: './dynamic-form.scss'
@@ -22,36 +19,19 @@ export class DynamicForm implements OnInit {
   questions: any[] = [];
   formulaireId: number | null = null;
   
-  // Réponses utilisateur
   responses: any = {};
-  
-  // Progression
   progress = 0;
-  
-  // Options pour les types de questions
-  questionTypes = {
-    'text': 'Texte',
-    'number': 'Nombre',
-    'date': 'Date',
-    'choice': 'Choix unique',
-    'multiple_choice': 'Choix multiple'
-  };
-
-  // Variables pour le formulaire
-  documentTitle = '';
-  outputFormat = 'pdf';
-  includeWatermark = false;
-  sendEmail = false;
-  saveAsTemplate = false;
+  isStepPreview = false; // Bascule entre formulaire et aperçu
+  today = new Date();
+  showFormatModal = false; // Contrôle l'affichage de la modale de choix
+  isGenerating = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private templateService: TemplateService,
     private formulaireService: FormulaireService,
-    private questionService: QuestionService,
-    private documentService: DocumentGenereService,
-    private reponseService: ReponseService
+    private documentService: DocumentGenereService
   ) {
     this.templateId = Number(this.route.snapshot.paramMap.get('id'));
   }
@@ -59,255 +39,121 @@ export class DynamicForm implements OnInit {
   ngOnInit(): void {
     this.loadTemplate();
     this.loadFormData();
-    // Initialiser le titre du document
-    this.documentTitle = `Document ${new Date().toLocaleDateString()}`;
   }
 
   loadTemplate(): void {
-    this.templateService.getTemplate(this.templateId)
-      .subscribe({
-        next: (template) => {
-          this.template = template;
-          // Mettre à jour le titre avec le nom du template
-          if (template.titre) {
-            this.documentTitle = template.titre;
-          }
-        },
-        error: (error) => {
-          console.error('Erreur:', error);
-        }
-      });
+    this.templateService.getTemplate(this.templateId).subscribe({
+      next: (t) => {
+        this.template = t;
+      },
+      error: (err) => console.error('Erreur template:', err)
+    });
   }
 
   loadFormData(): void {
-    this.formulaireService.getFormulairesByTemplate(this.templateId)
-      .subscribe({
-        next: (formulaires) => {
-          if (formulaires.length > 0) {
-            this.formulaireId = formulaires[0].id;
-            this.loadQuestions(formulaires[0].id);
-          }
-        },
-        error: (error) => {
-          console.error('Erreur:', error);
+    this.formulaireService.getFormulairesByTemplate(this.templateId).subscribe({
+      next: (response: any) => {
+        const formulaires = response.results || response;
+        if (formulaires && formulaires.length > 0) {
+          const form = formulaires[0];
+          this.formulaireId = form.id;
+          this.questions = form.questions || [];
+          this.updateProgress();
         }
-      });
+      }
+    });
   }
 
-  loadQuestions(formulaireId: number): void {
-    this.questionService.getQuestionsByFormulaire(formulaireId)
-      .subscribe({
-        next: (questions) => {
-          // Trier par ordre
-          this.questions = questions.sort((a, b) => a.ordre - b.ordre);
-          this.updateProgress();
-        },
-        error: (error) => {
-          console.error('Erreur:', error);
-        }
-      });
+  // Détermine le type de design à afficher dans l'aperçu
+  getTemplateType(): string {
+    const nom = (this.template?.nom || '').toLowerCase();
+    if (nom.includes('lettre')) return 'lettre';
+    if (nom.includes('cv') || nom.includes('curriculum')) return 'cv';
+    return 'default';
+  }
+
+  // Récupère une valeur de réponse en cherchant par le texte du label
+  getVal(labelPart: string): string {
+    const q = this.questions.find(item => 
+      item.label.toLowerCase().includes(labelPart.toLowerCase())
+    );
+    return q ? (this.responses[q.id] || '') : '';
   }
 
   updateProgress(): void {
-    if (this.questions.length === 0) {
-      this.progress = 0;
-      return;
-    }
-    
-    const answered = this.questions.filter(q => {
-      const response = this.responses[q.id];
-      return response !== undefined && response !== null && response !== '';
-    }).length;
-    
+    if (this.questions.length === 0) return;
+    const answered = this.questions.filter(q => this.responses[q.id]).length;
     this.progress = Math.round((answered / this.questions.length) * 100);
   }
 
-  onResponseChange(questionId: number): void {
+  onResponseChange(): void {
     this.updateProgress();
   }
 
-  generateDocument(): void {
-    if (!this.isFormValid()) {
-      alert('Veuillez remplir toutes les questions obligatoires');
-      return;
-    }
-
-    // 1. Créer le document
-    const newDocument: Partial<DocumentGenere> = {
-      template: this.templateId,
-      titre: this.documentTitle || `Document ${this.template?.titre || 'Généré'}`,
-      statut: 'brouillon',
-      contenu_final: '',
-      // Ne pas inclure formulaire s'il est null
-      ...(this.formulaireId && { formulaire: this.formulaireId })
-    };
-
-    this.documentService.createDocument(newDocument)
-      .subscribe({
-        next: (document) => {
-          // 2. Enregistrer les réponses
-          const reponsesArray = Object.keys(this.responses)
-            .filter(questionId => this.responses[questionId]) // Filtrer les réponses vides
-            .map(questionId => ({
-              document_genere: document.id,
-              question: Number(questionId),
-              reponse: this.responses[questionId]
-            }));
-
-          if (reponsesArray.length > 0) {
-            this.reponseService.createMultipleReponses(reponsesArray)
-              .subscribe({
-                next: () => {
-                  // 3. Finaliser le document
-                  this.documentService.finaliserDocument(document.id)
-                    .subscribe({
-                      next: (finalizedDoc) => {
-                        // 4. Rediriger vers le résultat
-                        this.router.navigate(['/generation-result', finalizedDoc.id]);
-                      },
-                      error: (error) => {
-                        console.error('Erreur lors de la finalisation:', error);
-                        alert('Erreur lors de la finalisation du document');
-                      }
-                    });
-                },
-                error: (error) => {
-                  console.error('Erreur lors de l\'enregistrement des réponses:', error);
-                  alert('Erreur lors de l\'enregistrement des réponses');
-                }
-              });
-          } else {
-            // Aucune réponse, finaliser quand même
-            this.documentService.finaliserDocument(document.id)
-              .subscribe({
-                next: (finalizedDoc) => {
-                  this.router.navigate(['/generation-result', finalizedDoc.id]);
-                },
-                error: (error) => {
-                  console.error('Erreur:', error);
-                  alert('Erreur lors de la finalisation');
-                }
-              });
-          }
-        },
-        error: (error) => {
-          console.error('Erreur lors de la création du document:', error);
-          alert('Erreur lors de la création du document');
-        }
-      });
+  isFormValid(): boolean {
+    return this.questions
+      .filter(q => q.obligatoire)
+      .every(q => this.responses[q.id] && this.responses[q.id] !== '');
   }
 
-  saveAsDraft(): void {
-    const newDocument: Partial<DocumentGenere> = {
+  goToPreview(): void {
+    if (this.isFormValid()) {
+      this.isStepPreview = true;
+      window.scrollTo(0, 0);
+    }
+  }
+
+  openDownloadOptions() {
+    this.showFormatModal = true;
+  }
+
+  // Cette fonction lance la génération avec le format choisi
+ // dynamic-form.ts
+
+  generateDocument(format: 'pdf' | 'docx') {
+    this.showFormatModal = false;
+    this.isGenerating = true;
+
+    const payload = {
       template: this.templateId,
-      titre: this.documentTitle || 'Brouillon',
-      statut: 'brouillon',
-      contenu_final: '',
-      ...(this.formulaireId && { formulaire: this.formulaireId })
+      format: format,
+      reponses: Object.keys(this.responses).map(id => ({
+        question: Number(id),
+        valeur: String(this.responses[id])
+      }))
     };
 
-    this.documentService.createDocument(newDocument)
-      .subscribe({
-        next: (document) => {
-          if (Object.keys(this.responses).length > 0) {
-            const reponsesArray = Object.keys(this.responses)
-              .filter(questionId => this.responses[questionId])
-              .map(questionId => ({
-                document_genere: document.id,
-                question: Number(questionId),
-                reponse: this.responses[questionId]
-              }));
-
-            this.reponseService.createMultipleReponses(reponsesArray)
-              .subscribe({
-                next: () => {
-                  alert('Document enregistré comme brouillon');
-                  this.router.navigate(['/documents']);
-                },
-                error: (error) => {
-                  console.error('Erreur:', error);
-                  alert('Document créé mais erreur lors de l\'enregistrement des réponses');
-                }
-              });
-          } else {
-            alert('Document enregistré comme brouillon');
-            this.router.navigate(['/documents']);
+    this.documentService.createDocument(payload as any).subscribe({
+      next: (res: any) => {
+        // 1. Lancer le téléchargement automatique
+        this.documentService.downloadDocument(res.id).subscribe({
+          next: (blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `document_${res.id}.${format}`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            // 2. Aller vers la page de félicitations
+            this.isGenerating = false;
+            this.router.navigate(['/generation-result', res.id]);
+          },
+          error: (err) => {
+            console.error("Erreur de téléchargement, mais on avance quand même", err);
+            this.isGenerating = false;
+            this.router.navigate(['/generation-result', res.id]);
           }
-        },
-        error: (error) => {
-          console.error('Erreur:', error);
-          alert('Erreur lors de la création du brouillon');
-        }
-      });
+        });
+      },
+      error: (err) => {
+        this.isGenerating = false;
+        alert("Erreur lors de la création du document.");
+      }
+    });
   }
 
   cancelForm(): void {
-    if (confirm('Annuler ce formulaire ? Les données seront perdues.')) {
-      this.router.navigate(['/templates']);
-    }
-  }
-
-  // Méthodes utilitaires
-  getQuestionTypeLabel(type: string): string {
-    return this.questionTypes[type as keyof typeof this.questionTypes] || type;
-  }
-
-  isFormValid(): boolean {
-    // Vérifier si toutes les questions obligatoires sont remplies
-    const requiredQuestions = this.questions.filter(q => q.obligatoire);
-    return requiredQuestions.every(q => {
-      const response = this.responses[q.id];
-      return response !== undefined && response !== null && response !== '';
-    });
-  }
-
-  getAnsweredCount(): number {
-    return this.questions.filter(q => {
-      const response = this.responses[q.id];
-      return response !== undefined && response !== null && response !== '';
-    }).length;
-  }
-
-  isOptionSelected(questionId: number, option: string): boolean {
-    const response = this.responses[questionId];
-    if (!response || typeof response !== 'string') return false;
-    
-    // Pour les choix multiples, on peut stocker les options séparées par des virgules
-    return response.split(',').includes(option);
-  }
-
-  // dynamic-form.component.ts - Section corrigée
-  toggleMultipleChoice(questionId: number, option: string): void {
-    const currentResponse = this.responses[questionId] || '';
-    const options = currentResponse ? currentResponse.split(',') : [];
-    
-    if (options.includes(option)) {
-      // Retirer l'option
-      const newOptions = options.filter((o: string) => o !== option);
-      this.responses[questionId] = newOptions.join(',');
-    } else {
-      // Ajouter l'option
-      options.push(option);
-      this.responses[questionId] = options.join(',');
-    }
-    
-    this.onResponseChange(questionId);
-  }
-
-  // Méthode pour générer le contenu final (si nécessaire)
-  generateContent(): string {
-    let content = `<h1>${this.documentTitle}</h1>`;
-    content += `<p>Document généré le ${new Date().toLocaleDateString()}</p>`;
-    content += '<hr>';
-    
-    this.questions.forEach((question, index) => {
-      const response = this.responses[question.id];
-      if (response) {
-        content += `<h3>${question.texte}</h3>`;
-        content += `<p><strong>Réponse:</strong> ${response}</p>`;
-      }
-    });
-    
-    return content;
+    this.router.navigate(['/templates']);
   }
 }

@@ -8,7 +8,8 @@ import { Formulaire, PaginatedResponse } from '../models/document.model';
 })
 export class FormulaireService {
   private readonly apiService = inject(ApiService);
-  private readonly endpoint = 'documents/formulaires';
+  // private readonly endpoint = 'documents/formulaires';
+  private readonly endpoint = 'api/documents/formulaires'; // Ajoutez 'api/' au début
 
   getFormulaires(page: number = 1): Observable<PaginatedResponse<Formulaire>> {
     return this.apiService.get<PaginatedResponse<Formulaire>>(

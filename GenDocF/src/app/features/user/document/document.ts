@@ -239,7 +239,7 @@ export class Document implements OnInit {
   // Obtenir le nom du template
   getTemplateName(templateId: number): string {
     const template = this.templates.find(t => t.id === templateId);
-    return template?.titre || `Template ${templateId}`;
+    return template?.nom || `Template ${templateId}`;
   }
 
   // Obtenir les numéros de page

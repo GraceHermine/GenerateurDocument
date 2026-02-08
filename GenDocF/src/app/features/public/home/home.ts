@@ -1,59 +1,49 @@
-import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { ApiService } from '../../../core/services/api.service';
-import { CategorieTemplate, PaginatedResponse } from '../../../core/models/document.model';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { CategorieService } from '../../../core/services/categorie.service';
+import { CategorieTemplate } from '../../../core/models/document.model';
 
-@Injectable({
-  providedIn: 'root'
+@Component({
+  selector: 'app-home',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './home.html',
 })
-export class Home {
-  private readonly apiService = inject(ApiService);
-  
-  // ESSAYEZ CES ENDPOINTS DIFFÉRENTS :
-  // private readonly endpoint = 'documents/categories'; // Votre endpoint actuel
-  // private readonly endpoint = 'api/categories/';      // Peut-être avec api/
-  // private readonly endpoint = 'categories/';          // Simple
-  // private readonly endpoint = 'template-categories/'; // Spécifique aux templates
-  private readonly endpoint = 'categories/'; // Commencez par celui-ci
+export class Home implements OnInit {
+  categories: CategorieTemplate[] = [];
+  isLoading = true;
+  errorMessage: string | null = null;
 
-  getAllCategories(): Observable<CategorieTemplate[]> {
-    console.log('🔍 Appel API à:', this.endpoint);
-    
-    return this.apiService.get<any>(this.endpoint).pipe(
-      map(response => {
-        console.log('🔍 Réponse API brute:', response);
-        
-        // Gestion de différents formats de réponse
-        if (Array.isArray(response)) {
-          return response;
-        } else if (response && Array.isArray(response.results)) {
-          return response.results;
-        } else if (response && Array.isArray(response.data)) {
-          return response.data;
-        } else if (response && typeof response === 'object') {
-          // Essayez de convertir l'objet en tableau
-          const arr = Object.values(response);
-          return Array.isArray(arr) ? arr : [];
-        } else {
-          console.warn('Format de réponse inattendu:', response);
-          return [];
-        }
-      }),
-      catchError(error => {
-        console.error('❌ Erreur API catégories:', error);
-        
-        // Retournez des données mockées pour développement
-        const mockData: CategorieTemplate[] = [
-          { id: 1, nom: 'TEST - Attestations', description: 'Description test 1' },
-          { id: 2, nom: 'TEST - Travail', description: 'Description test 2' },
-          { id: 3, nom: 'TEST - Vie quotidienne', description: 'Description test 3' }
-        ];
-        
-        return of(mockData);
-      })
-    );
+  constructor(
+    private categorieService: CategorieService,
+    private cdr: ChangeDetectorRef // Ajouté pour forcer le rafraîchissement de la vue
+  ) {}
+
+  ngOnInit(): void {
+    this.loadCategories();
   }
-  
-  // ... autres méthodes
+
+  loadCategories(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    this.categorieService.getAllCategories().subscribe({
+      next: (response: CategorieTemplate[]) => {
+        this.categories = response;
+        this.isLoading = false;
+        
+        // Force Angular à détecter les changements suite au bug d'hydratation SSR
+        this.cdr.detectChanges(); 
+        
+        console.log(`✅ ${this.categories.length} catégories chargées`);
+      },
+      error: (error: Error) => {
+        console.error('❌ Erreur lors du chargement des catégories:', error);
+        this.errorMessage = error.message || 'Une erreur est survenue lors de la récupération des données.';
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
 }

@@ -21,7 +21,7 @@
       <div class="pdf-container">
         <div class="pdf-page">
           <h2>{{ document.titre }}</h2>
-          <p><strong>Template:</strong> {{ document.template_details?.titre }}</p>
+          <p><strong>Template:</strong> {{ document.template_details?.nom }}</p>
           <p><strong>Statut:</strong> {{ document.statut }}</p>
           <p><strong>Contenu:</strong></p>
           <div [innerHTML]="document.contenu_final"></div>

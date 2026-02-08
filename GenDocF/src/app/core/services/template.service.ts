@@ -8,7 +8,7 @@ import { TemplateDocument, PaginatedResponse } from '../models/document.model';
 })
 export class TemplateService {
   private readonly apiService = inject(ApiService);
-  private readonly endpoint = 'documents/templates';
+  private readonly endpoint = 'api/documents/templates';
 
   getTemplates(page: number = 1, categorieId?: number): Observable<PaginatedResponse<TemplateDocument>> {
     let url = `${this.endpoint}?page=${page}`;

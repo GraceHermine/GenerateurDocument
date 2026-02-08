@@ -9,8 +9,9 @@ export interface CategorieTemplate {
 
 export interface TemplateDocument {
   id: number;
-  titre: string;
+  nom: string;
   categorie: number;
+  categorie_nom: string;
   categorie_details?: CategorieTemplate;
   contenu: string;
   variables?: string[];
