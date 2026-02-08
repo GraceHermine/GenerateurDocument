@@ -10,10 +10,14 @@ import { Document } from './document/document';
 import { Settings } from './settings/settings';
 import { Site } from './site/site';
 
+import { authGuard } from '../../core/guards/auth.guard';
+import { adminGuard } from '../../core/guards/admin.guard';
+
 const routes: Routes = [
   { 
     path: '', 
     component: Admin, // Layout principal Admin
+    canActivate: [authGuard, adminGuard],
     children: [
       { path: '', component: Dashboard }, // Route par défaut (/admin)
       { path: 'user-management', component: UserManage },

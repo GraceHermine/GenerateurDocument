@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service'; // Vérifie ce chemin
 
@@ -15,18 +15,25 @@ import { AuthService } from '../../../core/services/auth.service'; // Vérifie c
 export class Login {
   loginForm: FormGroup;
   errorMessage: string | null = null;
+  successMessage: string | null = null;
   isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     // On initialise le formulaire
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]], // Email obligatoire
       password: ['', [Validators.required]] // Mot de passe obligatoire
     });
+
+    const registered = this.route.snapshot.queryParamMap.get('registered');
+    if (registered === '1') {
+      this.successMessage = "Compte cree avec succes. Vous pouvez vous connecter.";
+    }
   }
 
   // Cette fonction se lance quand tu cliques sur le bouton
@@ -39,15 +46,17 @@ export class Login {
 
     this.isLoading = true;
     this.errorMessage = null;
+    this.successMessage = null;
 
     console.log("Tentative de connexion avec :", this.loginForm.value);
 
     // 2. On appelle le service d'authentification (API)
     this.authService.login(this.loginForm.value).subscribe({
-      next: (response) => {
+      next: () => {
         console.log('✅ Connexion réussie ! Token reçu.');
-        // 3. Si ça marche, on redirige vers l'historique
-        this.router.navigate(['/user/history']); 
+        // 3. Redirection selon le role (user/admin)
+        this.router.navigate([this.authService.getDefaultRoute()]);
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('❌ Erreur login:', err);
