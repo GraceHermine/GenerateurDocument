@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'document.apps.DocumentConfig',
     'templates.apps.TemplatesConfig',
     'user.apps.UserConfig',
+    'django_filters',
 ]
 
 AUTH_USER_MODEL = 'user.User'

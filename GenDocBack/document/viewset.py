@@ -1,3 +1,4 @@
+import re
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -6,13 +7,18 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from django.core.files.base import ContentFile
 from django.db import models
-
+import subprocess
 import os
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas # Exemple avec ReportLab
+from django.core.files.base import ContentFile
+import io
+from django.http import FileResponse
 import tempfile
 from docx import Document
 from docx2pdf import convert
 import platform
-
+import pythoncom
 from .models import (
     CategorieTemplate, TemplateDocument, Formulaire,
     Question, TypeDocument, DocumentGenere, ReponseQuestion
@@ -121,180 +127,193 @@ class TypeDocumentViewSet(viewsets.GenericViewSet,
     filterset_fields = ['status']
     ordering = ['nom']
 
-
-class DocumentGenereViewSet(viewsets.GenericViewSet,
-                            viewsets.mixins.ListModelMixin,
-                            viewsets.mixins.RetrieveModelMixin,
-                            viewsets.mixins.CreateModelMixin):
-
-    queryset = DocumentGenere.objects.select_related('template').prefetch_related(
-        'reponses__question'
-    )
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['template', 'format', 'status']
-    ordering_fields = ['date_generation']
-    ordering = ['-date_generation']
+class DocumentGenereViewSet(viewsets.ModelViewSet):
+    queryset = DocumentGenere.objects.all()
 
     def get_serializer_class(self):
-        """Utilisation des différents serializers selon l'action"""
+        """Définit quel serializer utiliser selon l'action"""
         if self.action == 'create':
             return DocumentGenereCreateSerializer
         elif self.action == 'retrieve':
             return DocumentGenereDetailSerializer
         return DocumentGenereListSerializer
 
-    def _generer_document_pdf(self, document):
+    def _replace_text_in_docx(self, doc, replacements):
+        """
+        Remplace les variables dans le document Word.
+        AMÉLIORÉ : Gère plusieurs formats de variables et le fractionnement des runs.
+        """
+        def replace_in_text(text, replacements):
+            """Fonction utilitaire pour remplacer dans un texte"""
+            for var, val in replacements.items():
+                # Support de plusieurs formats : {VAR}, {{VAR}}, etc.
+                patterns = [
+                    f"{{{var}}}",           # {Prénom}
+                    f"{{{{{var}}}}}",       # {{Prénom}}
+                    f"{{{{var}}}}",         # Cas avec espaces
+                ]
+                for pattern in patterns:
+                    if pattern in text:
+                        text = text.replace(pattern, str(val))
+            return text
 
+        def process_paragraphs(paragraphs):
+            """Traite les paragraphes en gérant le fractionnement des runs"""
+            for paragraph in paragraphs:
+                # 1. Récupérer le texte complet du paragraphe
+                full_text = paragraph.text
+                
+                # 2. Effectuer les remplacements
+                new_text = replace_in_text(full_text, replacements)
+                
+                # 3. Si des changements ont été effectués
+                if new_text != full_text:
+                    # Vider tous les runs sauf le premier
+                    if paragraph.runs:
+                        paragraph.runs[0].text = new_text
+                        for i in range(1, len(paragraph.runs)):
+                            paragraph.runs[i].text = ""
+
+        # Traiter les paragraphes principaux
+        process_paragraphs(doc.paragraphs)
+        
+        # Traiter les tableaux
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    process_paragraphs(cell.paragraphs)
+
+    def _generer_fichier(self, document_obj, reponses_data):
+        """
+        Génère le fichier final (DOCX ou PDF) en remplaçant les variables.
+        AMÉLIORÉ : Meilleur logging et gestion des erreurs.
+        """
         try:
-            template_path = document.template.fichier.path
+            if not document_obj.template.fichier:
+                print("❌ Aucun fichier template trouvé")
+                return False
 
-            doc = Document(template_path)
+            # Ouvrir le document Word template
+            doc = Document(document_obj.template.fichier.path)
+            print(f"✅ Template chargé : {document_obj.template.fichier.path}")
+            
+            # Construction du dictionnaire de remplacement
+            replacements = {}
+            for r in reponses_data:
+                try:
+                    question = Question.objects.get(id=r['question'])
+                    variable_name = question.variable
+                    valeur = r['valeur']
+                    
+                    replacements[variable_name] = valeur
+                    print(f"📝 Mapping : {{{variable_name}}} -> {valeur}")
+                    
+                except Question.DoesNotExist:
+                    print(f"⚠️ Question ID {r['question']} non trouvée")
+                    continue
 
-            reponses = ReponseQuestion.objects.filter(document=document).select_related('question')
+            # DEBUG : Afficher toutes les variables trouvées dans le document
+            all_text = "\n".join([p.text for p in doc.paragraphs])
+            variables_in_doc = re.findall(r'\{([^}]+)\}', all_text)
+            print(f"🔍 Variables détectées dans le template : {set(variables_in_doc)}")
+            print(f"🔍 Variables à remplacer : {list(replacements.keys())}")
 
-            replacements = {
-                f"{{{reponse.question.variable}}}": reponse.valeur
-                for reponse in reponses
-            }
+            # Effectuer les remplacements
+            self._replace_text_in_docx(doc, replacements)
+            print("✅ Remplacements effectués")
 
-            for paragraph in doc.paragraphs:
-                for variable, valeur in replacements.items():
-                    if variable in paragraph.text:
-                        for run in paragraph.runs:
-                            if variable in run.text:
-                                run.text = run.text.replace(variable, valeur)
+            # Sauvegarder dans un dossier temporaire
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                temp_docx = os.path.join(tmp_dir, 'out.docx')
+                doc.save(temp_docx)
+                print(f"✅ Document temporaire sauvegardé : {temp_docx}")
 
-            for table in doc.tables:
-                for row in table.rows:
-                    for cell in row.cells:
-                        for paragraph in cell.paragraphs:
-                            for variable, valeur in replacements.items():
-                                if variable in paragraph.text:
-                                    for run in paragraph.runs:
-                                        if variable in run.text:
-                                            run.text = run.text.replace(variable, valeur)
+                ext = 'pdf' if document_obj.format == 'pdf' else 'docx'
+                final_name = f"document_{document_obj.id}.{ext}"
+                final_path = temp_docx
 
-            temp_docx = tempfile.NamedTemporaryFile(delete=False, suffix='.docx')
-            temp_docx_path = temp_docx.name
-            temp_docx.close()
+                # Conversion en PDF si nécessaire
+                if document_obj.format == 'pdf':
+                    final_path = os.path.join(tmp_dir, 'out.pdf')
+                    print("🔄 Conversion en PDF...")
+                    
+                    if platform.system() == 'Windows':
+                        pythoncom.CoInitialize()
+                        try:
+                            convert(temp_docx, final_path)
+                        finally:
+                            pythoncom.CoUninitialize()
+                    else:
+                        subprocess.run([
+                            'libreoffice', '--headless', '--convert-to', 'pdf', 
+                            '--outdir', tmp_dir, temp_docx
+                        ], check=True)
+                    
+                    print("✅ Conversion PDF réussie")
 
-            doc.save(temp_docx_path)
-
-            temp_pdf = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
-            temp_pdf_path = temp_pdf.name
-            temp_pdf.close()
-
-            try:
-                convert(temp_docx_path, temp_pdf_path)
-            except Exception as e:
-                if platform.system() in ['Linux', 'Darwin']:
-                    import subprocess
-                    subprocess.run([
-                        'libreoffice',
-                        '--headless',
-                        '--convert-to',
-                        'pdf',
-                        '--outdir',
-                        os.path.dirname(temp_pdf_path),
-                        temp_docx_path
-                    ], check=True)
-
-                    generated_pdf = temp_docx_path.replace('.docx', '.pdf')
-                    if os.path.exists(generated_pdf):
-                        os.rename(generated_pdf, temp_pdf_path)
-                else:
-                    raise e
-
-            with open(temp_pdf_path, 'rb') as pdf_file:
-                pdf_content = pdf_file.read()
-
-            filename = f"document_{document.id}_{document.template.nom.replace(' ', '_')}.pdf"
-            document.fichier.save(filename, ContentFile(pdf_content), save=False)
-            document.status = 'done'
-            document.save()
-
-            try:
-                os.unlink(temp_docx_path)
-                os.unlink(temp_pdf_path)
-            except:
-                pass
-
+                # Sauvegarder le fichier final
+                with open(final_path, 'rb') as f:
+                    document_obj.fichier.save(final_name, ContentFile(f.read()), save=False)
+                
+                print(f"✅ Fichier final sauvegardé : {final_name}")
+            
+            document_obj.status = 'done'
+            document_obj.save()
             return True
-
+            
         except Exception as e:
-            document.status = 'error'
-            document.save()
-            print(f"Erreur lors de la génération du PDF: {str(e)}")
+            print(f"❌ Erreur génération : {e}")
+            import traceback
+            traceback.print_exc()
+            document_obj.status = 'error'
+            document_obj.save()
             return False
 
     def create(self, request, *args, **kwargs):
-
+        """Crée un nouveau document généré"""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
+        # 1. Créer l'objet Document
         document = serializer.save()
+        print(f"📄 Document créé : ID={document.id}")
 
-        if document.format == DocumentGenere.PDF:
-            document.status = 'processing'
-            document.save()
+        # 2. Sauvegarder les réponses en base
+        reponses_data = request.data.get('reponses', [])
+        print(f"📝 Nombre de réponses reçues : {len(reponses_data)}")
+        
+        for r in reponses_data:
+            ReponseQuestion.objects.create(
+                document=document,
+                question_id=r['question'],
+                valeur=r['valeur']
+            )
 
-            success = self._generer_document_pdf(document)
-
-            if not success:
-                detail_serializer = DocumentGenereDetailSerializer(document)
-                return Response(
-                    {
-                        'error': 'Erreur lors de la génération du document',
-                        'document': detail_serializer.data
-                    },
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                )
-        else:
-            document.status = 'done'
-            document.save()
-
-        detail_serializer = DocumentGenereDetailSerializer(document)
+        # 3. Générer le fichier
+        if self._generer_fichier(document, reponses_data):
+            return Response(
+                DocumentGenereDetailSerializer(document).data, 
+                status=status.HTTP_201_CREATED
+            )
         return Response(
-            detail_serializer.data,
-            status=status.HTTP_201_CREATED
+            {"error": "Échec lors de la génération du fichier"}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
     @action(detail=True, methods=['get'])
-    def reponses(self, request, pk=None):
-        """Récupération des réponses d'un document"""
+    def download(self, request, pk=None):
+        """Télécharge un document généré"""
         document = self.get_object()
-        reponses = document.reponses.all()
-        serializer = ReponseQuestionSerializer(reponses, many=True)
-        return Response(serializer.data)
-
-    @action(detail=False, methods=['get'])
-    def par_statut(self, request):
-
-        status_param = request.query_params.get('status', None)
-        if status_param:
-            documents = self.queryset.filter(status=status_param)
-        else:
-            documents = self.queryset.all()
-
-        serializer = self.get_serializer(documents, many=True)
-        return Response(serializer.data)
-
-    @action(detail=False, methods=['get'])
-    def statistiques(self, request):
-        """Obtenir des statistiques sur les documents générés"""
-        from django.db.models import Count, Q
-
-        stats = DocumentGenere.objects.aggregate(
-            total=Count('id'),
-            pending=Count('id', filter=Q(status='pending')),
-            processing=Count('id', filter=Q(status='processing')),
-            done=Count('id', filter=Q(status='done')),
-            error=Count('id', filter=Q(status='error')),
-        )
-
-        return Response(stats)
-
-
+        if document.fichier and os.path.exists(document.fichier.path):
+            return FileResponse(
+                open(document.fichier.path, 'rb'), 
+                as_attachment=True
+            )
+        return Response({"detail": "Fichier non trouvé"}, status=404) 
+    
+    
 class ReponseQuestionViewSet(viewsets.GenericViewSet,
+
                              viewsets.mixins.ListModelMixin,
                              viewsets.mixins.RetrieveModelMixin):
 
