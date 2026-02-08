@@ -23,11 +23,10 @@ class RegisterSerializer(serializers.Serializer):
         password = validated_data["password"]
 
         user = User.objects.create_user(
-            username=email,
             email=email,
-            first_name=first_name,
-            last_name=last_name,
-            password=password
+            password=password,
+            nom=last_name,
+            prenom=first_name
         )
 
         return user
@@ -39,9 +38,8 @@ class UserMeSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "email",
-            "username",
-            "first_name",
-            "last_name",
+            "nom",
+            "prenom",
             "is_staff",
             "is_superuser"
         ]

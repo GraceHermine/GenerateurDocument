@@ -1,16 +1,10 @@
 import { Routes } from '@angular/router';
-<<<<<<< HEAD
-import { authGuard } from './core/guards/auth.guard';
-=======
 import { authMatchGuard } from './core/guards/auth.guard';
->>>>>>> fix-frontend-startup
 
 export const routes: Routes = [
-  // 👇 MODIFICATION MAJEURE : On redirige la racine ('') vers le Login
-  // Cela empêche la page blanche au démarrage
   {
     path: '',
-    redirectTo: '',
+    redirectTo: 'public',
     pathMatch: 'full'
   },
 
@@ -18,7 +12,7 @@ export const routes: Routes = [
   
   {
     // Si tu as une partie publique (Site vitrine), on peut y accéder via /public
-    path: '', 
+    path: 'public', 
     loadChildren: () => 
       import('./features/public/public-routing-module').then(m => m.PublicRoutingModule)
   },
@@ -29,14 +23,12 @@ export const routes: Routes = [
   },
   {
     path: 'user',
-    canActivate: [authGuard],
     loadChildren: () => 
       import('./features/user/user-routing-module').then(m => m.UserRoutingModule),
     canMatch: [authMatchGuard]
   },
   {
     path: 'admin',
-    canActivate: [authGuard],
     loadChildren: () => 
       import('./features/admin/admin-routing-module').then(m => m.AdminRoutingModule)
   },

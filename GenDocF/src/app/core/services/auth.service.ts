@@ -19,7 +19,7 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     // ✅ TRADUCTION : On transforme 'email' en 'username' pour Django
     const payload = {
-      username: credentials.email, // On met l'email dans le champ username
+      email: credentials.email,
       password: credentials.password
     };
 

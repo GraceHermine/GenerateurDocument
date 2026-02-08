@@ -58,12 +58,28 @@ export class Register {
         if (err.status === 0) {
           this.errorMessage = 'Impossible de contacter le serveur.';
         } else if (err.status === 400) {
-          this.errorMessage = 'Veuillez verifier les informations saisies.';
+          this.errorMessage = this.formatBackendErrors(err.error) || 'Veuillez verifier les informations saisies.';
         } else {
           this.errorMessage = 'Une erreur est survenue.';
         }
       }
     });
+  }
+
+  private formatBackendErrors(errors: any): string | null {
+    if (!errors || typeof errors !== 'object') {
+      return null;
+    }
+
+    const messages: string[] = [];
+    Object.keys(errors).forEach((key) => {
+      const value = errors[key];
+      if (Array.isArray(value) && value.length > 0) {
+        messages.push(`${key}: ${value[0]}`);
+      }
+    });
+
+    return messages.length > 0 ? messages.join(' | ') : null;
   }
 
 }
