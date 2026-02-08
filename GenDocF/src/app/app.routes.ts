@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
+import { authMatchGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   // 👇 MODIFICATION MAJEURE : On redirige la racine ('') vers le Login
   // Cela empêche la page blanche au démarrage
   {
     path: '',
-    redirectTo: 'auth/login',
+    redirectTo: '',
     pathMatch: 'full'
   },
 
@@ -13,7 +14,7 @@ export const routes: Routes = [
   
   {
     // Si tu as une partie publique (Site vitrine), on peut y accéder via /public
-    path: 'public', 
+    path: '', 
     loadChildren: () => 
       import('./features/public/public-routing-module').then(m => m.PublicRoutingModule)
   },
@@ -25,7 +26,8 @@ export const routes: Routes = [
   {
     path: 'user',
     loadChildren: () => 
-      import('./features/user/user-routing-module').then(m => m.UserRoutingModule)
+      import('./features/user/user-routing-module').then(m => m.UserRoutingModule),
+    canMatch: [authMatchGuard]
   },
   {
     path: 'admin',
@@ -38,6 +40,6 @@ export const routes: Routes = [
   // Si l'URL n'existe pas, on renvoie vers le login
   { 
     path: '**', 
-    redirectTo: 'auth/login' 
+    redirectTo: 'public' 
   }
 ];

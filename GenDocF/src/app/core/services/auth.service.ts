@@ -136,7 +136,21 @@ export class AuthService {
   }
 
   // 4. Déconnexion
-  logout(): void {
+  logoutRequest(): Observable<any> {
+    const refresh = isPlatformBrowser(this.platformId)
+      ? localStorage.getItem('refresh_token')
+      : null;
+
+    return this.http.post(
+      `${this.apiUrl}/auth/logout/`,
+      { refresh },
+      { headers: this.getAuthHeaders() }
+    ).pipe(
+      catchError(() => of(null))
+    );
+  }
+
+  clearSession(): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');

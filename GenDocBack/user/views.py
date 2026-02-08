@@ -31,3 +31,21 @@ class MeAPIView(APIView):
 	def get(self, request, *args, **kwargs):
 		serializer = UserMeSerializer(request.user)
 		return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class LogoutAPIView(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def post(self, request, *args, **kwargs):
+		refresh_token = request.data.get("refresh")
+		if refresh_token:
+			try:
+				from rest_framework_simplejwt.tokens import RefreshToken
+				try:
+					RefreshToken(refresh_token).blacklist()
+				except AttributeError:
+					pass
+			except Exception:
+				pass
+
+		return Response(status=status.HTTP_204_NO_CONTENT)
