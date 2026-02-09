@@ -1,4 +1,27 @@
-<h2>Liste des catégories</h2>
-<ul>
-  <li *ngFor="let cat of categories">{{ cat.nom }}</li>
-</ul>
+<section class="public-container">
+  <div class="public-hero">
+    <div class="public-panel public-reveal">
+      <span class="public-kicker">Categories</span>
+      <h1 class="public-title">Bibliotheque des categories.</h1>
+      <p class="public-subtitle">Parcourez toutes les categories disponibles.</p>
+    </div>
+    <div class="public-panel public-panel--dark public-reveal">
+      <span class="public-badge">Conseil</span>
+      <h3>Choisissez une categorie claire</h3>
+      <p>Vous trouverez plus vite le bon template.</p>
+    </div>
+  </div>
+
+  <section class="public-section">
+    <div class="public-grid">
+      <div class="public-card public-reveal" *ngFor="let cat of categories">
+        <span class="public-pill">#{{ cat.id }}</span>
+        <div class="public-card-title">{{ cat.nom }}</div>
+        <p class="public-card-text">{{ cat.description || 'Aucune description' }}</p>
+        <a class="public-btn public-btn--ghost" [routerLink]="['/public/templates', { category: cat.id }]">
+          Voir les modeles
+        </a>
+      </div>
+    </div>
+  </section>
+</section>

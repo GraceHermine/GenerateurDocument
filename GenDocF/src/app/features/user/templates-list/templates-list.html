@@ -1,61 +1,103 @@
-<div class="p-8">
-  <div class="mb-8">
-    <h2 class="text-3xl font-bold">
-      Bibliothèque de Templates ({{ displayedTemplates.length }})
-    </h2>
-  </div>
-
-  <div class="flex gap-3 mb-8 overflow-x-auto pb-2">
-    <button (click)="filterByCategory(null)"
-      [class]="selectedCategoryId === null ? 'bg-primary text-white' : 'bg-[#f3ece7]'"
-      class="rounded-full px-5 py-2 transition-colors whitespace-nowrap">
-      Tous ({{ allTemplates.length }})
-    </button>
-
-    <button *ngFor="let cat of categories"
-      (click)="filterByCategory(cat.id)"
-      [class]="selectedCategoryId === cat.id ? 'bg-primary text-white' : 'bg-[#f3ece7]'"
-      class="rounded-full px-5 py-2 transition-colors whitespace-nowrap">
-      {{ cat.nom }} ({{ getTemplatesByCategory(cat.id).length }})
-    </button>
-  </div>
-
-  <div *ngIf="!isLoading && displayedTemplates.length > 0" 
-       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    
-    <div *ngFor="let template of displayedTemplates" class="border rounded-xl p-4 bg-white shadow-sm flex flex-col">
-      <div class="text-primary font-bold text-xs mb-2 uppercase tracking-wider">
-        {{ template.categorie_nom }}
+<div class="templates-page">
+  <section class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">Bibliothèque publique</p>
+      <h1>Templates prêts à l'emploi</h1>
+      <p class="subtitle">
+        Parcourez une sélection de modèles conçus pour accélérer la création de vos documents.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">{{ allTemplates.length }}</span>
+          <span class="stat-label">Modèles disponibles</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ categories.length }}</span>
+          <span class="stat-label">Catégories actives</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ displayedTemplates.length }}</span>
+          <span class="stat-label">Affichés</span>
+        </div>
       </div>
-      
-      <h3 class="font-bold text-lg mb-2">{{ template.nom }}</h3>
-      
-      <p class="text-sm text-gray-600 flex-grow">
+    </div>
+    <div class="hero-panel">
+      <div class="panel-title">Astuce de productivite</div>
+      <p class="panel-text">
+        Commencez par un template court, puis enrichissez-le selon vos besoins. Vous gagnez du temps
+        et gardez une structure claire.
+      </p>
+      <div class="panel-badge">Nouveaux modèles chaque semaine</div>
+    </div>
+  </section>
+
+  <section class="filters">
+    <div class="filter-row" role="tablist" aria-label="Filtres de categorie">
+      <button
+        (click)="filterByCategory(null)"
+        [class]="selectedCategoryId === null ? 'chip chip-active' : 'chip'"
+      >
+        Tous <span class="chip-count">{{ allTemplates.length }}</span>
+      </button>
+
+      <button
+        *ngFor="let cat of categories"
+        (click)="filterByCategory(cat.id)"
+        [class]="selectedCategoryId === cat.id ? 'chip chip-active' : 'chip'"
+      >
+        {{ cat.nom }} <span class="chip-count">{{ getTemplatesByCategory(cat.id).length }}</span>
+      </button>
+    </div>
+  </section>
+
+  <section
+    *ngIf="!isLoading && displayedTemplates.length > 0"
+    class="templates-grid"
+  >
+    <article *ngFor="let template of displayedTemplates" class="template-card">
+      <div class="card-top">
+        <span class="category-pill">{{ template.categorie_nom }}</span>
+        <span class="card-id">#{{ template.id }}</span>
+      </div>
+
+      <h3>{{ template.nom }}</h3>
+
+      <p class="card-desc">
         {{ template.description || 'Prêt à l\'emploi pour vos documents.' }}
       </p>
-      
-      <div class="flex gap-2 mt-6">
-        <button [routerLink]="['/user/template-preview', template.id]" 
-                class="flex-1 border border-gray-200 rounded-lg p-2 text-xs font-medium hover:bg-gray-50 transition-colors">
-          Aperçu
+
+      <div class="card-meta">
+        <span>Format intelligent</span>
+        <span>Compatibilite multi-usages</span>
+      </div>
+
+      <div class="card-actions">
+        <button
+          [routerLink]="['/user/template-preview', template.id]"
+          class="btn-outline"
+        >
+          Apercu
         </button>
-        <button [routerLink]="['/user/dynamic-form', template.id]" 
-                class="flex-1 bg-primary text-white rounded-lg p-2 text-xs font-medium hover:opacity-90 transition-colors">
+        <button
+          [routerLink]="['/user/dynamic-form', template.id]"
+          class="btn-solid"
+        >
           Utiliser
         </button>
       </div>
-    </div>
-  </div>
+    </article>
+  </section>
 
-  <div *ngIf="isLoading" class="text-center py-20">
-    <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-primary border-t-transparent mb-4"></div>
-    <p class="italic text-gray-500">Chargement de la bibliothèque...</p>
-  </div>
+  <section *ngIf="isLoading" class="state-panel">
+    <div class="loader"></div>
+    <p>Chargement de la bibliotheque...</p>
+  </section>
 
-  <div *ngIf="!isLoading && displayedTemplates.length === 0" class="text-center py-20 border-2 border-dashed rounded-3xl">
-    <p class="text-gray-500">Aucun template ne correspond à cette catégorie.</p>
-    <button (click)="filterByCategory(null)" class="text-primary font-bold mt-2 underline">
-      Voir tous les modèles
+  <section *ngIf="!isLoading && displayedTemplates.length === 0" class="state-panel empty">
+    <h3>Aucun template ne correspond a cette categorie.</h3>
+    <p>Essayez un autre filtre pour decouvrir nos modeles disponibles.</p>
+    <button (click)="filterByCategory(null)" class="btn-solid">
+      Voir tous les modeles
     </button>
-  </div>
+  </section>
 </div>

@@ -1,182 +1,95 @@
-<!-- HERO SECTION -->
-<section class="mx-auto max-w-[1280px] px-6 py-12 lg:px-12 lg:py-24">
-  <div class="@container">
-    <div class="flex flex-col gap-12 @[864px]:flex-row @[864px]:items-center">
+<section class="public-container">
+  <div class="public-hero">
+    <div class="public-panel public-reveal">
+      <span class="public-kicker">GenDoc public</span>
+      <h1 class="public-title">Gerez vos documents en un clic.</h1>
+      <p class="public-subtitle">
+        GenDoc simplifie votre administration avec une bibliotheque de templates claire,
+        des formulaires intelligents et une generation rapide.
+      </p>
 
-      <div class="flex flex-1 flex-col gap-8">
-        <div class="flex flex-col gap-4">
-          <span class="inline-flex w-fit items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary dark:bg-primary/20 dark:text-[#d4a373]">
-            L'art de l'organisation avec GenDoc
-          </span>
-
-          <h1 class="text-4xl font-black leading-[1.1] tracking-tight text-[#1b130e] dark:text-[#f8f7f6] @[480px]:text-6xl">
-            Générez vos documents <span class="text-primary">en un clic</span>
-          </h1>
-
-          <p class="max-w-[540px] text-lg leading-relaxed text-[#1b130e]/70 dark:text-[#f8f7f6]/70">
-            GenDoc simplifie votre administration avec une plateforme intuitive et sécurisée au design chaleureux et professionnel.
-          </p>
-        </div>
-
-        <div class="flex flex-wrap gap-4">
-          <button
-            routerLink="/public/templates"
-            class="flex h-14 min-w-[180px] items-center justify-center rounded-xl bg-primary px-8 text-base font-bold text-white shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all hover:-translate-y-0.5">
-            Commencer l'essai
-          </button>
-
-          <button
-            class="flex h-14 min-w-[180px] items-center justify-center rounded-xl border-2 border-[#e6dad1] dark:border-[#3d2b1f] bg-transparent px-8 text-base font-bold text-[#1b130e] dark:text-[#f8f7f6] hover:bg-[#f3ece8] dark:hover:bg-[#3d2b1f] transition-all">
-            Voir la démo
-          </button>
-        </div>
-
-        <div class="flex items-center gap-4 pt-4 border-t border-[#e6dad1] dark:border-[#3d2b1f] w-fit">
-          <div class="flex -space-x-2">
-            <div class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold">JD</div>
-            <div class="h-8 w-8 rounded-full bg-primary/40 flex items-center justify-center text-[10px] font-bold">ML</div>
-            <div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-[10px] font-bold text-white">+1k</div>
-          </div>
-          <p class="text-sm font-medium opacity-70">Utilisateurs font confiance à GenDoc</p>
-        </div>
+      <div class="public-actions">
+        <a routerLink="/public/templates" class="public-btn public-btn--primary">Explorer les templates</a>
+        <a routerLink="/public/document-generation" class="public-btn public-btn--ghost">Voir un exemple</a>
       </div>
 
-      <div class="flex-1">
-        <div class="relative aspect-square w-full max-w-[500px] mx-auto">
-          <div class="absolute inset-0 rotate-3 rounded-3xl bg-primary/10"></div>
-          <div class="absolute inset-0 -rotate-2 rounded-3xl bg-primary/5"></div>
-          <div
-            class="relative h-full w-full overflow-hidden rounded-3xl border-8 border-white dark:border-[#3d2b1f] shadow-2xl bg-cover bg-center"
-            style="background-image: url('https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=1000');">
-            <div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
-          </div>
+      <div class="public-stats">
+        <div class="public-stat">
+          <span class="public-stat-value">{{ categories.length }}</span>
+          <span class="public-stat-label">Categories actives</span>
+        </div>
+        <div class="public-stat">
+          <span class="public-stat-value">24/7</span>
+          <span class="public-stat-label">Generation disponible</span>
+        </div>
+        <div class="public-stat">
+          <span class="public-stat-value">1k+</span>
+          <span class="public-stat-label">Documents par semaine</span>
         </div>
       </div>
+    </div>
 
+    <div class="public-panel public-panel--dark public-reveal">
+      <div class="public-badge">Conseil express</div>
+      <h3>Commencez par un modele court</h3>
+      <p>
+        Choisissez une categorie, utilisez un template simple, puis personnalisez-le. Votre flux reste
+        propre et rapide.
+      </p>
+      <div class="public-pill">Nouveaux modeles chaque semaine</div>
     </div>
   </div>
-</section>
 
-<!-- CATÉGORIES -->
-<!-- CATÉGORIES -->
-<!-- CATÉGORIES -->
-<section class="mx-auto max-w-[1280px] px-6 py-20 lg:px-12">
-  <div class="flex flex-col gap-12">
-
-    <div class="max-w-[720px]">
-      <h2 class="text-3xl font-black tracking-tight lg:text-4xl">
-        Choisissez votre type de document
-      </h2>
-      <p class="mt-3 text-lg opacity-70">
-        Accédez rapidement à des modèles prêts à l'emploi classés par catégorie.
+  <section class="public-section">
+    <div class="public-panel">
+      <span class="public-kicker">Categories</span>
+      <h2 class="public-title">Choisissez votre type de document</h2>
+      <p class="public-subtitle">
+        Accedez rapidement a des modeles classes par categorie.
       </p>
     </div>
 
-    <!-- Message d'erreur -->
-    <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 rounded-xl p-6">
-      <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-red-500">error</span>
-        <div>
-          <h3 class="font-bold text-red-800">Erreur de chargement</h3>
-          <p class="text-red-700">{{ errorMessage }}</p>
-          <button 
-            (click)="ngOnInit()"
-            class="mt-3 px-4 py-2 bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition">
-            Réessayer
-          </button>
-        </div>
+    <div *ngIf="errorMessage" class="public-panel public-reveal" style="margin-top: 18px;">
+      <span class="public-badge">Erreur de chargement</span>
+      <p class="public-card-text">{{ errorMessage }}</p>
+      <button (click)="ngOnInit()" class="public-btn public-btn--ghost">Reessayer</button>
+    </div>
+
+    <div *ngIf="isLoading" class="public-grid public-section">
+      <div *ngFor="let i of [1,2,3,4,5,6]" class="public-card public-reveal">
+        <div class="public-pill">Chargement</div>
+        <div class="public-card-title">Preparation...</div>
+        <div class="public-card-text">Les categories arrivent.</div>
       </div>
     </div>
 
-    
-
-    <!-- État de chargement -->
-    <div *ngIf="isLoading" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <div *ngFor="let i of [1,2,3,4,5,6]" 
-           class="rounded-2xl border p-6 shadow-sm animate-pulse">
-        <div class="flex flex-col gap-4">
-          <div class="h-12 w-12 rounded-xl bg-gray-200"></div>
-          <div class="h-4 w-3/4 bg-gray-200 rounded"></div>
-          <div class="h-3 w-full bg-gray-200 rounded"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Contenu chargé -->
-    <div *ngIf="!isLoading && categories.length > 0" 
-         class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      
-      <div *ngFor="let category of categories; let i = index"
-           class="flex flex-col justify-between rounded-2xl border p-6 shadow-sm hover:-translate-y-1 transition-all hover:shadow-md">
-
-        <!-- Numéro de catégorie (debug) -->
-        <div class="absolute top-4 right-4 text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded">
-          #{{ category.id }}
-        </div>
-        
-        <div class="flex flex-col gap-4">
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <span class="material-symbols-outlined text-2xl">
-              <!-- Icons basées sur le nom de la catégorie -->
-              <ng-container [ngSwitch]="category.nom">
-                <span *ngSwitchCase="'Attestations & Déclarations'">description</span>
-                <span *ngSwitchCase="'Résiliations & Contrats'">assignment_return</span>
-                <span *ngSwitchCase="'Réclamations & Litiges'">gavel</span>
-                <span *ngSwitchCase="'Travail & Études'">work</span>
-                <span *ngSwitchCase="'Vie quotidienne'">home</span>
-                <span *ngSwitchDefault>folder</span>
-              </ng-container>
-            </span>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold">{{ category.nom }}</h3>
-            <p class="mt-2 text-sm opacity-70">{{ category.description || 'Aucune description' }}</p>
-          </div>
-        </div>
-
-        <a
-          [routerLink]="['/public/templates', { category: category.id }]">
-          Voir les modèles
+    <div *ngIf="!isLoading && categories.length > 0" class="public-grid public-section">
+      <div *ngFor="let category of categories" class="public-card public-reveal">
+        <span class="public-pill">#{{ category.id }}</span>
+        <div class="public-card-title">{{ category.nom }}</div>
+        <p class="public-card-text">{{ category.description || 'Aucune description' }}</p>
+        <a class="public-btn public-btn--ghost" [routerLink]="['/public/templates', { category: category.id }]">
+          Voir les modeles
         </a>
-
       </div>
     </div>
 
-    <!-- Message si aucune catégorie après chargement -->
-    <div *ngIf="!isLoading && categories.length === 0 && !errorMessage" 
-         class="text-center py-12">
-      <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl">
-        <span class="material-symbols-outlined text-4xl opacity-50 mb-4">
-          folder_off
-        </span>
-        <h3 class="text-xl font-bold mb-2">Aucune catégorie disponible</h3>
-        <p class="opacity-70 mb-4">Il n'y a pas encore de catégories dans la base de données.</p>
-        <button 
-          (click)="ngOnInit()"
-          class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition">
-          Actualiser
-        </button>
+    <div *ngIf="!isLoading && categories.length === 0 && !errorMessage" class="public-panel public-section">
+      <h3>Aucune categorie disponible</h3>
+      <p class="public-card-text">Il n'y a pas encore de categories dans la base.</p>
+      <button (click)="ngOnInit()" class="public-btn public-btn--primary">Actualiser</button>
+    </div>
+  </section>
+
+  <section class="public-section">
+    <div class="public-panel public-panel--dark public-reveal" style="text-align: center;">
+      <span class="public-badge">Essayez maintenant</span>
+      <h2>Pret a simplifier votre flux GenDoc ?</h2>
+      <p>Rejoignez des milliers d'utilisateurs qui nous font confiance.</p>
+      <div class="public-actions" style="justify-content: center;">
+        <a routerLink="/auth/register" class="public-btn public-btn--primary">Creer un compte gratuit</a>
+        <a routerLink="/public/templates" class="public-btn public-btn--ghost">Voir les templates</a>
       </div>
     </div>
-
-  </div>
-</section>
-
-<!-- CTA FINAL -->
-<section class="mx-auto max-w-[1280px] px-6 py-20 lg:px-12">
-  <div class="rounded-[2.5rem] bg-primary px-8 py-16 text-center text-white shadow-2xl">
-    <h2 class="text-3xl font-black @[480px]:text-5xl">
-      Prêt à simplifier votre flux GenDoc ?
-    </h2>
-    <p class="mt-4 opacity-90">
-      Rejoignez des milliers d'utilisateurs qui nous font confiance.
-    </p>
-
-    <button
-      routerLink="/auth/register"
-      class="mt-8 h-16 min-w-[240px] rounded-2xl bg-white text-lg font-black text-primary hover:bg-[#f5f5dc] transition">
-      Créer un compte gratuit
-    </button>
-  </div>
+  </section>
 </section>

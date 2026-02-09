@@ -1,68 +1,53 @@
-<!-- document.html -->
-<div class="container">
-  <!-- Liste des documents -->
-  <div *ngIf="documents.length > 0; else noDocuments">
-    <h2>Mes Documents ({{ documents.length }})</h2>
-    
-    <div class="document-list">
-      <div *ngFor="let doc of documents" class="document-card">
-        <h3>{{ doc.titre }}</h3>
-        <p>Statut: <span [class]="'status-' + doc.statut">{{ doc.statut }}</span></p>
-        <p>Créé le: {{ doc.created_at | date:'dd/MM/yyyy' }}</p>
-        
-        <div class="document-actions">
-          <button (click)="downloadDocument(doc.id)" class="btn-download">
-            <span class="material-symbols-outlined">download</span>
-            Télécharger
-          </button>
-          
-          <button *ngIf="doc.statut === 'brouillon'" 
-                  (click)="finaliserDocument(doc.id)" 
-                  class="btn-finalize">
-            <span class="material-symbols-outlined">check_circle</span>
+<section class="public-container">
+  <div class="public-panel public-reveal">
+    <span class="public-kicker">Documents</span>
+    <h1 class="public-title">Mes documents ({{ documents.length }})</h1>
+    <p class="public-subtitle">Consultez, telechargez ou finalisez vos documents.</p>
+  </div>
+
+  <section class="public-section">
+    <div *ngIf="documents.length > 0; else noDocuments" class="public-grid">
+      <div *ngFor="let doc of documents" class="public-card public-reveal">
+        <div class="public-card-title">{{ doc.titre }}</div>
+        <p class="public-card-text">Statut: {{ doc.statut }}</p>
+        <p class="public-card-text">Cree le: {{ doc.created_at | date:'dd/MM/yyyy' }}</p>
+        <div class="public-actions">
+          <button (click)="downloadDocument(doc.id)" class="public-btn public-btn--ghost">Telecharger</button>
+          <button *ngIf="doc.statut === 'brouillon'" (click)="finaliserDocument(doc.id)" class="public-btn public-btn--ghost">
             Finaliser
           </button>
-          
-          <button (click)="deleteDocument(doc.id)" class="btn-delete">
-            <span class="material-symbols-outlined">delete</span>
-            Supprimer
-          </button>
+          <button (click)="deleteDocument(doc.id)" class="public-btn public-btn--ghost">Supprimer</button>
         </div>
       </div>
     </div>
-  </div>
 
-  <ng-template #noDocuments>
-    <div class="empty-state">
-      <p>Aucun document disponible</p>
-      <button (click)="createNewDocument()" class="btn-create">
-        <span class="material-symbols-outlined">add</span>
-        Créer un nouveau document
-      </button>
-    </div>
-  </ng-template>
+    <ng-template #noDocuments>
+      <div class="public-panel public-reveal">
+        <p class="public-card-text">Aucun document disponible.</p>
+        <button (click)="createNewDocument()" class="public-btn public-btn--primary">Creer un nouveau document</button>
+      </div>
+    </ng-template>
+  </section>
 
-  <!-- Liste des catégories -->
-  <div *ngIf="categories.length > 0">
-    <h2>Catégories</h2>
-    <div class="categories">
-      <div *ngFor="let cat of categories" class="category-chip">
-        {{ cat.nom }}
+  <section *ngIf="categories.length > 0" class="public-section">
+    <div class="public-panel public-reveal">
+      <h2>Categories</h2>
+      <div class="public-actions">
+        <span *ngFor="let cat of categories" class="public-pill">{{ cat.nom }}</span>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Liste des templates -->
-  <div *ngIf="templates.length > 0">
-    <h2>Templates disponibles</h2>
-    <div class="templates-grid">
-      <div *ngFor="let template of templates" class="template-card">
-        <h3>{{ template.nom }}</h3>
-        <p>{{ template.description }}</p>
-        <button routerLink="/dynamic-form/{{ template.id }}">
-          Utiliser ce template
-        </button>
+  <section *ngIf="templates.length > 0" class="public-section">
+    <div class="public-panel public-reveal">
+      <h2>Templates disponibles</h2>
+      <div class="public-grid" style="margin-top: 12px;">
+        <div *ngFor="let template of templates" class="public-card">
+          <div class="public-card-title">{{ template.nom }}</div>
+          <p class="public-card-text">{{ template.description }}</p>
+          <button routerLink="/dynamic-form/{{ template.id }}" class="public-btn public-btn--ghost">Utiliser ce template</button>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
+</section>

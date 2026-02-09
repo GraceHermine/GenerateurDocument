@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CategorieService } from '../../../../shared/services/categorie'; // chemin corrigé
 import { Categorie } from '../../../../shared/models/categorie'; // chemin corrigé
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-categories',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss']
 })

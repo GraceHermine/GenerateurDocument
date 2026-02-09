@@ -1,106 +1,60 @@
-<div class="flex min-h-screen">
-
-  <aside class="flex flex-col border-r border-white/10 shadow-2xl">
-
-    <div class="p-6">
-      <div class="flex items-center gap-4">
-        <div class="bg-primary rounded-xl p-3 flex items-center justify-center shadow-md">
-          <span class="material-symbols-outlined text-wood-dark text-4xl font-black">forest</span>
-        </div>
-        <div>
-          <h1 class="text-2xl font-extrabold text-white tracking-tight">GenDoc</h1>
-          <p class="text-white/70 text-sm font-medium uppercase tracking-widest mt-1">Gestion de Documents</p>
-        </div>
+<div class="public-theme user-layout">
+  <aside class="user-sidebar">
+    <div class="user-brand">
+      <div class="user-brand-mark">
+        <span class="material-symbols-outlined">forest</span>
+      </div>
+      <div>
+        <div class="user-brand-name">GenDoc</div>
+        <div class="user-brand-tag">Gestion documents</div>
       </div>
     </div>
 
-    <nav class="flex-1 px-5 py-4 space-y-2 overflow-y-auto">
-      
-      <a 
-        routerLink="/user" 
-        routerLinkActive="sidebar-active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-2xl">dashboard</span>
-        <span class="text-base font-semibold">Dashboard</span>
+    <nav class="user-nav">
+      <a routerLink="/user" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+        <span class="material-symbols-outlined">dashboard</span>
+        Dashboard
+      </a>
+      <a routerLink="/user/profile" routerLinkActive="is-active">
+        <span class="material-symbols-outlined">person</span>
+        Profil
+      </a>
+      <a routerLink="/user/history" routerLinkActive="is-active">
+        <span class="material-symbols-outlined">history</span>
+        Historique
+      </a>
+      <a routerLink="/user/templates-list" routerLinkActive="is-active">
+        <span class="material-symbols-outlined">description</span>
+        Templates
+      </a>
+      <a routerLink="/user/template-create" routerLinkActive="is-active">
+        <span class="material-symbols-outlined">note_add</span>
+        Creer template
       </a>
 
-      <a 
-        routerLink="/user/profile" 
-        routerLinkActive="sidebar-active"
-        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-2xl">person</span>
-        <span class="text-base font-medium">Profil</span>
+      <div class="user-nav-divider"></div>
+
+      <a routerLink="/user/settings" routerLinkActive="is-active">
+        <span class="material-symbols-outlined">settings</span>
+        Parametres
       </a>
-
-      <a 
-        routerLink="/user/history" 
-        routerLinkActive="sidebar-active"
-        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-2xl">history</span>
-        <span class="text-base font-medium">Historique</span>
-      </a>
-
-      <a 
-        routerLink="/user/templates-list" 
-        routerLinkActive="sidebar-active"
-        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-2xl">description</span>
-        <span class="text-base font-medium">Templates</span>
-      </a>
-
-      <a 
-        routerLink="/user/template-create" 
-        routerLinkActive="sidebar-active"
-        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-2xl">note_add</span>
-        <span class="text-base font-medium">Créer Template</span>
-      </a>
-
-
-      <div class="my-6 px-2">
-        <div class="h-px bg-white/15"></div>
-      </div>
-
-      <a 
-        routerLink="/user/settings" 
-        routerLinkActive="sidebar-active"
-        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-2xl">settings</span>
-        <span class="text-base font-medium">Paramètres</span>
-      </a>
-
-      <a 
-        routerLink="/user/notifications" 
-        routerLinkActive="sidebar-active"
-        class="nav-link flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-2xl">notifications</span>
-        <span class="text-base font-medium">Notifications</span>
+      <a routerLink="/user/notifications" routerLinkActive="is-active">
+        <span class="material-symbols-outlined">notifications</span>
+        Notifications
       </a>
     </nav>
 
-    <div class="p-6 border-t border-white/10 mt-auto">
-      <button 
-        routerLink="/auth/logout"
-        class="logout-btn w-full flex items-center justify-center gap-3 py-3.5 rounded-xl font-semibold text-lg transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-2xl">logout</span>
-        <span>Se déconnecter</span>
+    <div class="user-logout">
+      <button routerLink="/auth/logout">
+        <span class="material-symbols-outlined">logout</span>
+        Se deconnecter
       </button>
     </div>
   </aside>
 
-  <main class="flex-1 bg-bg-light overflow-hidden">
-    <div class="h-full overflow-y-auto p-6">
+  <main class="user-main">
+    <div class="user-content">
       <router-outlet></router-outlet>
     </div>
   </main>
-
 </div>

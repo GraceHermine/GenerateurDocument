@@ -1,158 +1,35 @@
+<section class="public-container">
+    <div class="public-panel public-reveal">
+        <span class="public-kicker">Notifications</span>
+        <h1 class="public-title">Centre de notifications</h1>
+        <p class="public-subtitle">Gerez vos alertes et mises a jour.</p>
+        <div class="public-actions">
+            <button class="public-btn public-btn--ghost">Tout marquer comme lu</button>
+        </div>
+    </div>
 
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#cf7317",
-                        "background-light": "#fcfaf8",
-                        "background-dark": "#211911",
-                    },
-                    fontFamily: {
-                        "display": ["Manrope", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                },
-            },
-        }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .material-symbols-fill {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-    </style>
-
-<!-- Main Content -->
-<main class="flex-1 flex flex-col overflow-y-auto">
-<!-- Top Navigation Bar -->
-
-<div class="max-w-4xl w-full mx-auto px-6 py-8">
-<!-- Page Heading -->
-<div class="flex flex-wrap items-end justify-between gap-4 mb-8">
-<div class="flex flex-col gap-2">
-<h1 class="text-[#1b140e] dark:text-[#fcfaf8] text-4xl font-black tracking-tight">Centre de Notifications</h1>
-<p class="text-[#97734e] text-base">Gérez vos alertes et mises à jour de documents en temps réel.</p>
-</div>
-<button class="flex items-center gap-2 min-w-[84px] cursor-pointer justify-center rounded-lg h-10 px-4 bg-[#f3ede7] dark:bg-[#3d2e1f] text-[#1b140e] dark:text-[#fcfaf8] text-sm font-bold hover:bg-primary/10 transition-colors">
-<span class="material-symbols-outlined text-sm">done_all</span>
-<span class="truncate">Tout marquer comme lu</span>
-</button>
-</div>
-<!-- Tabs -->
-<div class="mb-6">
-<div class="flex border-b border-[#f3ede7] dark:border-[#3d2e1f] gap-8">
-<a class="flex flex-col items-center justify-center border-b-[3px] border-primary text-[#1b140e] dark:text-[#fcfaf8] pb-3 pt-4" href="#">
-<p class="text-sm font-bold tracking-wide">Toutes (14)</p>
-</a>
-<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-[#97734e] pb-3 pt-4 hover:text-[#1b140e] dark:hover:text-[#fcfaf8] transition-all" href="#">
-<p class="text-sm font-bold tracking-wide">Non lues (3)</p>
-</a>
-</div>
-</div>
-<!-- Notification Section: Today -->
-<div class="mb-8">
-<h3 class="text-[#1b140e] dark:text-[#fcfaf8] text-lg font-bold px-1 pb-4 flex items-center gap-2">
-<span class="material-symbols-outlined text-sm text-primary">calendar_today</span>
-                        Aujourd'hui
-                    </h3>
-<div class="flex flex-col gap-3">
-<!-- Notification Card 1 (Unread) -->
-<div class="group relative flex items-start gap-4 p-4 bg-white dark:bg-[#2a2118] rounded-xl border border-[#f3ede7] dark:border-[#3d2e1f] hover:shadow-md transition-all cursor-pointer">
-<div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 bg-primary rounded-r-full"></div>
-<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined">description</span>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start">
-<h4 class="text-[#1b140e] dark:text-[#fcfaf8] text-base font-bold truncate">Contrat de Prestation Prêt</h4>
-<span class="text-[#97734e] text-xs font-medium whitespace-nowrap ml-4">Il y a 5 min</span>
-</div>
-<p class="text-[#97734e] text-sm mt-1 leading-relaxed">Le document "Contrat_Final_V2.pdf" a été généré avec succès et est prêt pour signature.</p>
-<div class="flex gap-4 mt-3">
-<button class="text-primary text-xs font-bold hover:underline">Voir le document</button>
-<button class="text-[#97734e] text-xs font-medium hover:text-[#1b140e] dark:hover:text-[#fcfaf8]">Marquer comme lu</button>
-</div>
-</div>
-</div>
-<!-- Notification Card 2 (Unread) -->
-<div class="group relative flex items-start gap-4 p-4 bg-white dark:bg-[#2a2118] rounded-xl border border-[#f3ede7] dark:border-[#3d2e1f] hover:shadow-md transition-all cursor-pointer">
-<div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 bg-primary rounded-r-full"></div>
-<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600">
-<span class="material-symbols-outlined">auto_awesome</span>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start">
-<h4 class="text-[#1b140e] dark:text-[#fcfaf8] text-base font-bold truncate">Nouveau Template Disponible</h4>
-<span class="text-[#97734e] text-xs font-medium whitespace-nowrap ml-4">Il y a 2h</span>
-</div>
-<p class="text-[#97734e] text-sm mt-1 leading-relaxed">Un nouveau modèle "Facture Pro Estivale" a été ajouté à votre bibliothèque de templates.</p>
-</div>
-</div>
-</div>
-</div>
-<!-- Notification Section: Yesterday -->
-<div class="mb-8">
-<h3 class="text-[#1b140e] dark:text-[#fcfaf8] text-lg font-bold px-1 pb-4">Hier</h3>
-<div class="flex flex-col gap-3">
-<!-- Notification Card 3 (Read) -->
-<div class="group flex items-start gap-4 p-4 bg-background-light dark:bg-background-dark/50 rounded-xl border border-[#f3ede7] dark:border-[#3d2e1f] opacity-80 hover:opacity-100 transition-all cursor-pointer">
-<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-100 dark:bg-[#3d2e1f] flex items-center justify-center text-[#97734e]">
-<span class="material-symbols-outlined">draw</span>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start">
-<h4 class="text-[#1b140e] dark:text-[#fcfaf8] text-base font-medium truncate">Signature Reçue</h4>
-<span class="text-[#97734e] text-xs font-medium whitespace-nowrap ml-4">Hier, 16:45</span>
-</div>
-<p class="text-[#97734e] text-sm mt-1 leading-relaxed">Jean Dupont a signé le document "Accord de Confidentialité".</p>
-</div>
-</div>
-<!-- Notification Card 4 (Read) -->
-<div class="group flex items-start gap-4 p-4 bg-background-light dark:bg-background-dark/50 rounded-xl border border-[#f3ede7] dark:border-[#3d2e1f] opacity-80 hover:opacity-100 transition-all cursor-pointer">
-<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-100 dark:bg-[#3d2e1f] flex items-center justify-center text-[#97734e]">
-<span class="material-symbols-outlined">settings</span>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start">
-<h4 class="text-[#1b140e] dark:text-[#fcfaf8] text-base font-medium truncate">Mise à jour système</h4>
-<span class="text-[#97734e] text-xs font-medium whitespace-nowrap ml-4">Hier, 09:00</span>
-</div>
-<p class="text-[#97734e] text-sm mt-1 leading-relaxed">La plateforme a été mise à jour vers la version 2.4.1. Découvrez les nouvelles fonctionnalités.</p>
-</div>
-</div>
-</div>
-</div>
-<!-- Notification Section: Older -->
-<div class="mb-12">
-<h3 class="text-[#1b140e] dark:text-[#fcfaf8] text-lg font-bold px-1 pb-4">Plus tôt</h3>
-<div class="flex flex-col gap-3">
-<div class="group flex items-start gap-4 p-4 bg-background-light dark:bg-background-dark/50 rounded-xl border border-[#f3ede7] dark:border-[#3d2e1f] opacity-80 hover:opacity-100 transition-all cursor-pointer">
-<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-100 dark:bg-[#3d2e1f] flex items-center justify-center text-[#97734e]">
-<span class="material-symbols-outlined">verified_user</span>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start">
-<h4 class="text-[#1b140e] dark:text-[#fcfaf8] text-base font-medium truncate">Sécurité : Nouvelle connexion</h4>
-<span class="text-[#97734e] text-xs font-medium whitespace-nowrap ml-4">3 oct.</span>
-</div>
-<p class="text-[#97734e] text-sm mt-1 leading-relaxed">Une nouvelle connexion a été détectée depuis un navigateur Chrome sur macOS.</p>
-</div>
-</div>
-</div>
-<div class="mt-8 flex justify-center">
-<button class="px-6 py-2 rounded-full border-2 border-[#f3ede7] dark:border-[#3d2e1f] text-[#97734e] text-sm font-bold hover:bg-[#f3ede7] dark:hover:bg-[#3d2e1f] transition-all">
-                            Charger plus de notifications
-                        </button>
-</div>
-</div>
-</div>
-</main>
+    <section class="public-section">
+        <div class="public-grid">
+            <div class="public-card public-reveal">
+                <div class="public-card-title">Contrat de prestation pret</div>
+                <p class="public-card-text">Le document Contrat_Final_V2.pdf est pret pour signature.</p>
+                <div class="public-actions">
+                    <button class="public-btn public-btn--ghost">Voir le document</button>
+                    <button class="public-btn public-btn--ghost">Marquer comme lu</button>
+                </div>
+            </div>
+            <div class="public-card public-reveal">
+                <div class="public-card-title">Nouveau template disponible</div>
+                <p class="public-card-text">Le modele Facture Pro Estivale est disponible.</p>
+            </div>
+            <div class="public-card public-reveal">
+                <div class="public-card-title">Signature recue</div>
+                <p class="public-card-text">Jean Dupont a signe Accord de Confidentialite.</p>
+            </div>
+            <div class="public-card public-reveal">
+                <div class="public-card-title">Mise a jour systeme</div>
+                <p class="public-card-text">La plateforme a ete mise a jour.</p>
+            </div>
+        </div>
+    </section>
+</section>

@@ -1,13 +1,13 @@
 // generation-result.ts
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DocumentGenereService } from '../../../core/services/document-genere.service';
 import { DocumentGenere } from '../../../core/models/document.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-generation-result',
-  imports: [CommonModule], 
+  imports: [CommonModule, RouterModule], 
   templateUrl: './generation-result.html',
   styleUrl: './generation-result.scss',
 })

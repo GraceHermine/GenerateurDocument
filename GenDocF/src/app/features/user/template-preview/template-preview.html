@@ -1,102 +1,21 @@
-<!-- Top Navigation Bar -->
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#f4f2e6] dark:border-woody-brown/30 bg-background-light dark:bg-background-dark px-10 py-3 sticky top-0 z-50">
-  <div class="flex items-center gap-4 text-[#1d1a0c] dark:text-white">
-    <div class="size-6 text-primary">
-      <!-- SVG Logo -->
-      <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-        <path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"/>
-        <path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"/>
-      </svg>
-    </div>
-    <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">DocuGen</h2>
-  </div>
-  <div class="flex flex-1 justify-end gap-8">
-    <nav class="flex items-center gap-9">
-      <a class="text-[#1d1a0c] dark:text-gray-200 text-sm font-medium leading-normal hover:text-warm-accent" routerLink="/user/templates-list">Modèles</a>
-      <a class="text-[#1d1a0c] dark:text-gray-200 text-sm font-medium leading-normal hover:text-warm-accent" routerLink="/user/history">Mes Documents</a>
-      <a class="text-[#1d1a0c] dark:text-gray-200 text-sm font-medium leading-normal hover:text-warm-accent" routerLink="/user/history">Archives</a>
-    </nav>
-    <div class="flex gap-2">
-      <button class="flex items-center justify-center rounded-lg h-10 bg-[#f4f2e6] dark:bg-woody-brown/40 text-[#1d1a0c] dark:text-white px-3" routerLink="/user/settings">
-        <span class="material-symbols-outlined">settings</span>
-      </button>
-      <button class="flex items-center justify-center rounded-lg h-10 bg-[#f4f2e6] dark:bg-woody-brown/40 text-[#1d1a0c] dark:text-white px-3" routerLink="/user/notifications">
-        <span class="material-symbols-outlined">notifications</span>
-      </button>
-    </div>
-    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary"
-      data-alt="User profile avatar"
-      routerLink="/user/profile"
-      style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBgXRiwXSFJEfUD2697hqtAvEA0e1sgEdCr3tsRk_PzqQzeI-tveZ6dt3FxXmzcEd0GtEYUn0fQGILensMpPgK0W_HGNlZf_9cU5EBrBKAHqJtiB_1_wBvj7wCc9jn_FfMfNZUtkGj4Y6BYUbVaOc9RSdjwCnizQAIc05ad7Sz2rks7536QF69MEdt4s60pHWn2ggQgsaxdCsLwTVsUM_My7UYnG-MFHnMojHLZL101C08L7XT9EHSb7O1Lymkp_BqNTmp3IqpdSbgN");'>
+<section class="public-container">
+  <div class="public-panel public-reveal">
+    <span class="public-kicker">Template</span>
+    <h1 class="public-title">Apercu du template</h1>
+    <p class="public-subtitle">Consultez la structure et utilisez ce modele.</p>
+    <div class="public-actions">
+      <a routerLink="/user/templates-list" class="public-btn public-btn--ghost">Retour a la liste</a>
+      <a routerLink="/user/template-create" class="public-btn public-btn--primary">Utiliser ce template</a>
     </div>
   </div>
-</header>
 
-<main class="max-w-[1440px] mx-auto flex flex-col md:flex-row min-h-[calc(100-64px)]">
-  <!-- Side Navigation -->
-  <aside class="w-64 hidden lg:flex flex-col border-r border-[#f4f2e6] dark:border-woody-brown/30 bg-background-light dark:bg-background-dark p-6">
-    <!-- Sidebar Content -->
-    <div class="flex flex-col gap-6">
-      <div class="flex gap-3 items-center">
-        <div class="bg-woody-brown text-primary rounded-lg p-2">
-          <span class="material-symbols-outlined">description</span>
-        </div>
-        <div class="flex flex-col">
-          <h1 class="text-[#1d1a0c] dark:text-white text-sm font-bold">DocuGen Admin</h1>
-          <p class="text-warm-accent text-xs">Gestion de documents</p>
-        </div>
-      </div>
-      <nav class="flex flex-col gap-2">
-        <a class="flex items-center gap-3 px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-[#f4f2e6] dark:hover:bg-woody-brown/20 rounded-lg" routerLink="/user">
-          <span class="material-symbols-outlined">dashboard</span>
-          <span class="text-sm font-medium">Tableau de bord</span>
-        </a>
-        <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#f4f2e6] dark:bg-woody-brown/40 text-[#1d1a0c] dark:text-white" routerLink="/user/templates-list">
-          <span class="material-symbols-outlined">article</span>
-          <span class="text-sm font-medium">Modèles</span>
-        </a>
-        <a class="flex items-center gap-3 px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-[#f4f2e6] dark:hover:bg-woody-brown/20 rounded-lg" routerLink="/user/history">
-          <span class="material-symbols-outlined">folder</span>
-          <span class="text-sm font-medium">Documents</span>
-        </a>
-        <a class="flex items-center gap-3 px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-[#f4f2e6] dark:hover:bg-woody-brown/20 rounded-lg" routerLink="/user/profile">
-          <span class="material-symbols-outlined">group</span>
-          <span class="text-sm font-medium">Équipe</span>
-        </a>
-        <a class="flex items-center gap-3 px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-[#f4f2e6] dark:hover:bg-woody-brown/20 rounded-lg" routerLink="/user/history">
-          <span class="material-symbols-outlined">archive</span>
-          <span class="text-sm font-medium">Archives</span>
-        </a>
-      </nav>
-    </div>
-  </aside>
-
-  <!-- Main Preview Content -->
-  <section class="flex-1 flex flex-col wood-texture dark:bg-background-dark/50 p-8 overflow-y-auto">
-    <!-- Breadcrumbs & Actions -->
-    <div class="flex items-center justify-between mb-6">
-      <a class="flex items-center gap-2 text-warm-accent hover:text-woody-brown transition-colors" routerLink="/user/templates-list">
-        <span class="material-symbols-outlined mr-1">arrow_back</span>
-        Retour vers la liste
-      </a>
-      <div class="flex gap-3">
-        <button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-woody-brown/20 border border-[#f4f2e6] dark:border-woody-brown/40 rounded-lg text-sm font-bold text-woody-brown dark:text-white shadow-sm hover:bg-gray-50" routerLink="/user/template-preview">
-          <span class="material-symbols-outlined text-[18px]">print</span>
-          Imprimer un spécimen
-        </button>
-        <button class="flex items-center gap-2 px-6 py-2 bg-primary text-woody-brown rounded-lg text-sm font-bold shadow-md hover:brightness-105 transition-all" routerLink="/user/template-create">
-          <span class="material-symbols-outlined text-[18px]">add_circle</span>
-          Utiliser ce template
-        </button>
-      </div>
-    </div>
-
-    <!-- Document Preview & Sidebar -->
-    <div class="flex flex-col xl:flex-row gap-8">
-      <!-- Document Preview Card -->
-      <div class="flex-[3] flex flex-col gap-6">
-        <!-- La carte du document ici -->
+  <section class="public-section">
+    <div class="public-panel public-reveal">
+      <div class="public-card-title">Apercu du document</div>
+      <p class="public-card-text">Le contenu du template sera affiche ici.</p>
+      <div class="public-panel" style="margin-top: 16px; min-height: 240px;">
+        <p class="public-card-text">Zone de previsualisation.</p>
       </div>
     </div>
   </section>
-</main>
+</section>

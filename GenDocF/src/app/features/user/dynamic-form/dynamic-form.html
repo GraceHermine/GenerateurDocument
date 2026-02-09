@@ -1,168 +1,98 @@
-<main class="min-h-screen bg-[#f8fafc] dark:bg-gray-950 p-4 md:p-8">
-  <div class="max-w-5xl mx-auto">
+<section class="public-container">
+  <div *ngIf="!isStepPreview" class="public-panel public-reveal">
+    <span class="public-kicker">Formulaire</span>
+    <h1 class="public-title">{{ template?.nom }}</h1>
+    <p class="public-subtitle">{{ progress }}% rempli</p>
+  </div>
 
-    <div *ngIf="!isStepPreview" class="animate-in fade-in duration-500">
-      <div class="mb-6 flex items-center justify-between">
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ template?.nom }}</h1>
-        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-bold">{{ progress }}% rempli</span>
-      </div>
+  <div *ngIf="!isStepPreview" class="public-section">
+    <div class="public-grid">
+      <div *ngFor="let q of questions" class="public-card public-reveal">
+        <label class="public-badge">
+          {{ q.label }} <span *ngIf="q.obligatoire">*</span>
+        </label>
 
-      <div class="grid gap-6">
-        <div *ngFor="let q of questions" class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-          <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
-            {{ q.label }} <span *ngIf="q.obligatoire" class="text-red-500">*</span>
-          </label>
+        <textarea
+          *ngIf="q.type_champ === 'text'"
+          [(ngModel)]="responses[q.id]"
+          (ngModelChange)="onResponseChange()"
+          class="public-textarea"
+          rows="3"></textarea>
 
-          <textarea *ngIf="q.type_champ === 'text'" [(ngModel)]="responses[q.id]" (ngModelChange)="onResponseChange()"
-            class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+        <select
+          *ngIf="q.type_champ === 'select'"
+          [(ngModel)]="responses[q.id]"
+          (ngModelChange)="onResponseChange()"
+          class="public-input">
+          <option *ngFor="let opt of q.options" [value]="opt">{{ opt }}</option>
+        </select>
 
-          <select *ngIf="q.type_champ === 'select'" [(ngModel)]="responses[q.id]" (ngModelChange)="onResponseChange()"
-            class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white outline-none">
-            <option *ngFor="let opt of q.options" [value]="opt">{{ opt }}</option>
-          </select>
-
-          <input *ngIf="q.type_champ === 'date'" type="date" [(ngModel)]="responses[q.id]" (ngModelChange)="onResponseChange()"
-            class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white outline-none">
-        </div>
-
-        <div class="flex justify-end pt-4">
-          <button (click)="goToPreview()" [disabled]="!isFormValid()"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-3 rounded-lg font-bold shadow-lg disabled:opacity-50 transition-all">
-            Générer l'aperçu
-          </button>
-        </div>
+        <input
+          *ngIf="q.type_champ === 'date'"
+          type="date"
+          [(ngModel)]="responses[q.id]"
+          (ngModelChange)="onResponseChange()"
+          class="public-input" />
       </div>
     </div>
 
-    <div *ngIf="isStepPreview" class="animate-in slide-in-from-bottom-10 duration-700">
-      
-      <div class="flex justify-between items-center mb-8 max-w-[800px] mx-auto">
-        <h2 class="text-xl font-bold dark:text-white">Aperçu du document</h2>
-        <button (click)="isStepPreview = false" class="text-blue-600 font-medium hover:underline">Modifier</button>
+    <div style="margin-top: 18px; display: flex; justify-content: flex-end;">
+      <button (click)="goToPreview()" [disabled]="!isFormValid()" class="public-btn public-btn--primary">
+        Generer l'apercu
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="isStepPreview" class="public-section">
+    <div class="public-panel public-reveal">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+        <h2>Apercu du document</h2>
+        <button (click)="isStepPreview = false" class="public-btn public-btn--ghost">Modifier</button>
       </div>
 
-      <div class="bg-white text-black shadow-2xl mx-auto mb-32 p-16 md:p-20 min-h-[1050px] w-full max-w-[800px] border border-gray-200 relative overflow-hidden">
-        
+      <div class="public-panel" style="margin-top: 16px;">
         <div [ngSwitch]="getTemplateType()">
-
-          <div *ngSwitchCase="'lettre'" class="font-serif text-[11pt]">
-            <div class="flex justify-between mb-16">
-              <div class="leading-tight">
-                <p class="font-bold text-lg">{{ getVal('Nom') }} {{ getVal('Prénom') }}</p>
-                <p>{{ getVal('Adresse') }}</p>
-                <p>{{ getVal('Téléphone') }}</p>
-              </div>
-              <div class="text-right mt-24">
-                <p>Le {{ today | date:'dd MMMM yyyy' }}</p>
-              </div>
-            </div>
-
-            <div class="text-center mb-12">
-              <h1 class="text-xl font-bold uppercase underline underline-offset-8 decoration-1 italic">{{ template?.nom }}</h1>
-            </div>
-
-            <div class="space-y-6 text-justify leading-relaxed">
-              <p>Madame, Monsieur,</p>
-              <p>Je soussigné(e) {{ getVal('Nom') }} {{ getVal('Prénom') }}, demeurant au {{ getVal('Adresse') }},</p>
-              <p class="whitespace-pre-line">{{ getVal('Contenu') || getVal('Motivation') || '[Contenu du document]' }}</p>
-              <p class="pt-12">Cordialement,</p>
-              <p class="font-bold pt-2">{{ getVal('Prénom') }} {{ getVal('Nom') }}</p>
-            </div>
+          <div *ngSwitchCase="'lettre'">
+            <p><strong>{{ getVal('Nom') }} {{ getVal('Prénom') }}</strong></p>
+            <p>{{ getVal('Adresse') }}</p>
+            <p>{{ getVal('Téléphone') }}</p>
+            <p style="margin-top: 16px;">Le {{ today | date:'dd MMMM yyyy' }}</p>
+            <p style="margin-top: 16px;">{{ getVal('Contenu') || getVal('Motivation') || '[Contenu du document]' }}</p>
           </div>
 
-          <div *ngSwitchCase="'cv'" class="font-sans">
-            <header class="border-b-4 border-gray-900 pb-4 mb-8">
-              <h1 class="text-4xl font-black uppercase tracking-tighter">{{ getVal('Nom') }} {{ getVal('Prénom') }}</h1>
-              <p class="text-blue-600 text-xl font-bold tracking-widest">{{ getVal('Poste') || 'CANDIDAT' }}</p>
-            </header>
-            <div class="grid grid-cols-3 gap-10 text-sm">
-              <div class="col-span-1 space-y-6">
-                <section>
-                  <h3 class="font-bold border-b-2 border-gray-200 mb-2 uppercase">Contact</h3>
-                  <p>{{ getVal('Email') }}</p>
-                  <p>{{ getVal('Téléphone') }}</p>
-                </section>
-                <section>
-                  <h3 class="font-bold border-b-2 border-gray-200 mb-2 uppercase">Compétences</h3>
-                  <p class="whitespace-pre-line">{{ getVal('Compétences') }}</p>
-                </section>
-              </div>
-              <div class="col-span-2 space-y-8">
-                <section>
-                  <h3 class="font-bold text-lg border-b-2 border-gray-900 mb-3 uppercase">Expériences</h3>
-                  <p class="whitespace-pre-line">{{ getVal('Expérience') }}</p>
-                </section>
-                <section>
-                  <h3 class="font-bold text-lg border-b-2 border-gray-900 mb-3 uppercase">Formation</h3>
-                  <p>{{ getVal('Diplôme') }}</p>
-                </section>
-              </div>
-            </div>
+          <div *ngSwitchCase="'cv'">
+            <p><strong>{{ getVal('Nom') }} {{ getVal('Prénom') }}</strong></p>
+            <p>{{ getVal('Poste') || 'CANDIDAT' }}</p>
+            <p>{{ getVal('Email') }}</p>
           </div>
 
           <div *ngSwitchDefault>
-            <h1 class="text-2xl font-bold border-b-2 pb-2 mb-8">{{ template?.nom }}</h1>
-            <div class="space-y-4">
-              <div *ngFor="let q of questions">
-                <p class="text-[10px] text-gray-400 font-bold uppercase">{{ q.label }}</p>
-                <p class="text-lg">{{ responses[q.id] || '......' }}</p>
-              </div>
+            <h3>{{ template?.nom }}</h3>
+            <div *ngFor="let q of questions" style="margin-top: 8px;">
+              <p class="public-badge">{{ q.label }}</p>
+              <p>{{ responses[q.id] || '......' }}</p>
             </div>
           </div>
         </div>
-
-        <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">
-          <span class="text-[150px] -rotate-45 font-black uppercase">Aperçu</span>
-        </div>
       </div>
 
-      <div class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center bg-[#1e2129] text-white p-2 rounded-2xl shadow-2xl border border-gray-700 min-w-[320px] md:min-w-[450px]">
-        <button (click)="isStepPreview = false" class="flex-1 flex flex-col items-center py-2 hover:text-blue-400 transition">
-          <span class="material-symbols-outlined text-2xl">edit</span>
-          <span class="text-[10px] font-bold uppercase tracking-wider">Modifier</span>
+      <div class="public-actions" style="margin-top: 16px;">
+        <button (click)="openDownloadOptions()" [disabled]="isGenerating" class="public-btn public-btn--primary">
+          <span *ngIf="!isGenerating">Telecharger le document</span>
+          <span *ngIf="isGenerating">Generation en cours...</span>
         </button>
-        
-        <div class="w-px h-10 bg-gray-700"></div>
-
-        <button (click)="cancelForm()" class="flex-1 flex flex-col items-center py-2 hover:text-red-400 transition">
-          <span class="material-symbols-outlined text-2xl">delete</span>
-          <span class="text-[10px] font-bold uppercase tracking-wider">Abandonner</span>
-        </button>
-
-        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t flex justify-center gap-4">
-  <button (click)="openDownloadOptions()" 
-          [disabled]="isGenerating"
-          class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all">
-    <span *ngIf="!isGenerating">⬇️ Télécharger le document</span>
-    <span *ngIf="isGenerating" class="animate-spin">⌛</span>
-    <span *ngIf="isGenerating">Génération en cours...</span>
-  </button>
-</div>
-
-<div *ngIf="showFormatModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-  <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
-    <h3 class="text-xl font-bold mb-4 text-center">Choisir le format</h3>
-    <p class="text-gray-600 text-center mb-6">Sous quel format souhaitez-vous recevoir votre document ?</p>
-    
-    <div class="grid grid-cols-1 gap-3">
-      <button (click)="generateDocument('pdf')" 
-              class="w-full py-3 bg-red-50 text-red-700 border border-red-200 rounded-lg font-semibold hover:bg-red-100 flex items-center justify-center gap-2">
-        📄 Format PDF (.pdf)
-      </button>
-      
-      <button (click)="generateDocument('docx')" 
-              class="w-full py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg font-semibold hover:bg-blue-100 flex items-center justify-center gap-2">
-        📝 Format Word (.docx)
-      </button>
-      
-      <button (click)="showFormatModal = false" class="mt-2 text-gray-500 text-sm font-medium">
-        Annuler
-      </button>
-    </div>
-  </div>
-</div>
+        <button (click)="cancelForm()" class="public-btn public-btn--ghost">Abandonner</button>
       </div>
-
     </div>
   </div>
-</main>
+
+  <div *ngIf="showFormatModal" class="public-panel" style="max-width: 420px; margin: 24px auto;">
+    <h3>Choisir le format</h3>
+    <p class="public-card-text">Sous quel format souhaitez-vous recevoir votre document ?</p>
+    <div class="public-actions">
+      <button (click)="generateDocument('pdf')" class="public-btn public-btn--ghost">Format PDF</button>
+      <button (click)="generateDocument('docx')" class="public-btn public-btn--ghost">Format Word</button>
+      <button (click)="showFormatModal = false" class="public-btn public-btn--ghost">Annuler</button>
+    </div>
+  </div>
+</section>

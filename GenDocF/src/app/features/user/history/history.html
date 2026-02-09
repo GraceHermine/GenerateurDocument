@@ -1,101 +1,45 @@
-<main class="flex-1 flex flex-col overflow-y-auto h-full">
-  
-  <header class="sticky top-0 z-10 flex items-center justify-between border-b border-[#f3ece7] dark:border-[#3a2a1d] bg-white/90 dark:bg-[#1b130d]/90 backdrop-blur-md px-8 py-4">
-    <div class="flex items-center gap-8 flex-1 max-w-2xl">
-      <div class="flex w-full max-w-md items-center rounded-lg bg-[#f3ece7] dark:bg-[#3a2a1d] px-3 py-2">
-        <span class="material-symbols-outlined text-[#9a6c4c]">search</span>
-        <input type="text" placeholder="Rechercher..." class="ml-2 w-full bg-transparent border-none focus:outline-none text-sm text-[#1b130d] dark:text-[#fcfaf8] placeholder-[#9a6c4c]">
-      </div>
+<section class="public-container">
+  <div class="public-panel public-reveal">
+    <span class="public-kicker">Historique</span>
+    <h1 class="public-title">Historique des documents</h1>
+    <p class="public-subtitle">Gerez et telechargez vos documents generes.</p>
+    <div class="public-actions">
+      <a routerLink="/user/document-generation" class="public-btn public-btn--primary">
+        Nouveau document
+      </a>
     </div>
-    
-    <div class="flex items-center gap-4 ml-4">
-      <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#3a2a1d] transition-colors">
-        <span class="material-symbols-outlined text-[#1b130d] dark:text-[#fcfaf8]">notifications</span>
-      </button>
-      <div class="h-6 w-[1px] bg-gray-300 dark:bg-[#3a2a1d]"></div>
-      <button class="flex items-center gap-2">
-        <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-           <span class="material-symbols-outlined text-lg">person</span>
-        </div>
-        <span class="text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8]">Mon Compte</span>
-      </button>
-    </div>
-  </header>
+  </div>
 
-  <div class="p-8 max-w-7xl mx-auto w-full">
-    
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-      <div>
-        <h2 class="text-3xl font-extrabold text-[#1b130d] dark:text-[#fcfaf8] tracking-tight">Historique des Documents</h2>
-        <p class="text-[#9a6c4c] dark:text-[#b08b72] mt-1">Gérez et téléchargez vos documents précédemment générés.</p>
-      </div>
-      <button routerLink="/user/document-generation" class="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20">
-        <span class="material-symbols-outlined">add</span>
-        Nouveau Document
-      </button>
+  <section class="public-section">
+    <div *ngIf="isLoading" class="public-panel public-reveal">
+      <div class="public-card-text">Chargement de l'historique...</div>
     </div>
 
-    <div *ngIf="isLoading" class="flex flex-col items-center justify-center py-20 text-[#9a6c4c]">
-      <span class="material-symbols-outlined animate-spin text-4xl mb-3">sync</span>
-      <p>Chargement de l'historique...</p>
+    <div *ngIf="errorMessage" class="public-panel public-reveal">
+      <div class="public-card-text">{{ errorMessage }}</div>
     </div>
 
-    <div *ngIf="errorMessage" class="bg-red-50 text-red-700 p-4 rounded-lg mb-6 border border-red-200 flex items-center gap-3">
-      <span class="material-symbols-outlined">error</span>
-      {{ errorMessage }}
-    </div>
-
-    <div *ngIf="isLoading" class="bg-white dark:bg-[#2d2116] rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] p-10 text-center">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-primary border-t-transparent mb-4"></div>
-      <p class="text-[#9a6c4c] dark:text-[#b08b72]">Chargement de l'historique...</p>
-    </div>
-
-    <div *ngIf="!isLoading && errorMessage" class="bg-red-50 border border-red-200 rounded-xl p-6 text-red-700">
-      {{ errorMessage }}
-    </div>
-
-    <div *ngIf="!isLoading && !errorMessage" class="bg-white dark:bg-[#2d2116] rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] overflow-hidden shadow-sm">
-      <table class="w-full text-left border-collapse" *ngIf="documents.length > 0; else emptyState">
+    <div *ngIf="!isLoading && !errorMessage" class="public-panel public-reveal">
+      <table *ngIf="documents.length > 0; else emptyState" style="width: 100%; border-collapse: collapse;">
         <thead>
-          <tr class="bg-[#f3ece7] dark:bg-[#3a2a1d] border-b border-[#f3ece7] dark:border-[#3a2a1d]">
-            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Nom du Document</th>
-            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Date de création</th>
-            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Format</th>
-            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Statut</th>
-            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-right">Actions</th>
+          <tr style="text-transform: uppercase; font-size: 0.75rem; color: var(--public-muted);">
+            <th style="text-align: left; padding: 10px 0;">Document</th>
+            <th style="text-align: left; padding: 10px 0;">Date</th>
+            <th style="text-align: left; padding: 10px 0;">Format</th>
+            <th style="text-align: left; padding: 10px 0;">Statut</th>
+            <th style="text-align: right; padding: 10px 0;">Actions</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-[#f3ece7] dark:divide-[#3a2a1d]">
-          <tr *ngFor="let doc of documents" class="hover:bg-[#f3ece7]/50 transition-colors">
-            <td class="px-6 py-4">
-              <div class="flex items-center gap-3">
-                <div class="size-9 bg-primary/10 rounded flex items-center justify-center text-primary">
-                  <span class="material-symbols-outlined">description</span>
-                </div>
-                <div>
-                  <p class="text-sm font-bold">{{ doc.template_nom }}</p>
-                  <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72]">{{ doc.format | uppercase }}</p>
-                </div>
-              </div>
-            </td>
-            <td class="px-6 py-4">
-              <p class="text-sm text-[#1b130d] dark:text-[#fcfaf8]">{{ doc.date_generation | date:'dd MMM yyyy' }}</p>
-            </td>
-            <td class="px-6 py-4">
-              <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide bg-warm-beige text-[#1b130d] border border-[#e9ded5]">{{ doc.format }}</span>
-            </td>
-            <td class="px-6 py-4">
-              <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide bg-primary/10 text-primary border border-primary/20">{{ doc.status }}</span>
-            </td>
-
-            <td class="px-6 py-4 text-right">
-              <div class="flex justify-end gap-2">
-                <button [routerLink]="['/user/document-preview', doc.id]" class="p-2 hover:bg-primary/10 rounded-lg transition-all">
-                  <span class="material-symbols-outlined">visibility</span>
-                </button>
-                <button (click)="onDownload(doc)" class="p-2 hover:bg-primary/10 rounded-lg transition-all">
-                  <span class="material-symbols-outlined">download</span>
-                </button>
+        <tbody>
+          <tr *ngFor="let doc of documents" style="border-top: 1px solid var(--public-line);">
+            <td style="padding: 12px 0; font-weight: 600;">{{ doc.template_nom }}</td>
+            <td style="padding: 12px 0; color: var(--public-muted);">{{ doc.date_generation | date:'dd MMM yyyy' }}</td>
+            <td style="padding: 12px 0; color: var(--public-muted);">{{ doc.format }}</td>
+            <td style="padding: 12px 0; color: var(--public-muted);">{{ doc.status }}</td>
+            <td style="padding: 12px 0; text-align: right;">
+              <div style="display: inline-flex; gap: 8px;">
+                <button [routerLink]="['/user/document-preview', doc.id]" class="public-btn public-btn--ghost">Voir</button>
+                <button (click)="onDownload(doc)" class="public-btn public-btn--ghost">Telecharger</button>
               </div>
             </td>
           </tr>
@@ -103,10 +47,8 @@
       </table>
 
       <ng-template #emptyState>
-        <div class="p-10 text-center text-[#9a6c4c] dark:text-[#b08b72]">
-          Aucun document dans votre historique.
-        </div>
+        <div class="public-card-text">Aucun document dans votre historique.</div>
       </ng-template>
     </div>
-  </div>
-</main>
+  </section>
+</section>

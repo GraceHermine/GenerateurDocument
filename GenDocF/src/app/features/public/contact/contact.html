@@ -1,87 +1,59 @@
-<section class="max-w-[1200px] mx-auto w-full px-6 py-12">
-
-  <!-- Breadcrumb -->
-  <div class="flex flex-wrap gap-2 py-4 text-sm">
-    <a routerLink="/" class="text-[#976d4e] hover:underline">Accueil</a>
-    <span class="text-[#976d4e]">/</span>
-    <span class="font-semibold">Contact</span>
+<section class="public-container">
+  <div class="public-hero">
+    <div class="public-panel public-reveal">
+      <span class="public-kicker">Contact</span>
+      <h1 class="public-title">Parlons de vos documents.</h1>
+      <p class="public-subtitle">
+        Notre equipe repond rapidement pour vous guider sur la generation, les templates et la mise
+        en place d'un workflow clair.
+      </p>
+    </div>
+    <div class="public-panel public-panel--dark public-reveal">
+      <span class="public-badge">Coordonnees</span>
+      <p>Email: gendoc@gendoc.com</p>
+      <p>Telephone: +225 0710692244</p>
+      <p>Adresse: Bassam, Cote d'Ivoire</p>
+      <div class="public-pill">Reponse sous 24h ouvrees</div>
+    </div>
   </div>
 
-  <!-- Titre -->
-  <div class="flex flex-col gap-3 py-6">
-    <h1 class="text-4xl md:text-5xl font-black">
-      Contactez-nous
-    </h1>
-    <p class="text-lg text-[#976d4e] max-w-2xl">
-      Notre équipe est à votre écoute pour vous accompagner dans la gestion et la génération de vos documents.
-    </p>
-  </div>
-
-  <!-- Contenu principal -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-8">
-
-    <!-- Formulaire -->
-    <div class="lg:col-span-2">
-      <div class="bg-white dark:bg-[#2d2118] p-8 rounded-xl border shadow-sm">
-        <form class="space-y-6">
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <section class="public-section">
+    <div class="public-grid">
+      <div class="public-card public-reveal" style="grid-column: span 2;">
+        <div class="public-card-title">Envoyer un message</div>
+        <form class="public-form" style="display: grid; gap: 16px;">
+          <div style="display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
             <div>
-              <label class="block text-sm font-semibold mb-1">Nom complet</label>
-              <input type="text" class="w-full h-14 rounded-lg border px-4"
-                     placeholder="Akissi Marturine">
+              <label class="public-badge">Nom complet</label>
+              <input type="text" class="public-input" placeholder="Akissi Marturine">
             </div>
-
             <div>
-              <label class="block text-sm font-semibold mb-1">Adresse e-mail</label>
-              <input type="email" class="w-full h-14 rounded-lg border px-4"
-                     placeholder="akissi@email.com">
+              <label class="public-badge">Adresse e-mail</label>
+              <input type="email" class="public-input" placeholder="akissi@email.com">
             </div>
           </div>
-
           <div>
-            <label class="block text-sm font-semibold mb-1">Sujet</label>
-            <input type="text" class="w-full h-14 rounded-lg border px-4"
-                   placeholder="Comment pouvons-nous vous aider ?">
+            <label class="public-badge">Sujet</label>
+            <input type="text" class="public-input" placeholder="Comment pouvons-nous vous aider ?">
           </div>
-
           <div>
-            <label class="block text-sm font-semibold mb-1">Message</label>
-            <textarea rows="6" class="w-full rounded-lg border px-4 py-3"
-                      placeholder="Décrivez votre besoin..."></textarea>
+            <label class="public-badge">Message</label>
+            <textarea rows="6" class="public-textarea" placeholder="Decrivez votre besoin..."></textarea>
           </div>
-
-          <button type="submit"
-            class="px-10 py-4 bg-primary text-white font-bold rounded-lg flex items-center gap-2 hover:opacity-90">
-            <span class="material-symbols-outlined">Envoyer</span>
-           
+          <button type="submit" class="public-btn public-btn--primary">
+            <span class="material-symbols-outlined">send</span>
+            Envoyer
           </button>
-
         </form>
       </div>
-    </div>
 
-    <!-- Infos -->
-    <aside class="space-y-8">
-      <div>
-        <h3 class="text-xl font-bold border-l-4 border-primary pl-4 mb-4">
-          Coordonnées
-        </h3>
-
-        <div class="space-y-4 text-sm">
-          <p><strong>Email :</strong> gendoc@gendoc.com</p>
-          <p><strong>Téléphone :</strong> +225 0710692244</p>
-          <p><strong>Adresse :</strong> Bassam, Côte d'Ivoire</p>
-        </div>
-      </div>
-
-      <div class="bg-primary/5 p-6 rounded-xl">
-        <p class="italic text-sm">
-          Nous répondons sous 24h ouvrées.
+      <div class="public-card public-reveal">
+        <div class="public-card-title">Besoin rapide</div>
+        <p class="public-card-text">
+          Consultez notre centre d'aide pour les questions frequentes et les guides pas a pas.
         </p>
+        <a routerLink="/public/help" class="public-btn public-btn--ghost">Centre d'aide</a>
       </div>
-    </aside>
-
-  </div>
-
+    </div>
+  </section>
 </section>

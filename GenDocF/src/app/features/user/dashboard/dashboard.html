@@ -1,83 +1,66 @@
-<div class="max-w-6xl mx-auto w-full px-8 py-8">
-
-  <h2 class="text-wood-dark dark:text-white text-3xl font-extrabold tracking-tight mb-2">
-    Bienvenue, {{ userName }}
-  </h2>
-  <p class="text-wood-light mt-2 text-base mb-8">
-    Gérez et générez vos documents professionnels en un clic.
-  </p>
-
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-
-    <a routerLink="/user/templates-list"
-      class="group bg-white dark:bg-background-dark p-6 rounded-xl border border-wood-medium/10 shadow-sm hover:border-primary hover:shadow-md transition-all cursor-pointer">
-      <div class="size-14 rounded-xl bg-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-        <span class="material-symbols-outlined text-wood-dark text-3xl">note_add</span>
-      </div>
-      <h3 class="text-wood-dark dark:text-white text-lg font-bold mb-1">Nouvelle Génération</h3>
-      <p class="text-wood-light text-sm mb-4">Commencer un nouveau document à partir d'un template.</p>
-      <div class="flex items-center text-primary font-bold text-sm">
-        Créer maintenant <span class="material-symbols-outlined ml-1 text-base">arrow_forward</span>
-      </div>
-    </a>
-
-    <a routerLink="/user/template-create"
-      class="group bg-white dark:bg-background-dark p-6 rounded-xl border border-wood-medium/10 shadow-sm hover:border-primary hover:shadow-md transition-all cursor-pointer">
-      <div class="size-14 rounded-xl bg-primary flex items-center justify-center mb-6">
-        <span class="material-symbols-outlined text-wood-dark text-3xl">description</span>
-      </div>
-      <h3 class="text-lg font-bold mb-1">Modèles</h3>
-      <p class="text-sm text-wood-light mb-4">Gérer et créer vos templates personnalisés.</p>
-      <span class="text-primary font-bold text-sm">Voir les modèles →</span>
-    </a>
-
-    <a routerLink="/user/history"
-      class="group bg-white dark:bg-background-dark p-6 rounded-xl border border-wood-medium/10 shadow-sm hover:border-primary hover:shadow-md transition-all cursor-pointer">
-      <div class="size-14 rounded-xl bg-primary flex items-center justify-center mb-6">
-        <span class="material-symbols-outlined text-wood-dark text-3xl">history</span>
-      </div>
-      <h3 class="text-lg font-bold mb-1">Historique</h3>
-      <p class="text-sm text-wood-light mb-4">Consultez vos documents récents.</p>
-      <span class="text-primary font-bold text-sm">Voir l’historique →</span>
-    </a>
+<section class="public-container">
+  <div class="public-panel public-reveal">
+    <span class="public-kicker">Tableau de bord</span>
+    <h1 class="public-title">Bienvenue, {{ userName }}</h1>
+    <p class="public-subtitle">Gerez et generez vos documents en un clic.</p>
   </div>
 
-  <div class="bg-white dark:bg-background-dark rounded-xl border border-wood-medium/10 shadow-sm overflow-hidden mb-12">
-    <div class="px-6 py-5 border-b border-wood-medium/10 flex items-center justify-between">
-      <h3 class="text-wood-dark dark:text-white text-lg font-bold">Activité Récente</h3>
-      <a routerLink="/user/history" class="text-sm font-bold text-wood-light hover:text-wood-dark transition-colors">Tout voir</a>
+  <section class="public-section">
+    <div class="public-grid">
+      <a routerLink="/user/templates-list" class="public-card public-reveal">
+        <span class="public-pill">Demarrer</span>
+        <div class="public-card-title">Nouvelle generation</div>
+        <p class="public-card-text">Creer un document a partir d'un template.</p>
+        <span class="public-btn public-btn--ghost">Creer maintenant</span>
+      </a>
+      <a routerLink="/user/template-create" class="public-card public-reveal">
+        <span class="public-pill">Templates</span>
+        <div class="public-card-title">Creer un modele</div>
+        <p class="public-card-text">Gerer et publier vos templates.</p>
+        <span class="public-btn public-btn--ghost">Ouvrir</span>
+      </a>
+      <a routerLink="/user/history" class="public-card public-reveal">
+        <span class="public-pill">Historique</span>
+        <div class="public-card-title">Documents recents</div>
+        <p class="public-card-text">Consultez vos documents generes.</p>
+        <span class="public-btn public-btn--ghost">Voir l'historique</span>
+      </a>
     </div>
+  </section>
 
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
+  <section class="public-section">
+    <div class="public-panel public-reveal">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <h2>Activite recente</h2>
+        <a routerLink="/user/history" class="public-btn public-btn--ghost">Tout voir</a>
+      </div>
+
+      <div *ngIf="recentDocuments.length === 0" style="margin-top: 16px;" class="public-card-text">
+        Aucun document recent.
+      </div>
+
+      <table *ngIf="recentDocuments.length > 0" style="width: 100%; margin-top: 16px; border-collapse: collapse;">
         <thead>
-          <tr class="text-wood-light text-xs uppercase bg-background-light/50 dark:bg-white/5">
-            <th class="px-6 py-4">Document</th>
-            <th class="px-6 py-4">Type</th>
-            <th class="px-6 py-4">Date</th>
-            <th class="px-6 py-4 text-right">Action</th>
+          <tr style="text-transform: uppercase; font-size: 0.75rem; color: var(--public-muted);">
+            <th style="text-align: left; padding: 10px 0;">Document</th>
+            <th style="text-align: left; padding: 10px 0;">Type</th>
+            <th style="text-align: left; padding: 10px 0;">Date</th>
+            <th style="text-align: right; padding: 10px 0;">Action</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-wood-medium/5">
-          <tr *ngFor="let doc of recentDocuments" class="hover:bg-background-light/30 dark:hover:bg-white/5 transition-colors">
-            <td class="px-6 py-4">
-              <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-wood-light">article</span>
-                <a [routerLink]="['/user/document-preview', doc.id]" class="text-sm font-bold text-wood-dark dark:text-white hover:underline">
-                  {{ doc.titre }}
-                </a>
-              </div>
+        <tbody>
+          <tr *ngFor="let doc of recentDocuments" style="border-top: 1px solid var(--public-line);">
+            <td style="padding: 12px 0; font-weight: 600;">
+              <a [routerLink]="['/user/document-preview', doc.id]">{{ doc.titre }}</a>
             </td>
-            <td class="px-6 py-4 text-sm text-wood-light">{{ doc.type }}</td>
-            <td class="px-6 py-4 text-sm text-wood-light">{{ doc.date }}</td>
-            <td class="px-6 py-4 text-right">
-              <a [routerLink]="['/user/document-preview', doc.id]" class="p-2 rounded-lg text-wood-dark hover:bg-primary/20 transition-all inline-flex">
-                <span class="material-symbols-outlined">visibility</span>
-              </a>
+            <td style="padding: 12px 0; color: var(--public-muted);">{{ doc.type }}</td>
+            <td style="padding: 12px 0; color: var(--public-muted);">{{ doc.date }}</td>
+            <td style="padding: 12px 0; text-align: right;">
+              <a [routerLink]="['/user/document-preview', doc.id]" class="public-btn public-btn--ghost">Ouvrir</a>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
-</div>
+  </section>
+</section>
