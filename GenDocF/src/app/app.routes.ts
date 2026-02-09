@@ -30,6 +30,7 @@ import { SettingsComponent } from './features/user/settings/settings';
 import { TemplateCreate } from './features/user/template-create/template-create';
 import { TemplateManage } from './features/user/template-manage/template-manage';
 import { TemplatePreview } from './features/user/template-preview/template-preview';
+import { Public } from '@shared/layouts/public/public';
 
 export const routes: Routes = [
 

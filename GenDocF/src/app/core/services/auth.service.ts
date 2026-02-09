@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl; 
+  private apiUrl = 'http://localhost:8000/api/auth';
 
   constructor(
     private http: HttpClient,
@@ -25,7 +25,7 @@ export class AuthService {
 
     console.log("Envoi au backend :", payload); // Pour vérifier
 
-    return this.http.post(`${this.apiUrl}/auth/token/`, payload).pipe(
+    return this.http.post(`${this.apiUrl}/token/`, payload).pipe(
       tap((response: any) => {
         if (response.access && isPlatformBrowser(this.platformId)) {
           localStorage.setItem('access_token', response.access);
@@ -56,7 +56,7 @@ export class AuthService {
 
   // 1.b Inscription
   register(payload: { firstName: string; lastName: string; email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/register/`, {
+    return this.http.post(`${this.apiUrl}/register/`, {
       first_name: payload.firstName,
       last_name: payload.lastName,
       email: payload.email,
@@ -65,7 +65,7 @@ export class AuthService {
   }
 
   getCurrentUser(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/auth/me/`, {
+    return this.http.get(`${this.apiUrl}/me/`, {
       headers: this.getAuthHeaders()
     });
   }
@@ -148,6 +148,32 @@ export class AuthService {
     ).pipe(
       catchError(() => of(null))
     );
+  }
+
+  getUserInfo() {
+    const token = localStorage.getItem('access_token');
+    if (!token) return null;
+
+    try {
+      // Le token JWT est composé de 3 parties séparées par des points. 
+      // La 2ème partie (index 1) contient les données (payload).
+      const payload = token.split('.')[1];
+      const decodedData = JSON.parse(atob(payload));
+      
+      // Django (SimpleJWT) inclut souvent l'user_id, mais pas forcément le prénom par défaut.
+      // Si vous avez configuré Django pour inclure le prénom, il sera ici.
+      return decodedData;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  getUserProfile(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/auth/me/`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      })
+    });
   }
 
   clearSession(): void {

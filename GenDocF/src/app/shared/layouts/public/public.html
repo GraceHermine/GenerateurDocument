@@ -99,8 +99,8 @@
            Contact
         </a>
 
-          <a
-            routerLink="/auth/login"
+          
+           <a routerLink="/auth/login"
             class="px-4 py-2 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors"
             (click)="closeMobileMenu()">
             Connexion
@@ -144,6 +144,8 @@
             <li><a routerLink="/public/document-generation" class="hover:text-primary transition-colors text-sm">Générer un document</a></li>
             
             <li><a routerLink="/public/about" class="hover:text-primary transition-colors text-sm">À propos</a></li>
+            <li><a routerLink="/public/contact" class="hover:text-primary transition-colors text-sm">Contact</a></li>
+            <li><a routerLink="/public/faq" class="hover:text-primary transition-colors text-sm">FAQ</a></li>
           </ul>
         </div>
 
@@ -152,7 +154,7 @@
           <ul class="space-y-3">
             <li><a routerLink="/auth/login" class="hover:text-primary transition-colors text-sm">Connexion</a></li>
             <li><a routerLink="/auth/register" class="hover:text-primary transition-colors text-sm">Inscription</a></li>
-            <li><a routerLink="/user/profile" class="hover:text-primary transition-colors text-sm">Mon profil</a></li>
+            <li><a routerLink="/dashboard" class="hover:text-primary transition-colors text-sm">Mon profil</a></li>
           </ul>
         </div>
 
@@ -161,8 +163,8 @@
           <ul class="space-y-3">
             <li><a routerLink="/public/help" class="hover:text-primary transition-colors text-sm">Centre d'aide</a></li>
             <li><a routerLink="/public/contact" class="hover:text-primary transition-colors text-sm">Contact</a></li>
-            <li><a routerLink="/privacy" class="hover:text-primary transition-colors text-sm">Confidentialité</a></li>
-            <li><a routerLink="/terms" class="hover:text-primary transition-colors text-sm">Conditions d'utilisation</a></li>
+            <li><a routerLink="/public/privacy" class="hover:text-primary transition-colors text-sm">Confidentialité</a></li>
+            <li><a routerLink="/public/terms" class="hover:text-primary transition-colors text-sm">Conditions d'utilisation</a></li>
           </ul>
         </div>
 
@@ -171,9 +173,9 @@
       <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
         <p class="text-sm text-gray-400">© 2024 GenDoc. Tous droits réservés.</p>
         <div class="flex gap-6 text-sm text-gray-400">
-          <a routerLink="/privacy" class="hover:text-primary transition-colors">Politique de confidentialité</a>
-          <a routerLink="/terms" class="hover:text-primary transition-colors">Mentions légales</a>
-          <a routerLink="/cookies" class="hover:text-primary transition-colors">Cookies</a>
+          <a routerLink="/public/privacy" class="hover:text-primary transition-colors">Politique de confidentialité</a>
+          <a routerLink="/public/terms" class="hover:text-primary transition-colors">Mentions légales</a>
+          <a routerLink="/public/cookies" class="hover:text-primary transition-colors">Cookies</a>
         </div>
       </div>
 

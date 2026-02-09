@@ -31,7 +31,7 @@ export class Login {
 
     const registered = this.route.snapshot.queryParamMap.get('registered');
     if (registered === '1') {
-      this.successMessage = 'Compte cree avec succes. Vous pouvez vous connecter.';
+      this.successMessage = 'Compte créé avec succès. Vous pouvez vous connecter.';
     }
   }
 
@@ -47,8 +47,9 @@ export class Login {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
-        this.router.navigate([this.authService.getDefaultRoute()]);
         this.isLoading = false;
+        // On force la redirection vers /dashboard pour contourner le problème de getDefaultRoute()
+        this.router.navigate(['/dashboard']); 
       },
       error: (err) => {
         this.isLoading = false;
@@ -57,7 +58,7 @@ export class Login {
         } else if (err.status === 0) {
           this.errorMessage = 'Impossible de contacter le serveur.';
         } else {
-          this.errorMessage = 'Une erreur est survenue.';
+          this.errorMessage = 'Une erreur est survenue lors de la connexion.';
         }
       }
     });
