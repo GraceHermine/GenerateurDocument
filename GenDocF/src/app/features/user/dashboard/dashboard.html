@@ -1,93 +1,55 @@
 <div class="max-w-6xl mx-auto w-full px-8 py-8">
 
-  <!-- Titre -->
   <h2 class="text-wood-dark dark:text-white text-3xl font-extrabold tracking-tight mb-2">
-    Bienvenue, Gilbert
+    Bienvenue, {{ userName }}
   </h2>
   <p class="text-wood-light mt-2 text-base mb-8">
     Gérez et générez vos documents professionnels en un clic.
   </p>
 
-  <!-- CARTES ACTIONS -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
 
-    <!-- Nouvelle génération -->
-    <a
-      routerLink="/user/document-generation"
+    <a routerLink="/document-generation"
       class="group bg-white dark:bg-background-dark p-6 rounded-xl border border-wood-medium/10 shadow-sm hover:border-primary hover:shadow-md transition-all cursor-pointer">
-
       <div class="size-14 rounded-xl bg-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
         <span class="material-symbols-outlined text-wood-dark text-3xl">note_add</span>
       </div>
-
-      <h3 class="text-wood-dark dark:text-white text-lg font-bold mb-1">
-        Nouvelle Génération
-      </h3>
-
-      <p class="text-wood-light text-sm mb-4">
-        Commencer un nouveau document à partir d'un template.
-      </p>
-
+      <h3 class="text-wood-dark dark:text-white text-lg font-bold mb-1">Nouvelle Génération</h3>
+      <p class="text-wood-light text-sm mb-4">Commencer un nouveau document à partir d'un template.</p>
       <div class="flex items-center text-primary font-bold text-sm">
-        Créer maintenant
-        <span class="material-symbols-outlined ml-1 text-base">arrow_forward</span>
+        Créer maintenant <span class="material-symbols-outlined ml-1 text-base">arrow_forward</span>
       </div>
     </a>
 
-    <!-- Templates -->
-    <a
-      routerLink="/user/templates-list"
+    <a routerLink="/templates"
       class="group bg-white dark:bg-background-dark p-6 rounded-xl border border-wood-medium/10 shadow-sm hover:border-primary hover:shadow-md transition-all cursor-pointer">
-
       <div class="size-14 rounded-xl bg-primary flex items-center justify-center mb-6">
         <span class="material-symbols-outlined text-wood-dark text-3xl">description</span>
       </div>
-
       <h3 class="text-lg font-bold mb-1">Modèles</h3>
-      <p class="text-sm text-wood-light mb-4">
-        Gérer et créer vos templates personnalisés.
-      </p>
-
+      <p class="text-sm text-wood-light mb-4">Gérer et créer vos templates personnalisés.</p>
       <span class="text-primary font-bold text-sm">Voir les modèles →</span>
     </a>
 
-    <!-- Historique -->
-    <a
-      routerLink="/user/history"
+    <a routerLink="/history"
       class="group bg-white dark:bg-background-dark p-6 rounded-xl border border-wood-medium/10 shadow-sm hover:border-primary hover:shadow-md transition-all cursor-pointer">
-
       <div class="size-14 rounded-xl bg-primary flex items-center justify-center mb-6">
         <span class="material-symbols-outlined text-wood-dark text-3xl">history</span>
       </div>
-
       <h3 class="text-lg font-bold mb-1">Historique</h3>
-      <p class="text-sm text-wood-light mb-4">
-        Consultez vos documents récents.
-      </p>
-
+      <p class="text-sm text-wood-light mb-4">Consultez vos documents récents.</p>
       <span class="text-primary font-bold text-sm">Voir l’historique →</span>
     </a>
-
   </div>
 
-  <!-- ACTIVITÉ RÉCENTE -->
   <div class="bg-white dark:bg-background-dark rounded-xl border border-wood-medium/10 shadow-sm overflow-hidden mb-12">
-
     <div class="px-6 py-5 border-b border-wood-medium/10 flex items-center justify-between">
-      <h3 class="text-wood-dark dark:text-white text-lg font-bold">
-        Activité Récente
-      </h3>
-
-      <a
-        routerLink="/user/history"
-        class="text-sm font-bold text-wood-light hover:text-wood-dark transition-colors">
-        Tout voir
-      </a>
+      <h3 class="text-wood-dark dark:text-white text-lg font-bold">Activité Récente</h3>
+      <a routerLink="/history" class="text-sm font-bold text-wood-light hover:text-wood-dark transition-colors">Tout voir</a>
     </div>
 
     <div class="overflow-x-auto">
       <table class="w-full text-left">
-
         <thead>
           <tr class="text-wood-light text-xs uppercase bg-background-light/50 dark:bg-white/5">
             <th class="px-6 py-4">Document</th>
@@ -96,63 +58,26 @@
             <th class="px-6 py-4 text-right">Action</th>
           </tr>
         </thead>
-
         <tbody class="divide-y divide-wood-medium/5">
-
-            <tr class="hover:bg-background-light/30 dark:hover:bg-white/5 transition-colors">
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-wood-light">article</span>
-
-                        <a
-                        routerLink="/user/document-preview"
-                        class="text-sm font-bold text-wood-dark dark:text-white hover:underline">
-                        Contrat_Partenaire_V2.pdf
-                        </a>
-                    </div>
-                </td>
-
-                <td class="px-6 py-4 text-sm text-wood-light">Juridique</td>
-                <td class="px-6 py-4 text-sm text-wood-light">Aujourd'hui, 14:30</td>
-
-                <td class="px-6 py-4 text-right">
-                    <a
-                        routerLink="/document-preview"
-                        class="p-2 rounded-lg text-wood-dark hover:bg-primary/20 transition-all inline-flex">
-                        <span class="material-symbols-outlined">visibility</span>
-                    </a>
-                </td>
-            </tr>
-
-            <tr class="hover:bg-background-light/30 dark:hover:bg-white/5 transition-colors">
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-wood-light">article</span>
-
-                        <a
-                        routerLink="/document-preview"
-                        class="text-sm font-bold text-wood-dark dark:text-white hover:underline">
-                        Contrat de bail BANGOLO.pdf
-                        </a>
-                    </div>
-                </td>
-
-                <td class="px-6 py-4 text-sm text-wood-light">Juridique</td>
-                <td class="px-6 py-4 text-sm text-wood-light">Hier, 14:30</td>
-
-                <td class="px-6 py-4 text-right">
-                    <a
-                        routerLink="/document-preview"
-                        class="p-2 rounded-lg text-wood-dark hover:bg-primary/20 transition-all inline-flex">
-                        <span class="material-symbols-outlined">visibility</span>
-                    </a>
-                </td>
-            </tr>
-
+          <tr *ngFor="let doc of recentDocuments" class="hover:bg-background-light/30 dark:hover:bg-white/5 transition-colors">
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-wood-light">article</span>
+                <a [routerLink]="['/document', doc.id]" class="text-sm font-bold text-wood-dark dark:text-white hover:underline">
+                  {{ doc.titre }}
+                </a>
+              </div>
+            </td>
+            <td class="px-6 py-4 text-sm text-wood-light">{{ doc.type }}</td>
+            <td class="px-6 py-4 text-sm text-wood-light">{{ doc.date }}</td>
+            <td class="px-6 py-4 text-right">
+              <a [routerLink]="['/document', doc.id]" class="p-2 rounded-lg text-wood-dark hover:bg-primary/20 transition-all inline-flex">
+                <span class="material-symbols-outlined">visibility</span>
+              </a>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
-
   </div>
-
 </div>
