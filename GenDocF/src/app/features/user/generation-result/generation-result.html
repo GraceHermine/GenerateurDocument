@@ -1,148 +1,231 @@
-<main class="flex-1 flex flex-col overflow-y-auto p-8 max-w-[1400px] mx-auto w-full">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Félicitations - Document prêt</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 
-  <!-- Breadcrumbs -->
-  <nav class="flex items-center gap-2 mb-6">
-    <a
-      routerLink="/dashboard"
-      class="text-[#97734e] hover:text-primary text-sm font-medium transition-colors"
-    >
-      Accueil
-    </a>
+  <style>
+    :root {
+      --primary: #8b4513;
+      --primary-dark: #6d3610;
+      --bg-light: #f8f7f6;
+      --gray-50: #faf9f8;
+      --gray-100: #f0eeed;
+      --gray-400: #a39a92;
+      --gray-600: #5c554f;
+      --gray-900: #1f1a16;
+    }
 
-    <span class="material-symbols-outlined text-[16px] text-[#97734e]">
-      chevron_right
-    </span>
+    * { margin:0; padding:0; box-sizing:border-box; }
 
-    <a
-      routerLink="/documents"
-      class="text-[#97734e] hover:text-primary text-sm font-medium transition-colors"
-    >
-      Historique
-    </a>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-light);
+      color: var(--gray-900);
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
 
-    <span class="material-symbols-outlined text-[16px] text-[#97734e]">
-      chevron_right
-    </span>
+    .confetti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+      animation: globalFade 130s forwards;
+    }
 
-    <span class="text-[#1b140e] dark:text-[#fcfaf8] text-sm font-bold">
-      Détails du Document
-    </span>
-  </nav>
+    @keyframes globalFade {
+      0%        { opacity: 1; }
+      80%       { opacity: 1; }          /* jusqu'à ~104 secondes */
+      90%       { opacity: 0.4; }        /* début du fondu ~117 s */
+      100%      { opacity: 0; }          /* invisible à 130 s */
+    }
 
-  <!-- Page Heading -->
-  <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
-    <div class="flex flex-col gap-1">
-      <h1 class="text-3xl font-black text-[#1b140e] dark:text-[#fcfaf8] tracking-tight flex items-center gap-3">
-        {{ document.name }}
-        <span
-          class="px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold uppercase tracking-wider">
-          {{ document.status }}
-        </span>
-      </h1>
-      <p class="text-[#97734e] text-sm">
-        Généré le {{ document.generatedDate }} par {{ document.generatedBy }}
-      </p>
-    </div>
+    .confetti {
+      position: absolute;
+      top: -15%;
+      left: var(--left);
+      width: var(--size);
+      height: var(--size);
+      background: var(--color);
+      border-radius: var(--radius, 3px);
+      opacity: var(--opacity, 0.92);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+      will-change: transform;
+      transform: rotate(var(--rotate-start, 0deg));
+    }
 
-    <div class="flex gap-3">
-      <button
-        
-        class="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[#f3ede7] dark:border-[#3d2e1f] hover:bg-[#f3ede7] dark:hover:bg-[#3d2e1f] text-sm font-bold transition-all">
-        <span class="material-symbols-outlined text-[20px]">edit</span>
-        Renommer
-      </button>
-    </div>
+    /* Tailles plus grandes */
+    .big    { --size: 18px; }
+    .huge   { --size: 26px; }
+    .medium { --size: 14px; }
+
+    /* Formes */
+    .circle   { border-radius: 50%; }
+    .long     { height: calc(var(--size) * 2.8); width: calc(var(--size) * 0.45); border-radius: 50%; }
+    .square   { border-radius: 5px; }
+    .triangle { width: 0; height: 0; border-left: calc(var(--size)/1.8) solid transparent; border-right: calc(var(--size)/1.8) solid transparent; border-bottom: var(--size) solid; background: none; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+
+    /* Couleurs vives */
+    .red    { --color: #ff3366; }
+    .blue   { --color: #3366ff; }
+    .green  { --color: #33cc66; }
+    .yellow { --color: #ffcc33; }
+    .purple { --color: #9933ff; }
+    .orange { --color: #ff6633; }
+    .pink   { --color: #ff66cc; }
+    .cyan   { --color: #33ffff; }
+
+    /* Animations de chute */
+    @keyframes fall-fast   { to { transform: translateY(140vh) rotate(1440deg) translateX(70vw); } }
+    @keyframes fall-medium { to { transform: translateY(150vh) rotate(-1080deg) translateX(-60vw); } }
+    @keyframes fall-slow   { to { transform: translateY(130vh) rotate(1800deg) translateX(40vw); } }
+
+    /* Exemples (duplique autant que voulu) */
+    .confetti:nth-child(1)  { --left: 6%;   animation: fall-slow 22s linear infinite; animation-delay: 0s;     --color: #ff3366; --size: 22px; }
+    .confetti:nth-child(2)  { --left: 11%;  animation: fall-medium 16s linear infinite; animation-delay: 0.8s; --color: #3366ff; class: circle huge; }
+    .confetti:nth-child(3)  { --left: 17%;  animation: fall-fast 13s linear infinite; animation-delay: 1.9s;  --color: #33cc66; --size: 28px; }
+    .confetti:nth-child(4)  { --left: 24%;  animation: fall-slow 24s linear infinite; animation-delay: 2.4s;  --color: #ffcc33; class: square big; }
+    .confetti:nth-child(5)  { --left: 30%;  animation: fall-medium 18s linear infinite; animation-delay: 3.7s; --color: #9933ff; class: long; }
+    .confetti:nth-child(6)  { --left: 36%;  animation: fall-fast 14s linear infinite; animation-delay: 4.5s;  --color: #ff6633; class: circle; }
+    .confetti:nth-child(7)  { --left: 43%;  animation: fall-slow 23s linear infinite; animation-delay: 0.5s;  --color: #ff66cc; --size: 20px; }
+    .confetti:nth-child(8)  { --left: 49%;  animation: fall-medium 17s linear infinite; animation-delay: 6.2s; --color: #33ffff; class: huge; }
+    .confetti:nth-child(9)  { --left: 56%;  animation: fall-fast 12s linear infinite; animation-delay: 1.4s;  --color: #ff3366; }
+    .confetti:nth-child(10) { --left: 63%;  animation: fall-slow 25s linear infinite; animation-delay: 7.1s;  --color: #3366ff; class: triangle big; }
+    .confetti:nth-child(11) { --left: 69%;  animation: fall-medium 19s linear infinite; animation-delay: 3.3s;  --color: #33cc66; }
+    .confetti:nth-child(12) { --left: 76%;  animation: fall-fast 15s linear infinite; animation-delay: 8.4s;  --color: #ffcc33; class: long; }
+    .confetti:nth-child(13) { --left: 82%;  animation: fall-slow 21s linear infinite; animation-delay: 5.6s;  --color: #9933ff; --size: 24px; }
+    .confetti:nth-child(14) { --left: 88%;  animation: fall-medium 16s linear infinite; animation-delay: 9.2s;  --color: #ff6633; class: circle; }
+    .confetti:nth-child(15) { --left: 94%;  animation: fall-fast 14s linear infinite; animation-delay: 6.8s;  --color: #ff66cc; --size: 22px; }
+
+    /* Carte principale */
+    .container {
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .card {
+      background: white;
+      border-radius: 1.75rem;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 20px 50px -12px rgba(139, 69, 19, 0.22);
+      border: 1px solid var(--gray-100);
+      text-align: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .icon-circle {
+      width: 5.5rem;
+      height: 5.5rem;
+      background: rgba(139, 69, 19, 0.10);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.2rem;
+      margin: 0 auto 1.5rem;
+    }
+
+    h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 0.8rem; }
+    .message { font-size: 1.15rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 2.5rem; }
+    .strong { color: var(--primary); font-weight: 700; }
+
+    .buttons { display: flex; flex-direction: column; gap: 1.1rem; }
+
+    button {
+      width: 100%;
+      padding: 1.15rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 1rem;
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      box-shadow: 0 8px 24px -6px rgba(139, 69, 19, 0.35);
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-3px); }
+
+    .btn-outline {
+      background: white;
+      border: 2px solid var(--gray-100);
+      color: var(--gray-600);
+    }
+    .btn-outline:hover { background: var(--gray-100); color: var(--gray-900); }
+
+    .footer-id {
+      margin-top: 2.2rem;
+      color: var(--gray-400);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+    .footer-id span { color: var(--primary); font-family: monospace; font-weight: 600; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: scale(0.94) translateY(30px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .card { animation: appear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+  </style>
+</head>
+<body>
+
+  <div class="confetti-container">
+    <div class="confetti big red"></div>
+    <div class="confetti huge circle blue"></div>
+    <div class="confetti big green"></div>
+    <div class="confetti medium square yellow"></div>
+    <div class="confetti long purple"></div>
+    <div class="confetti huge orange circle"></div>
+    <div class="confetti big pink"></div>
+    <div class="confetti cyan huge"></div>
+    <div class="confetti red big circle"></div>
+    <div class="confetti blue medium"></div>
+    <div class="confetti green huge triangle"></div>
+    <div class="confetti yellow big"></div>
+    <div class="confetti purple long"></div>
+    <div class="confetti orange medium"></div>
+    <div class="confetti pink big circle"></div>
+    <!-- Duplique ces lignes 15–30 fois de plus pour plus de densité si tu veux -->
   </div>
 
-  <!-- Split Layout -->
-  <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+  <div class="container">
+    <div class="card">
+      <div class="icon-circle">🎉</div>
+      
+      <h1>Félicitations !</h1>
+      
+      <p class="message">
+        Votre document <span class="strong">{{ document?.titre || 'généré' }}</span><br>
+        est prêt et le téléchargement a démarré.
+      </p>
 
-    <!-- LEFT: Document Preview -->
-    <div class="xl:col-span-2">
-      <div class="bg-white dark:bg-[#2a2016] rounded-xl border border-[#f3ede7] dark:border-[#3d2e1f] shadow-sm overflow-hidden">
-        <div class="p-10 bg-[#f3ede7] dark:bg-[#1a130b] flex justify-center min-h-[700px]">
-          <div class="w-full max-w-[600px] bg-white dark:bg-[#211911] shadow-xl p-12 relative">
-
-            <h3 class="font-bold text-lg dark:text-[#fcfaf8] mb-2">DocuWood S.A.S</h3>
-            <p class="text-xs text-[#97734e] mb-8">12 Avenue de la Forêt, Paris</p>
-
-            <table class="w-full text-left mb-12">
-              <thead class="border-b border-[#f3ede7] dark:border-[#3d2e1f]">
-                <tr>
-                  <th class="py-3 text-[10px] font-bold text-[#97734e] uppercase">
-                    Description
-                  </th>
-                  <th class="py-3 text-[10px] font-bold text-[#97734e] uppercase text-right">
-                    Montant
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="py-4 text-sm dark:text-[#fcfaf8]">
-                    Prestation de service
-                  </td>
-                  <td class="py-4 text-sm font-bold text-right dark:text-[#fcfaf8]">
-                    1 980 €
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="flex justify-between border-t border-[#f3ede7] dark:border-[#3d2e1f] pt-4">
-              <span class="text-sm font-bold dark:text-[#fcfaf8]">TOTAL TTC</span>
-              <span class="text-lg font-black text-primary">1 980 €</span>
-            </div>
-
-          </div>
-        </div>
+      <div class="buttons">
+        <button class="btn-primary">Voir mon historique</button>
+        <button class="btn-outline">Retourner à l'accueil</button>
       </div>
     </div>
 
-    <!-- RIGHT: Actions -->
-    <div class="flex flex-col gap-6">
-
-      <!-- Infos -->
-      <section class="bg-white dark:bg-[#2a2016] rounded-xl border border-[#f3ede7] dark:border-[#3d2e1f] p-6 shadow-sm">
-        <h3 class="text-sm font-bold uppercase tracking-widest text-[#97734e] mb-6">
-          Informations
-        </h3>
-        <p class="text-sm dark:text-[#fcfaf8]">
-          Type : PDF<br />
-          Taille : 1.2 MB
-        </p>
-      </section>
-
-      <!-- Actions -->
-      <section class="bg-white dark:bg-[#2a2016] rounded-xl border border-[#f3ede7] dark:border-[#3d2e1f] p-6 shadow-sm">
-        <h3 class="text-sm font-bold uppercase tracking-widest text-[#97734e] mb-6">
-          Actions
-        </h3>
-
-        <div class="flex flex-col gap-3">
-
-          <a
-            routerLink="/documents"
-            class="w-full flex items-center justify-center gap-3 border border-[#f3ede7] dark:border-[#3d2e1f] rounded-lg py-3.5 font-bold hover:bg-[#f3ede7] dark:hover:bg-[#3d2e1f] transition-all">
-            <span class="material-symbols-outlined">arrow_back</span>
-            Retour aux documents
-          </a>
-
-          <button
-            class="w-full flex items-center justify-center gap-3 bg-primary hover:bg-primary/90 text-white rounded-lg py-3.5 font-bold transition-all">
-            <span class="material-symbols-outlined">download</span>
-            Télécharger
-          </button>
-
-          <button
-            class="w-full flex items-center justify-center gap-3 text-red-600 hover:bg-red-50 rounded-lg py-3 font-bold transition-all">
-            <span class="material-symbols-outlined">delete_outline</span>
-            Supprimer
-          </button>
-
-        </div>
-      </section>
-
-    </div>
+    <p class="footer-id">
+      ID du document : <span>#{{ document?.id || 'XXXXXX' }}</span>
+    </p>
   </div>
-</main>
+
+</body>
+</html>

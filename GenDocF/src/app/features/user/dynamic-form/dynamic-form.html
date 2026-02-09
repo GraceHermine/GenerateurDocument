@@ -1,221 +1,168 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Formulaire Dynamique - Rapport Mensuel</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f8f9fa;
-      margin: 0;
-      padding: 30px 20px;
-      color: #333;
-      line-height: 1.5;
-    }
-    .container {
-      max-width: 780px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-      overflow: hidden;
-    }
-    .header {
-      background: #f0f4ff;
-      padding: 20px 30px;
-      border-bottom: 1px solid #e0e7ff;
-    }
-    h1 {
-      margin: 0;
-      font-size: 1.55rem;
-      color: #574706;
-    }
-    .intro {
-      margin: 12px 0 0;
-      color: #555;
-      font-size: 0.97rem;
-    }
+<main class="min-h-screen bg-[#f8fafc] dark:bg-gray-950 p-4 md:p-8">
+  <div class="max-w-5xl mx-auto">
 
-    .section {
-      padding: 24px 30px;
-      border-bottom: 1px solid #eee;
-    }
-    .section:last-child {
-      border-bottom: none;
-    }
-    .section-title {
-      font-size: 1.18rem;
-      color: #38600b;
-      margin: 0 0 18px 0;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #e0e7ff;
-    }
-
-    .progress-container {
-      margin: 12px 0 30px;
-    }
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-      margin-bottom: 6px;
-      color: #555;
-    }
-    progress {
-      width: 100%;
-      height: 18px;
-      border-radius: 9px;
-    }
-    progress::-webkit-progress-bar {
-      background: #e5e7eb;
-      border-radius: 9px;
-    }
-    progress::-webkit-progress-value {
-      background: #3a5008;
-      border-radius: 9px;
-    }
-
-    label {
-      display: block;
-      margin: 14px 0 6px;
-      font-weight: 500;
-      color: #444;
-    }
-    input[type="text"],
-    input[type="date"],
-    input[type="month"],
-    textarea,
-    select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      box-sizing: border-box;
-    }
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .checkbox-group {
-      margin: 18px 0;
-    }
-    .checkbox-group label {
-      display: flex;
-      align-items: center;
-      margin: 10px 0;
-      font-weight: normal;
-    }
-    input[type="checkbox"],
-    input[type="radio"] {
-      margin-right: 10px;
-      width: 18px;
-      height: 18px;
-    }
-
-    .footer {
-      padding: 24px 30px;
-      background: #f8fafc;
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-    }
-    button {
-      padding: 12px 28px;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      border: none;
-    }
-    .btn-cancel {
-      background: #e5e7eb;
-      color: #444;
-    }
-    .btn-generate {
-      background: #67501a;
-      color: white;
-      font-weight: 500;
-    }
-    .btn-generate:hover {
-      background: #997e13;
-    }
-  </style>
-</head>
-<body>
-
-<div class="container">
-
-  <div class="header">
-    <h1>Formulaire Dynamique pour Rapport Mensuel</h1>
-    <p class="intro">
-      Veuillez remplir les champs ci-dessous pour générer votre document personnalisé.<br>
-      Les informations saisies seront utilisées pour peupler le modèle de rapport mensuel.
-    </p>
-  </div>
-
-  <div class="section">
-    <h2 class="section-title">Progression de la Génération</h2>
-    <div class="progress-container">
-      <div class="progress-label">
-        <span>État actuel : En attente de données...</span>
-        <span>0% Complété</span>
+    <div *ngIf="!isStepPreview" class="animate-in fade-in duration-500">
+      <div class="mb-6 flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ template?.nom }}</h1>
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-bold">{{ progress }}% rempli</span>
       </div>
-      <progress value="0" max="100"></progress>
-    </div>
-  </div>
 
-  <div class="section">
-    <h2 class="section-title">Informations Générales</h2>
-    
-    <label>Nom du Document</label>
-    <input type="text" value="Rapport Mensuel Février 2024">
+      <div class="grid gap-6">
+        <div *ngFor="let q of questions" class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+          <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
+            {{ q.label }} <span *ngIf="q.obligatoire" class="text-red-500">*</span>
+          </label>
 
-    <label>Date de Génération</label>
-    <input type="date" value="2024-02-29">
+          <textarea *ngIf="q.type_champ === 'text'" [(ngModel)]="responses[q.id]" (ngModelChange)="onResponseChange()"
+            class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
 
-    <label>Auteur</label>
-    <input type="text" value="John Doe">
-  </div>
+          <select *ngIf="q.type_champ === 'select'" [(ngModel)]="responses[q.id]" (ngModelChange)="onResponseChange()"
+            class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white outline-none">
+            <option *ngFor="let opt of q.options" [value]="opt">{{ opt }}</option>
+          </select>
 
-  <div class="section">
-    <h2 class="section-title">Détails Spécifiques du Rapport</h2>
-    
-    <label>Type de Rapport</label>
-    <input type="text" value="Rapport Mensuel">
+          <input *ngIf="q.type_champ === 'date'" type="date" [(ngModel)]="responses[q.id]" (ngModelChange)="onResponseChange()"
+            class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white outline-none">
+        </div>
 
-    <label>Période Couvrante</label>
-    <input type="month" value="2024-02">
-
-    <label>Objectifs</label>
-    <textarea>Analyse approfondie des ventes mensuelles, identification des points d'arrangement et proposition de stratégies d'amélioration.</textarea>
-
-    <label>Défis Rencontrés et Solutions</label>
-    <textarea>Difficulté à agréger les données de plusieurs sources. Solution : implémentation d'un script d'automatisation.</textarea>
-  </div>
-
-  <div class="section">
-    <h2 class="section-title">Options de Génération</h2>
-    
-    <div class="checkbox-group">
-      <label><input type="checkbox" checked> Inclure les graphiques analytiques</label>
-      <label><input type="radio" name="format" checked> Format Word (.docx)</label>
-      <label><input type="radio" name="format"> PDF (recommandé)</label>
-      <label><input type="radio" name="format"> HTML</label>
+        <div class="flex justify-end pt-4">
+          <button (click)="goToPreview()" [disabled]="!isFormValid()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-3 rounded-lg font-bold shadow-lg disabled:opacity-50 transition-all">
+            Générer l'aperçu
+          </button>
+        </div>
+      </div>
     </div>
 
-    <label>
-      <input type="checkbox"> Envoyer par e-mail après génération
-    </label>
-  </div>
+    <div *ngIf="isStepPreview" class="animate-in slide-in-from-bottom-10 duration-700">
+      
+      <div class="flex justify-between items-center mb-8 max-w-[800px] mx-auto">
+        <h2 class="text-xl font-bold dark:text-white">Aperçu du document</h2>
+        <button (click)="isStepPreview = false" class="text-blue-600 font-medium hover:underline">Modifier</button>
+      </div>
 
-  <div class="footer">
-    <button class="btn-cancel">Annuler</button>
-    <button class="btn-generate">Générer le Document</button>
-  </div>
+      <div class="bg-white text-black shadow-2xl mx-auto mb-32 p-16 md:p-20 min-h-[1050px] w-full max-w-[800px] border border-gray-200 relative overflow-hidden">
+        
+        <div [ngSwitch]="getTemplateType()">
 
+          <div *ngSwitchCase="'lettre'" class="font-serif text-[11pt]">
+            <div class="flex justify-between mb-16">
+              <div class="leading-tight">
+                <p class="font-bold text-lg">{{ getVal('Nom') }} {{ getVal('Prénom') }}</p>
+                <p>{{ getVal('Adresse') }}</p>
+                <p>{{ getVal('Téléphone') }}</p>
+              </div>
+              <div class="text-right mt-24">
+                <p>Le {{ today | date:'dd MMMM yyyy' }}</p>
+              </div>
+            </div>
+
+            <div class="text-center mb-12">
+              <h1 class="text-xl font-bold uppercase underline underline-offset-8 decoration-1 italic">{{ template?.nom }}</h1>
+            </div>
+
+            <div class="space-y-6 text-justify leading-relaxed">
+              <p>Madame, Monsieur,</p>
+              <p>Je soussigné(e) {{ getVal('Nom') }} {{ getVal('Prénom') }}, demeurant au {{ getVal('Adresse') }},</p>
+              <p class="whitespace-pre-line">{{ getVal('Contenu') || getVal('Motivation') || '[Contenu du document]' }}</p>
+              <p class="pt-12">Cordialement,</p>
+              <p class="font-bold pt-2">{{ getVal('Prénom') }} {{ getVal('Nom') }}</p>
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'cv'" class="font-sans">
+            <header class="border-b-4 border-gray-900 pb-4 mb-8">
+              <h1 class="text-4xl font-black uppercase tracking-tighter">{{ getVal('Nom') }} {{ getVal('Prénom') }}</h1>
+              <p class="text-blue-600 text-xl font-bold tracking-widest">{{ getVal('Poste') || 'CANDIDAT' }}</p>
+            </header>
+            <div class="grid grid-cols-3 gap-10 text-sm">
+              <div class="col-span-1 space-y-6">
+                <section>
+                  <h3 class="font-bold border-b-2 border-gray-200 mb-2 uppercase">Contact</h3>
+                  <p>{{ getVal('Email') }}</p>
+                  <p>{{ getVal('Téléphone') }}</p>
+                </section>
+                <section>
+                  <h3 class="font-bold border-b-2 border-gray-200 mb-2 uppercase">Compétences</h3>
+                  <p class="whitespace-pre-line">{{ getVal('Compétences') }}</p>
+                </section>
+              </div>
+              <div class="col-span-2 space-y-8">
+                <section>
+                  <h3 class="font-bold text-lg border-b-2 border-gray-900 mb-3 uppercase">Expériences</h3>
+                  <p class="whitespace-pre-line">{{ getVal('Expérience') }}</p>
+                </section>
+                <section>
+                  <h3 class="font-bold text-lg border-b-2 border-gray-900 mb-3 uppercase">Formation</h3>
+                  <p>{{ getVal('Diplôme') }}</p>
+                </section>
+              </div>
+            </div>
+          </div>
+
+          <div *ngSwitchDefault>
+            <h1 class="text-2xl font-bold border-b-2 pb-2 mb-8">{{ template?.nom }}</h1>
+            <div class="space-y-4">
+              <div *ngFor="let q of questions">
+                <p class="text-[10px] text-gray-400 font-bold uppercase">{{ q.label }}</p>
+                <p class="text-lg">{{ responses[q.id] || '......' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">
+          <span class="text-[150px] -rotate-45 font-black uppercase">Aperçu</span>
+        </div>
+      </div>
+
+      <div class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center bg-[#1e2129] text-white p-2 rounded-2xl shadow-2xl border border-gray-700 min-w-[320px] md:min-w-[450px]">
+        <button (click)="isStepPreview = false" class="flex-1 flex flex-col items-center py-2 hover:text-blue-400 transition">
+          <span class="material-symbols-outlined text-2xl">edit</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider">Modifier</span>
+        </button>
+        
+        <div class="w-px h-10 bg-gray-700"></div>
+
+        <button (click)="cancelForm()" class="flex-1 flex flex-col items-center py-2 hover:text-red-400 transition">
+          <span class="material-symbols-outlined text-2xl">delete</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider">Abandonner</span>
+        </button>
+
+        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t flex justify-center gap-4">
+  <button (click)="openDownloadOptions()" 
+          [disabled]="isGenerating"
+          class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all">
+    <span *ngIf="!isGenerating">⬇️ Télécharger le document</span>
+    <span *ngIf="isGenerating" class="animate-spin">⌛</span>
+    <span *ngIf="isGenerating">Génération en cours...</span>
+  </button>
 </div>
 
-</body>
-</html>
+<div *ngIf="showFormatModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+    <h3 class="text-xl font-bold mb-4 text-center">Choisir le format</h3>
+    <p class="text-gray-600 text-center mb-6">Sous quel format souhaitez-vous recevoir votre document ?</p>
+    
+    <div class="grid grid-cols-1 gap-3">
+      <button (click)="generateDocument('pdf')" 
+              class="w-full py-3 bg-red-50 text-red-700 border border-red-200 rounded-lg font-semibold hover:bg-red-100 flex items-center justify-center gap-2">
+        📄 Format PDF (.pdf)
+      </button>
+      
+      <button (click)="generateDocument('docx')" 
+              class="w-full py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg font-semibold hover:bg-blue-100 flex items-center justify-center gap-2">
+        📝 Format Word (.docx)
+      </button>
+      
+      <button (click)="showFormatModal = false" class="mt-2 text-gray-500 text-sm font-medium">
+        Annuler
+      </button>
+    </div>
+  </div>
+</div>
+      </div>
+
+    </div>
+  </div>
+</main>

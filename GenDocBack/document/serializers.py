@@ -26,9 +26,16 @@ class CategorieTemplateSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     """Serializer pour les questions du formulaire"""
 
+    options = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='valeur', # Le nom du champ dans l'image 8
+        source='choix'
+    )
+
     class Meta:
         model = Question
-        fields = ['id', 'label', 'variable', 'type_champ', 'obligatoire']
+        fields = ['id', 'label', 'variable', 'type_champ', 'obligatoire', 'options']
         read_only_fields = ['id']
 
 

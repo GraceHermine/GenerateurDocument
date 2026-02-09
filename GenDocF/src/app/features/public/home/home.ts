@@ -1,53 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { CategorieService } from '../../../core/services/categorie.service';
+import { CategorieTemplate } from '../../../core/models/document.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './home.html',
-  styleUrls: ['./home.scss'],
 })
-export class Home {
+export class Home implements OnInit {
+  categories: CategorieTemplate[] = [];
+  isLoading = true;
+  errorMessage: string | null = null;
 
-  categories = [
-    {
-      title: 'Attestations & Déclarations',
-      slug: 'attestations-declarations',
-      description: 'Attestation sur l’honneur, hébergement, domicile, etc.',
-      icon: 'description'
-    },
-    {
-      title: 'Résiliations & Contrats',
-      slug: 'resiliations-contrats',
-      description: 'Assurance, abonnement, logement, services.',
-      icon: 'assignment_return'
-    },
-    {
-      title: 'Réclamations & Litiges',
-      slug: 'reclamations-litiges',
-      description: 'Courriers de plainte, contestation et mise en demeure.',
-      icon: 'gavel'
-    },
-    {
-      title: 'Travail & Études',
-      slug: 'travail-et-etudes',
-      description: 'Demande de stage, congé, attestation employeur.',
-      icon: 'school'
-    },
-    {
-      title: 'Vie quotidienne',
-      slug: 'vie-quotidienne',
-      description: 'Courriers administratifs et démarches personnelles.',
-      icon: 'home'
-    },
-    {
-      title: 'Autres documents',
-      slug: 'autres',
-      description: 'Modèles personnalisables selon vos besoins.',
-      icon: 'folder'
-    }
-  ];
+  constructor(
+    private categorieService: CategorieService,
+    private cdr: ChangeDetectorRef // Ajouté pour forcer le rafraîchissement de la vue
+  ) {}
 
+  ngOnInit(): void {
+    this.loadCategories();
+  }
+
+  loadCategories(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    this.categorieService.getAllCategories().subscribe({
+      next: (response: CategorieTemplate[]) => {
+        this.categories = response;
+        this.isLoading = false;
+        
+        // Force Angular à détecter les changements suite au bug d'hydratation SSR
+        this.cdr.detectChanges(); 
+        
+        console.log(`✅ ${this.categories.length} catégories chargées`);
+      },
+      error: (error: Error) => {
+        console.error('❌ Erreur lors du chargement des catégories:', error);
+        this.errorMessage = error.message || 'Une erreur est survenue lors de la récupération des données.';
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
 }

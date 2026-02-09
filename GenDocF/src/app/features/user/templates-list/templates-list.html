@@ -1,62 +1,61 @@
-<!-- Page Content -->
 <div class="p-8">
-  <!-- Heading -->
   <div class="mb-8">
-    <h2 class="text-[#1b130d] dark:text-[#fcfaf8] text-3xl font-bold tracking-tight">Bibliothèque de Templates</h2>
-    <p class="text-[#9a6c4c] dark:text-[#b08b72] mt-1">Choisissez parmi plus de 50 modèles professionnels pour vos besoins administratifs.</p>
+    <h2 class="text-3xl font-bold">
+      Bibliothèque de Templates ({{ displayedTemplates.length }})
+    </h2>
   </div>
 
-  <!-- Filters -->
-  <div class="flex items-center gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
-    <button routerLink="/templates" class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-5 text-white shadow-sm">
-      <span class="text-sm font-medium">Tous</span>
+  <div class="flex gap-3 mb-8 overflow-x-auto pb-2">
+    <button (click)="filterByCategory(null)"
+      [class]="selectedCategoryId === null ? 'bg-primary text-white' : 'bg-[#f3ece7]'"
+      class="rounded-full px-5 py-2 transition-colors whitespace-nowrap">
+      Tous ({{ allTemplates.length }})
     </button>
-    <button routerLink="/templates?category=contracts" class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-[#f3ece7] dark:bg-[#3a2a1d] px-5 text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
-      <span class="text-sm font-medium">Contrats</span>
-      <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+
+    <button *ngFor="let cat of categories"
+      (click)="filterByCategory(cat.id)"
+      [class]="selectedCategoryId === cat.id ? 'bg-primary text-white' : 'bg-[#f3ece7]'"
+      class="rounded-full px-5 py-2 transition-colors whitespace-nowrap">
+      {{ cat.nom }} ({{ getTemplatesByCategory(cat.id).length }})
     </button>
-    <button routerLink="/templates?category=invoices" class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-full bg-[#f3ece7] dark:bg-[#3a2a1d] px-5 text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#e9ded5] dark:hover:bg-[#4a3a2d]">
-      <span class="text-sm font-medium">Factures</span>
-      <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
-    </button>
-    <!-- Ajoute les autres filtres ici -->
   </div>
 
-  <!-- Template Grid -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    <!-- Exemple de card -->
-    <div class="group flex flex-col rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] bg-white dark:bg-[#2d2116] overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all">
-      <div class="relative aspect-[3/4] bg-[#f9f5f2] dark:bg-[#1e150d] p-6 border-b border-[#f3ece7] dark:border-[#3a2a1d]">
-        <div class="w-full h-full bg-white dark:bg-[#221810] shadow-sm rounded p-4 flex flex-col gap-2 overflow-hidden opacity-80">
-          <div class="w-3/4 h-2 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
-          <div class="w-full h-1 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
-          <div class="w-full h-1 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
-          <div class="mt-4 w-1/2 h-2 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
-          <div class="w-full h-1 bg-[#f3ece7] dark:bg-[#3a2a1d]"></div>
-        </div>
-        <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors flex items-center justify-center">
-          <span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 scale-150 transition-all">visibility</span>
-        </div>
+  <div *ngIf="!isLoading && displayedTemplates.length > 0" 
+       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    
+    <div *ngFor="let template of displayedTemplates" class="border rounded-xl p-4 bg-white shadow-sm flex flex-col">
+      <div class="text-primary font-bold text-xs mb-2 uppercase tracking-wider">
+        {{ template.categorie_nom }}
       </div>
-      <div class="p-4 flex flex-col gap-3">
-        <div>
-          <h3 class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">Contrat de Prestation</h3>
-          <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72] mt-1">Juridique • 4 pages</p>
-        </div>
-        <div class="flex gap-2 pt-2">
-          <button routerLink="/template-preview" class="flex-1 text-xs font-bold py-2 px-3 border border-[#f3ece7] dark:border-[#3a2a1d] rounded-lg hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d] transition-colors">Aperçu</button>
-          <button routerLink="/user/dynamic-form" class="flex-1 text-xs font-bold py-2 px-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">Utiliser</button>
-        </div>
+      
+      <h3 class="font-bold text-lg mb-2">{{ template.nom }}</h3>
+      
+      <p class="text-sm text-gray-600 flex-grow">
+        {{ template.description || 'Prêt à l\'emploi pour vos documents.' }}
+      </p>
+      
+      <div class="flex gap-2 mt-6">
+        <button [routerLink]="['/template', template.id]" 
+                class="flex-1 border border-gray-200 rounded-lg p-2 text-xs font-medium hover:bg-gray-50 transition-colors">
+          Aperçu
+        </button>
+        <button [routerLink]="['/dynamic-form', template.id]" 
+                class="flex-1 bg-primary text-white rounded-lg p-2 text-xs font-medium hover:opacity-90 transition-colors">
+          Utiliser
+        </button>
       </div>
     </div>
-    <!-- Tu peux dupliquer les cards pour les autres templates -->
   </div>
 
-  <!-- Load More / Pagination -->
-  <div class="mt-12 flex justify-center">
-    <button routerLink="/templates" class="flex items-center gap-2 px-8 py-3 bg-[#f3ece7] dark:bg-[#3a2a1d] rounded-lg text-sm font-bold hover:bg-primary/10 transition-colors">
-      <span>Afficher plus de modèles</span>
-      <span class="material-symbols-outlined">expand_more</span>
+  <div *ngIf="isLoading" class="text-center py-20">
+    <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-primary border-t-transparent mb-4"></div>
+    <p class="italic text-gray-500">Chargement de la bibliothèque...</p>
+  </div>
+
+  <div *ngIf="!isLoading && displayedTemplates.length === 0" class="text-center py-20 border-2 border-dashed rounded-3xl">
+    <p class="text-gray-500">Aucun template ne correspond à cette catégorie.</p>
+    <button (click)="filterByCategory(null)" class="text-primary font-bold mt-2 underline">
+      Voir tous les modèles
     </button>
   </div>
 </div>

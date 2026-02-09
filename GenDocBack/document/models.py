@@ -68,6 +68,7 @@ class Question(models.Model):
         ('date', 'Date'),
         ('number', 'Nombre'),
         ('email', 'Email'),
+        ('select', 'Liste déroulante'),
     ]
 
     formulaire = models.ForeignKey(
@@ -92,6 +93,18 @@ class Question(models.Model):
 
     def __str__(self):
         return self.label
+
+
+class ChoixQuestion(models.Model):
+    question = models.ForeignKey(
+        Question,
+        on_delete=models.CASCADE,
+        related_name='choix'
+    )
+    valeur = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.valeur
 
 
 class TypeDocument(models.Model):
