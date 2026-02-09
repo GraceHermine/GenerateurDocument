@@ -98,19 +98,19 @@ export class DocumentGeneration implements OnInit {
   }
 
   generateAnother(): void {
-    this.router.navigate(['/templates']);
+    this.router.navigate(['/user/templates-list']);
   }
 
   goToDashboard(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/user']);
   }
 
   goToHistory(): void {
-    this.router.navigate(['/documents']);
+    this.router.navigate(['/user/document']);
   }
 
   goToTemplates(): void {
-    this.router.navigate(['/templates']);
+    this.router.navigate(['/user/templates-list']);
   }
 
   getStatusBadgeClass(status: string): string {

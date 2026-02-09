@@ -15,7 +15,7 @@ export class DocumentGenereService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
 
-  private readonly endpoint = 'api/documents/documents';
+  private readonly endpoint = 'documents/documents';
   private readonly apiUrl = `${environment.apiUrl}/documents/documents`;
 
   // 📄 Liste paginée
@@ -59,7 +59,7 @@ export class DocumentGenereService {
 
   // 📜 Historique utilisateur
   getUserDocuments(): Observable<DocumentHistory[]> {
-    return this.http.get<DocumentHistory[]>(`${this.apiUrl}/`, { headers: this.getHeaders() });
+    return this.apiService.get<DocumentHistory[]>(`${this.endpoint}/history/`);
   }
 
   // ⬇️ Télécharger

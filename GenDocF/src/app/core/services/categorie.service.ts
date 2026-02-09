@@ -8,7 +8,7 @@ import { CategorieTemplate, PaginatedResponse } from '../models/document.model';
 })
 export class CategorieService {
   private readonly apiService = inject(ApiService);
-  private readonly endpoint = 'api/documents/categories/'; // ✅ corrigé
+  private readonly endpoint = 'documents/categories/';
 
   getCategories(page: number = 1): Observable<PaginatedResponse<CategorieTemplate>> {
     return this.apiService.get<PaginatedResponse<CategorieTemplate>>(

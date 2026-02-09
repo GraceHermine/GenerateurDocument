@@ -168,10 +168,16 @@ class DocumentGenereCreateSerializer(serializers.ModelSerializer):
         """Créer le document et ses réponses"""
         reponses_data = validated_data.pop('reponses')
 
+        request = self.context.get('request')
+        user = getattr(request, 'user', None) if request else None
+        if user and user.is_authenticated:
+            validated_data['user'] = user
+
         document = DocumentGenere.objects.create(
             template=validated_data['template'],
             format=validated_data['format'],
-            status='pending'
+            status='pending',
+            user=validated_data.get('user')
         )
 
         for reponse_data in reponses_data:

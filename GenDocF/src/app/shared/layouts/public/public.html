@@ -13,31 +13,31 @@
       </div>
 
       <nav class="hidden md:flex items-center gap-8">
-          <a routerLink="/public" 
+           <a routerLink="/public/home" 
            routerLinkActive="text-primary font-semibold" 
            [routerLinkActiveOptions]="{exact: true}"
            class="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
            Accueil
         </a>
         
-          <a routerLink="/public/templates" 
+           <a routerLink="/public/templates" 
            routerLinkActive="text-primary font-semibold"
            class="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
            Templates
         </a>
         
-          <a routerLink="/public/generate" 
+           <a routerLink="/public/document-generation" 
            routerLinkActive="text-primary font-semibold"
            class="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
            Générer
         </a>
         
-          <a routerLink="/public/about" 
+           <a routerLink="/public/about" 
            routerLinkActive="text-primary font-semibold"
            class="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
            À propos
         </a>
-          <a routerLink="/public/contact" 
+           <a routerLink="/public/contact" 
            routerLinkActive="text-primary font-semibold"
            class="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
            Contact
@@ -64,7 +64,7 @@
 
     <div class="md:hidden border-t border-gray-200 bg-white" *ngIf="isMobileMenuOpen">
       <nav class="flex flex-col px-6 py-4 space-y-3">
-          <a routerLink="/public" 
+           <a routerLink="/public/home" 
            routerLinkActive="text-primary font-semibold bg-primary/5"
            [routerLinkActiveOptions]="{exact: true}"
            class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
@@ -72,27 +72,27 @@
            Accueil
         </a>
         
-          <a routerLink="/public/templates" 
+           <a routerLink="/public/templates" 
            routerLinkActive="text-primary font-semibold bg-primary/5"
            class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
            (click)="closeMobileMenu()">
            Templates
         </a>
         
-          <a routerLink="/public/generate" 
+           <a routerLink="/public/document-generation" 
            routerLinkActive="text-primary font-semibold bg-primary/5"
            class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
            (click)="closeMobileMenu()">
            Générer
         </a>
         
-          <a routerLink="/public/about" 
+           <a routerLink="/public/about" 
            routerLinkActive="text-primary font-semibold bg-primary/5"
            class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
            (click)="closeMobileMenu()">
            À propos
         </a>
-          <a routerLink="/public/contact" 
+           <a routerLink="/public/contact" 
            routerLinkActive="text-primary font-semibold bg-primary/5"
            class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
            (click)="closeMobileMenu()">
@@ -137,11 +137,11 @@
         <div>
           <h4 class="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Navigation</h4>
           <ul class="space-y-3">
-            <li><a routerLink="/public" class="hover:text-primary transition-colors text-sm">Accueil</a></li>
+            <li><a routerLink="/public/home" class="hover:text-primary transition-colors text-sm">Accueil</a></li>
             
             <li><a routerLink="/public/templates" class="hover:text-primary transition-colors text-sm">Templates</a></li>
             
-            <li><a routerLink="/public/generate" class="hover:text-primary transition-colors text-sm">Générer un document</a></li>
+            <li><a routerLink="/public/document-generation" class="hover:text-primary transition-colors text-sm">Générer un document</a></li>
             
             <li><a routerLink="/public/about" class="hover:text-primary transition-colors text-sm">À propos</a></li>
           </ul>

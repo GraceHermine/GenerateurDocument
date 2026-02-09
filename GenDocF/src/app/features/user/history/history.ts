@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Indispensable pour *ngFor et DatePipe
+import { RouterModule } from '@angular/router';
 import { DocumentGenereService } from '../../../core/services/document.service';
 import { DocumentHistory } from '../../../core/models/document.model';
 
@@ -7,7 +8,7 @@ import { DocumentHistory } from '../../../core/models/document.model';
   selector: 'app-history',
   standalone: true,
   // ✅ On importe CommonModule pour pouvoir utiliser les boucles et les dates dans le HTML
-  imports: [CommonModule], 
+  imports: [CommonModule, RouterModule], 
   templateUrl: './history.html',
   styleUrl: './history.scss',
 })
@@ -18,7 +19,10 @@ export class History implements OnInit {
   isLoading: boolean = true;
   errorMessage: string | null = null;
 
-  constructor(private documentService: DocumentGenereService) {}
+  constructor(
+    private documentService: DocumentGenereService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   // Cette fonction se lance automatiquement au chargement de la page
   ngOnInit(): void {
@@ -31,11 +35,13 @@ export class History implements OnInit {
         console.log('Documents reçus :', data); // Pour le débogage
         this.documents = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('Erreur API :', err);
         this.errorMessage = "Impossible de charger l'historique.";
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

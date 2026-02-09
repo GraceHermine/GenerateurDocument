@@ -8,7 +8,7 @@ import { DocumentGenere, PaginatedResponse } from '../models/document.model';
 })
 export class DocumentGenereService {
   private readonly apiService = inject(ApiService);
-  private readonly endpoint = 'api/documents/documents/';
+  private readonly endpoint = 'documents/documents/';
 
   getDocuments(page: number = 1, statut?: string): Observable<PaginatedResponse<DocumentGenere>> {
     let url = `${this.endpoint}?page=${page}`;

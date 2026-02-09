@@ -20,7 +20,7 @@
 
         <div class="flex flex-wrap gap-4">
           <button
-            routerLink="/templates"
+            routerLink="/public/templates"
             class="flex h-14 min-w-[180px] items-center justify-center rounded-xl bg-primary px-8 text-base font-bold text-white shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all hover:-translate-y-0.5">
             Commencer l'essai
           </button>
@@ -136,7 +136,7 @@
         </div>
 
         <a
-          [routerLink]="['/templates', { category: category.id }]">
+          [routerLink]="['/public/templates', { category: category.id }]">
           Voir les modèles
         </a>
 

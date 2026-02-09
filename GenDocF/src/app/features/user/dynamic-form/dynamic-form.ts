@@ -137,12 +137,12 @@ export class DynamicForm implements OnInit {
             
             // 2. Aller vers la page de félicitations
             this.isGenerating = false;
-            this.router.navigate(['/generation-result', res.id]);
+            this.router.navigate(['/user/generation-result', res.id]);
           },
           error: (err) => {
             console.error("Erreur de téléchargement, mais on avance quand même", err);
             this.isGenerating = false;
-            this.router.navigate(['/generation-result', res.id]);
+            this.router.navigate(['/user/generation-result', res.id]);
           }
         });
       },
@@ -154,6 +154,6 @@ export class DynamicForm implements OnInit {
   }
 
   cancelForm(): void {
-    this.router.navigate(['/templates']);
+    this.router.navigate(['/user/templates-list']);
   }
 }

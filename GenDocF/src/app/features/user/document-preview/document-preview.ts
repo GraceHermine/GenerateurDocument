@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common'; // AJOUTE CET IMPORT
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DocumentGenereService } from '../../../core/services/document-genere.service';
 import { DocumentGenere } from '../../../core/models/document.model';
 
@@ -10,17 +11,26 @@ import { DocumentGenere } from '../../../core/models/document.model';
   templateUrl: './document-preview.html',
   styleUrl: './document-preview.scss',
 })
-export class DocumentPreview implements OnInit {
+export class DocumentPreview implements OnInit, OnDestroy {
   document: DocumentGenere | null = null;
   isLoading = true;
+  isPdfLoading = false;
+  pdfError: string | null = null;
+  pdfUrl: SafeResourceUrl | null = null;
+  private pdfObjectUrl: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
-    private documentService: DocumentGenereService
+    private documentService: DocumentGenereService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
     this.loadDocument();
+  }
+
+  ngOnDestroy(): void {
+    this.revokePdfUrl();
   }
 
   loadDocument(): void {
@@ -31,12 +41,45 @@ export class DocumentPreview implements OnInit {
         next: (doc) => {
           this.document = doc;
           this.isLoading = false;
+          this.loadPdfPreview();
         },
         error: (error) => {
           console.error('Erreur lors du chargement:', error);
           this.isLoading = false;
         }
       });
+  }
+
+  loadPdfPreview(): void {
+    if (!this.document) {
+      return;
+    }
+
+    this.isPdfLoading = true;
+    this.pdfError = null;
+    this.revokePdfUrl();
+
+    this.documentService.downloadDocument(this.document.id)
+      .subscribe({
+        next: (blob) => {
+          this.pdfObjectUrl = window.URL.createObjectURL(blob);
+          this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfObjectUrl);
+          this.isPdfLoading = false;
+        },
+        error: (error) => {
+          console.error('Erreur lors du chargement du PDF:', error);
+          this.pdfError = 'Impossible de charger le PDF.';
+          this.isPdfLoading = false;
+        }
+      });
+  }
+
+  private revokePdfUrl(): void {
+    if (this.pdfObjectUrl) {
+      window.URL.revokeObjectURL(this.pdfObjectUrl);
+      this.pdfObjectUrl = null;
+    }
+    this.pdfUrl = null;
   }
 
   // GETTERS

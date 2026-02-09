@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environments';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +11,17 @@ import { environment } from '../../../environments/environments';
 export class ApiService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = environment.apiUrl;
+  private readonly authService = inject(AuthService);
 
   private getHeaders(): HttpHeaders {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
 
-    // const token = this.getAuthToken();
-    // if (token) {
-    //   headers = headers.set('Authorization', `Bearer ${token}`);
-    // }
+    const token = this.authService.getToken();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
 
     return headers;
   }
@@ -96,10 +98,10 @@ export class ApiService {
   uploadFile<T>(endpoint: string, formData: FormData): Observable<T> {
     let headers = new HttpHeaders();
     
-    // const token = this.getAuthToken();
-    // if (token) {
-    //   headers = headers.set('Authorization', `Bearer ${token}`);
-    // }
+    const token = this.authService.getToken();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
 
     return this.http.post<T>(`${this.baseUrl}/${endpoint}`, formData, {
       headers: headers
@@ -111,10 +113,10 @@ export class ApiService {
   downloadFile(endpoint: string): Observable<Blob> {
     let headers = new HttpHeaders();
     
-    // const token = this.getAuthToken();
-    // if (token) {
-    //   headers = headers.set('Authorization', `Bearer ${token}`);
-    // }
+    const token = this.authService.getToken();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
 
     return this.http.get(`${this.baseUrl}/${endpoint}`, {
       headers: headers,

@@ -32,7 +32,7 @@
         <h2 class="text-3xl font-extrabold text-[#1b130d] dark:text-[#fcfaf8] tracking-tight">Historique des Documents</h2>
         <p class="text-[#9a6c4c] dark:text-[#b08b72] mt-1">Gérez et téléchargez vos documents précédemment générés.</p>
       </div>
-      <button routerLink="/documents/new" class="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20">
+      <button routerLink="/user/document-generation" class="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/20">
         <span class="material-symbols-outlined">add</span>
         Nouveau Document
       </button>
@@ -52,67 +52,67 @@
       </button>
     </div>
 
-    <!-- Documents Table -->
-    <div class="bg-white dark:bg-[#2d2116] rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] overflow-hidden shadow-sm">
-      <table class="w-full text-left border-collapse">
+    <div *ngIf="isLoading" class="bg-white dark:bg-[#2d2116] rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] p-10 text-center">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-primary border-t-transparent mb-4"></div>
+      <p class="text-[#9a6c4c] dark:text-[#b08b72]">Chargement de l'historique...</p>
+    </div>
+
+    <div *ngIf="!isLoading && errorMessage" class="bg-red-50 border border-red-200 rounded-xl p-6 text-red-700">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage" class="bg-white dark:bg-[#2d2116] rounded-xl border border-[#f3ece7] dark:border-[#3a2a1d] overflow-hidden shadow-sm">
+      <table class="w-full text-left border-collapse" *ngIf="documents.length > 0; else emptyState">
         <thead>
           <tr class="bg-[#f3ece7] dark:bg-[#3a2a1d] border-b border-[#f3ece7] dark:border-[#3a2a1d]">
             <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Nom du Document</th>
             <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Date de création</th>
-            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Type</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Format</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Statut</th>
             <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-right">Actions</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-[#f3ece7] dark:divide-[#3a2a1d]">
-          <!-- Exemple Row -->
-          <tr class="hover:bg-[#f3ece7]/50 transition-colors">
+          <tr *ngFor="let doc of documents" class="hover:bg-[#f3ece7]/50 transition-colors">
             <td class="px-6 py-4">
               <div class="flex items-center gap-3">
-                <div class="size-9 bg-primary/10 rounded flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                  <span class="material-symbols-outlined">picture_as_pdf</span>
+                <div class="size-9 bg-primary/10 rounded flex items-center justify-center text-primary">
+                  <span class="material-symbols-outlined">description</span>
                 </div>
                 <div>
-                  <p class="text-sm font-bold">Facture_Q4_Apple_Inc.pdf</p>
-                  <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72]">2.4 MB</p>
+                  <p class="text-sm font-bold">{{ doc.template_nom }}</p>
+                  <p class="text-xs text-[#9a6c4c] dark:text-[#b08b72]">{{ doc.format | uppercase }}</p>
                 </div>
               </div>
             </td>
-            <td class="px-6 py-4"><p class="text-sm text-[#1b130d] dark:text-[#fcfaf8]">12 Oct 2023</p></td>
             <td class="px-6 py-4">
-              <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide bg-accent-yellow/10 text-accent-yellow border border-accent-yellow/20">Facture</span>
+              <p class="text-sm text-[#1b130d] dark:text-[#fcfaf8]">{{ doc.date_generation | date:'dd MMM yyyy' }}</p>
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide bg-warm-beige text-[#1b130d] border border-[#e9ded5]">{{ doc.format }}</span>
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide bg-primary/10 text-primary border border-primary/20">{{ doc.status }}</span>
             </td>
             <td class="px-6 py-4 text-right">
               <div class="flex justify-end gap-2">
-                <button routerLink="/document-preview" class="p-2 hover:bg-primary/10 rounded-lg transition-all">
+                <button [routerLink]="['/user/document-preview', doc.id]" class="p-2 hover:bg-primary/10 rounded-lg transition-all">
                   <span class="material-symbols-outlined">visibility</span>
                 </button>
-                <button class="p-2 hover:bg-primary/10 rounded-lg transition-all">
+                <button (click)="onDownload(doc)" class="p-2 hover:bg-primary/10 rounded-lg transition-all">
                   <span class="material-symbols-outlined">download</span>
                 </button>
               </div>
             </td>
           </tr>
-          <!-- Tu peux dupliquer Row ici pour plus de documents -->
         </tbody>
       </table>
 
-      <!-- Pagination -->
-      <div class="px-6 py-4 border-t border-[#f3ece7] flex items-center justify-between">
-        <p class="text-sm text-[#9a6c4c] dark:text-[#b08b72]">
-          Affichage de <span class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">1</span> à <span class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">10</span> sur <span class="font-bold text-[#1b130d] dark:text-[#fcfaf8]">150</span> documents
-        </p>
-        <div class="flex items-center gap-2">
-          <button class="px-3 py-1.5 rounded border border-[#f3ece7] dark:border-[#3a2a1d] text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] disabled:opacity-50" disabled>Précédent</button>
-          <div class="flex items-center gap-1">
-            <button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-white text-sm font-bold shadow-sm">1</button>
-            <button class="w-8 h-8 flex items-center justify-center rounded text-[#1b130d] dark:text-[#fcfaf8] text-sm font-medium hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">2</button>
-            <button class="w-8 h-8 flex items-center justify-center rounded text-[#1b130d] dark:text-[#fcfaf8] text-sm font-medium hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">3</button>
-            <span class="px-1 text-[#9a6c4c] dark:text-[#b08b72]">...</span>
-            <button class="w-8 h-8 flex items-center justify-center rounded text-[#1b130d] dark:text-[#fcfaf8] text-sm font-medium hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">15</button>
-          </div>
-          <button class="px-3 py-1.5 rounded border border-[#f3ece7] dark:border-[#3a2a1d] text-sm font-medium text-[#1b130d] dark:text-[#fcfaf8] hover:bg-[#f3ece7] dark:hover:bg-[#3a2a1d]">Suivant</button>
+      <ng-template #emptyState>
+        <div class="p-10 text-center text-[#9a6c4c] dark:text-[#b08b72]">
+          Aucun document dans votre historique.
         </div>
-      </div>
+      </ng-template>
     </div>
   </div>
 </main>

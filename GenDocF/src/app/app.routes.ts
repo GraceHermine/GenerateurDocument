@@ -9,6 +9,12 @@ import { Contact } from './features/public/contact/contact';
 import { Faq } from './features/public/faq/faq';
 import { Guide } from './features/public/guide/guide';
 import { Help } from './features/public/help/help';
+import { Public } from './shared/layouts/public/public';
+import { Auth } from './shared/layouts/auth/auth';
+import { Login } from './features/auth/login/login';
+import { Register } from './features/auth/register/register';
+import { Forgot } from './features/auth/forgot/forgot';
+import { Logout } from './features/auth/logout/logout';
 
 import { Dashboard } from './features/user/dashboard/dashboard';
 import { Document } from './features/user/document/document';
@@ -27,71 +33,45 @@ import { TemplatePreview } from './features/user/template-preview/template-previ
 
 export const routes: Routes = [
 
-//   {
-//     path: '',
-//     redirectTo: 'public',
-//     pathMatch: 'full'
-//   },
+  {
+    path: '',
+    redirectTo: 'public',
+    pathMatch: 'full'
+  },
 
-//   // --- TES MODULES (LAZY LOADING) ---
+  // --- TES MODULES (LAZY LOADING) ---
   
-//   {
-//     // Si tu as une partie publique (Site vitrine), on peut y accéder via /public
-//     path: 'public', 
-//     loadChildren: () => 
-//       import('./features/public/public-routing-module').then(m => m.PublicRoutingModule)
-//   },
-//   {
-//     path: 'auth',
-//     loadChildren: () => 
-//       import('./features/auth/auth-routing-module').then(m => m.AuthRoutingModule)
-//   },
-//   {
-//     path: 'user',
-//     loadChildren: () => 
-//       import('./features/user/user-routing-module').then(m => m.UserRoutingModule),
-//     canMatch: [authMatchGuard]
-//   },
-//   {
-//     path: 'admin',
-//     loadChildren: () => 
-//       import('./features/admin/admin-routing-module').then(m => m.AdminRoutingModule)
-//   },
+  {
+    // Si tu as une partie publique (Site vitrine), on peut y accéder via /public
+    path: 'public', 
+    loadChildren: () => 
+      import('./features/public/public-routing-module').then(m => m.PublicRoutingModule)
+  },
+  {
+    path: 'auth',
+    loadChildren: () => 
+      import('./features/auth/auth-routing-module').then(m => m.AuthRoutingModule)
+  },
+  {
+    path: 'user',
+    loadChildren: () => 
+      import('./features/user/user-routing-module').then(m => m.UserRoutingModule),
+    canMatch: [authMatchGuard]
+  },
+  {
+    path: 'admin',
+    loadChildren: () => 
+      import('./features/admin/admin-routing-module').then(m => m.AdminRoutingModule)
+  },
 
-//   // --- GESTION DES ERREURS (404) ---
+  // --- GESTION DES ERREURS (404) ---
   
-//   // Si l'URL n'existe pas, on renvoie vers le login
-//   { 
-//     path: '**', 
-//     redirectTo: 'public' 
-//   }
+  // Si l'URL n'existe pas, on renvoie vers le login
+  { 
+    path: '**', 
+    redirectTo: 'public' 
+  }
 
-  // Routes publiques
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: Home },
-  { path: 'about', component: About },
-  { path: 'contact', component: Contact },
-  { path: 'faq', component: Faq },
-  { path: 'guide', component: Guide },
-  { path: 'help', component: Help },
   
-  // Routes utilisateur
-  { path: 'dashboard', component: Dashboard },
-  { path: 'documents', component: Document },
-  { path: 'document/:id', component: DocumentPreview },
-  { path: 'templates', component: TemplatesList },
-  { path: 'template/:id', component: TemplatePreview },
-  { path: 'dynamic-form/:id', component: DynamicForm },
-  { path: 'generation-result/:id', component: GenerationResult },
-  { path: 'document-generation', component: DocumentGeneration },
-  { path: 'history', component: History },
-  { path: 'notifications', component: Notifications },
-  { path: 'profile', component: Profile },
-  { path: 'settings', component: SettingsComponent },
-  { path: 'template/create', component: TemplateCreate },
-  { path: 'template/manage', component: TemplateManage },
-  
-  // Fallback
-  { path: '**', redirectTo: 'home' }
 
 ];

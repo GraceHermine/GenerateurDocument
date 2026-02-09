@@ -2,7 +2,7 @@ import re
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from django.core.files.base import ContentFile
@@ -39,6 +39,8 @@ class CategorieTemplateViewSet(viewsets.GenericViewSet,
 
     queryset = CategorieTemplate.objects.all()
     serializer_class = CategorieTemplateSerializer
+    authentication_classes = []
+    permission_classes = [AllowAny]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['nom', 'description']
     ordering_fields = ['nom', 'id']
@@ -193,6 +195,10 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
                 print("❌ Aucun fichier template trouvé")
                 return False
 
+            if not os.path.exists(document_obj.template.fichier.path):
+                print("❌ Fichier template introuvable sur le disque")
+                return False
+
             # Ouvrir le document Word template
             doc = Document(document_obj.template.fichier.path)
             print(f"✅ Template chargé : {document_obj.template.fichier.path}")
@@ -278,6 +284,15 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
         document = serializer.save()
         print(f"📄 Document créé : ID={document.id}")
 
+        template_file = document.template.fichier
+        if not template_file or not os.path.exists(template_file.path):
+            document.status = 'error'
+            document.save()
+            return Response(
+                {"error": "Fichier template introuvable. Veuillez recharger le template."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         # 2. Sauvegarder les réponses en base
         reponses_data = request.data.get('reponses', [])
         print(f"📝 Nombre de réponses reçues : {len(reponses_data)}")
@@ -299,6 +314,16 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
             {"error": "Échec lors de la génération du fichier"}, 
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+    @action(detail=False, methods=['get'], permission_classes=[AllowAny])
+    def history(self, request):
+        """Historique des documents générés de l'utilisateur connecté."""
+        if not request.user or not request.user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        documents = self.queryset.filter(user=request.user).order_by('-date_generation')
+        serializer = DocumentGenereListSerializer(documents, many=True)
+        return Response(serializer.data)
 
     @action(detail=True, methods=['get'])
     def download(self, request, pk=None):

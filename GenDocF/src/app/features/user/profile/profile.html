@@ -78,10 +78,10 @@
 </button>
 </div>
 <div class="flex flex-col">
-<h3 class="text-wood-brown dark:text-white text-2xl font-extrabold leading-tight">Gregoire Franck</h3>
+<h3 class="text-wood-brown dark:text-white text-2xl font-extrabold leading-tight">{{ fullName }}</h3>
 <p class="text-soft-brown text-base flex items-center gap-1">
 <span class="material-symbols-outlined text-[18px]">mail</span>
-                                    frank.raissa@docuwood.fr
+                                    {{ email }}
                                 </p>
 <div class="mt-2 flex gap-2">
 <span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider rounded">Administrateur</span>
@@ -121,19 +121,11 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <div class="space-y-1">
 <label class="text-xs font-bold text-soft-brown uppercase tracking-wider">Prénom</label>
-<p class="text-base font-medium">Gregoire</p>
+<p class="text-base font-medium">{{ user?.prenom || '-' }}</p>
 </div>
 <div class="space-y-1">
 <label class="text-xs font-bold text-soft-brown uppercase tracking-wider">Nom</label>
-<p class="text-base font-medium">Franck</p>
-</div>
-<div class="space-y-1">
-<label class="text-xs font-bold text-soft-brown uppercase tracking-wider">Entreprise</label>
-<p class="text-base font-medium">Menuiserie</p>
-</div>
-<div class="space-y-1">
-<label class="text-xs font-bold text-soft-brown uppercase tracking-wider">Poste</label>
-<p class="text-base font-medium">Directeur des Opérations</p>
+<p class="text-base font-medium">{{ user?.nom || '-' }}</p>
 </div>
 <div class="space-y-1">
 <label class="text-xs font-bold text-soft-brown uppercase tracking-wider">Téléphone</label>

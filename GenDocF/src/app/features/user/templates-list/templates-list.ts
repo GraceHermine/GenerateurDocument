@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { TemplateService } from '../../../core/services/template.service';
@@ -23,7 +23,8 @@ export class TemplatesList implements OnInit {
     private templateService: TemplateService,
     private categorieService: CategorieService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -52,9 +53,15 @@ export class TemplatesList implements OnInit {
           this.allTemplates = Array.isArray(response) ? response : [];
         }
         
-        // Gestion des paramètres de l'URL pour le filtrage
-        this.route.params.subscribe(params => {
-          const catId = params['category'];
+        // Affichage immédiat sans attendre un clic
+        this.displayedTemplates = [...this.allTemplates];
+        this.isLoading = false;
+        this.cdr.detectChanges();
+
+        this.applyFilterFromRoute();
+
+        this.route.paramMap.subscribe(paramMap => {
+          const catId = paramMap.get('category');
           this.selectedCategoryId = catId ? Number(catId) : null;
           this.applyFilter();
         });
@@ -62,8 +69,15 @@ export class TemplatesList implements OnInit {
       error: (err) => {
         console.error('Erreur templates:', err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
+  }
+
+  applyFilterFromRoute(): void {
+    const catId = this.route.snapshot.paramMap.get('category');
+    this.selectedCategoryId = catId ? Number(catId) : null;
+    this.applyFilter();
   }
 
   applyFilter(): void {
@@ -75,13 +89,14 @@ export class TemplatesList implements OnInit {
       this.displayedTemplates = [...this.allTemplates];
     }
     this.isLoading = false; // Arrêt impératif du loader pour afficher le HTML
+    this.cdr.detectChanges();
   }
 
   filterByCategory(categoryId: number | null): void {
     if (categoryId) {
-      this.router.navigate(['/templates', { category: categoryId }]);
+      this.router.navigate(['./', { category: categoryId }], { relativeTo: this.route });
     } else {
-      this.router.navigate(['/templates']);
+      this.router.navigate(['./'], { relativeTo: this.route });
     }
   }
 

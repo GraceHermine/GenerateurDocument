@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8000' // URL de votre API Django
+  apiUrl: 'http://localhost:8000/api' // URL de votre API Django
 };
