@@ -62,6 +62,11 @@ export class DocumentGenereService {
     return this.apiService.get<DocumentHistory[]>(`${this.endpoint}/history/`);
   }
 
+  // 🕒 Activite recente (5 derniers)
+  getRecentDocuments(): Observable<DocumentHistory[]> {
+    return this.apiService.get<DocumentHistory[]>(`${this.endpoint}/recent/`);
+  }
+
   // ⬇️ Télécharger
   downloadDocument(id: number): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/${id}/download/`, {

@@ -325,6 +325,17 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
         serializer = DocumentGenereListSerializer(documents, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    def recent(self, request):
+        """Retourne les 5 documents récents de l'utilisateur connecté."""
+        documents = (
+            self.queryset
+            .filter(user=request.user)
+            .order_by('-date_generation')[:5]
+        )
+        serializer = DocumentGenereListSerializer(documents, many=True)
+        return Response(serializer.data)
+
     @action(detail=True, methods=['get'])
     def download(self, request, pk=None):
         """Télécharge un document généré"""

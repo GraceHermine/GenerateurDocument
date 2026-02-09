@@ -49,7 +49,7 @@ export class Login {
       next: () => {
         this.isLoading = false;
         // On force la redirection vers /dashboard pour contourner le problème de getDefaultRoute()
-        this.router.navigate(['/dashboard']); 
+        this.router.navigate(['/user']); 
       },
       error: (err) => {
         this.isLoading = false;

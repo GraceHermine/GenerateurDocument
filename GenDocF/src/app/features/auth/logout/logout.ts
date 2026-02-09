@@ -8,7 +8,7 @@ import { AuthService } from '../../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './logout.html',
-  styleUrl: './logout.scss',
+  styleUrls: ['./logout.scss'],
 })
 export class Logout implements OnInit {
   isLoading = true;
@@ -25,13 +25,13 @@ export class Logout implements OnInit {
         this.authService.clearSession();
         this.message = 'Deconnexion reussie.';
         this.isLoading = false;
-        this.router.navigate(['/auth/login']);
+        this.router.navigate(['/']);
       },
       error: () => {
         this.authService.clearSession();
         this.message = 'Deconnexion reussie.';
         this.isLoading = false;
-        this.router.navigate(['/auth/login']);
+        this.router.navigate(['/']);
       }
     });
   }

@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8000/api/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
 
   constructor(
     private http: HttpClient,
@@ -142,7 +142,7 @@ export class AuthService {
       : null;
 
     return this.http.post(
-      `${this.apiUrl}/auth/logout/`,
+      `${this.apiUrl}/logout/`,
       { refresh },
       { headers: this.getAuthHeaders() }
     ).pipe(
@@ -169,7 +169,7 @@ export class AuthService {
   }
 
   getUserProfile(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/auth/me/`, {
+    return this.http.get(`${this.apiUrl}/me/`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
       })

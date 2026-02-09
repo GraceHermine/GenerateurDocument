@@ -9,7 +9,7 @@
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
 
-    <a routerLink="/document-generation"
+    <a routerLink="/user/templates-list"
       class="group bg-white dark:bg-background-dark p-6 rounded-xl border border-wood-medium/10 shadow-sm hover:border-primary hover:shadow-md transition-all cursor-pointer">
       <div class="size-14 rounded-xl bg-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
         <span class="material-symbols-outlined text-wood-dark text-3xl">note_add</span>
@@ -21,7 +21,7 @@
       </div>
     </a>
 
-    <a routerLink="/templates"
+    <a routerLink="/user/template-create"
       class="group bg-white dark:bg-background-dark p-6 rounded-xl border border-wood-medium/10 shadow-sm hover:border-primary hover:shadow-md transition-all cursor-pointer">
       <div class="size-14 rounded-xl bg-primary flex items-center justify-center mb-6">
         <span class="material-symbols-outlined text-wood-dark text-3xl">description</span>
@@ -31,7 +31,7 @@
       <span class="text-primary font-bold text-sm">Voir les modèles →</span>
     </a>
 
-    <a routerLink="/history"
+    <a routerLink="/user/history"
       class="group bg-white dark:bg-background-dark p-6 rounded-xl border border-wood-medium/10 shadow-sm hover:border-primary hover:shadow-md transition-all cursor-pointer">
       <div class="size-14 rounded-xl bg-primary flex items-center justify-center mb-6">
         <span class="material-symbols-outlined text-wood-dark text-3xl">history</span>
@@ -45,7 +45,7 @@
   <div class="bg-white dark:bg-background-dark rounded-xl border border-wood-medium/10 shadow-sm overflow-hidden mb-12">
     <div class="px-6 py-5 border-b border-wood-medium/10 flex items-center justify-between">
       <h3 class="text-wood-dark dark:text-white text-lg font-bold">Activité Récente</h3>
-      <a routerLink="/history" class="text-sm font-bold text-wood-light hover:text-wood-dark transition-colors">Tout voir</a>
+      <a routerLink="/user/history" class="text-sm font-bold text-wood-light hover:text-wood-dark transition-colors">Tout voir</a>
     </div>
 
     <div class="overflow-x-auto">
@@ -63,7 +63,7 @@
             <td class="px-6 py-4">
               <div class="flex items-center gap-3">
                 <span class="material-symbols-outlined text-wood-light">article</span>
-                <a [routerLink]="['/document', doc.id]" class="text-sm font-bold text-wood-dark dark:text-white hover:underline">
+                <a [routerLink]="['/user/document-preview', doc.id]" class="text-sm font-bold text-wood-dark dark:text-white hover:underline">
                   {{ doc.titre }}
                 </a>
               </div>
@@ -71,7 +71,7 @@
             <td class="px-6 py-4 text-sm text-wood-light">{{ doc.type }}</td>
             <td class="px-6 py-4 text-sm text-wood-light">{{ doc.date }}</td>
             <td class="px-6 py-4 text-right">
-              <a [routerLink]="['/document', doc.id]" class="p-2 rounded-lg text-wood-dark hover:bg-primary/20 transition-all inline-flex">
+              <a [routerLink]="['/user/document-preview', doc.id]" class="p-2 rounded-lg text-wood-dark hover:bg-primary/20 transition-all inline-flex">
                 <span class="material-symbols-outlined">visibility</span>
               </a>
             </td>
