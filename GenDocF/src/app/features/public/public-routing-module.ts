@@ -11,6 +11,7 @@ import { Help } from './help/help';
 import { TemplatesList } from '../user/templates-list/templates-list';
 import { DocumentGeneration } from '../user/document-generation/document-generation';
 import { CategoriesComponent } from './public/categories/categories.component';
+import { DynamicForm } from '@features/user/dynamic-form/dynamic-form';
 
 const routes: Routes = [
   {
@@ -26,7 +27,9 @@ const routes: Routes = [
       { path: 'faq', component: Faq },
       { path: 'guide', component: Guide },
       { path: 'help', component: Help },
-      { path: 'categories', component: CategoriesComponent }
+      { path: 'categories', component: CategoriesComponent },
+      { path: 'dynamic-form', component: DynamicForm },
+      { path: 'dynamic-form/:id', component: DynamicForm },
     ]
   }
 ];

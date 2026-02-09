@@ -45,7 +45,7 @@
         <div *ngFor="let template of templates" class="public-card">
           <div class="public-card-title">{{ template.nom }}</div>
           <p class="public-card-text">{{ template.description }}</p>
-          <button routerLink="/dynamic-form/{{ template.id }}" class="public-btn public-btn--ghost">Utiliser ce template</button>
+          <button routerLink="/public/dynamic-form/{{ template.id }}" class="public-btn public-btn--ghost">Utiliser ce template</button>
         </div>
       </div>
     </div>

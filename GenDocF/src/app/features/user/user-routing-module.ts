@@ -12,7 +12,6 @@ import { TemplatePreview } from './template-preview/template-preview';
 import { TemplateManage } from './template-manage/template-manage';
 import { TemplateCreate } from './template-create/template-create';
 import { DocumentGeneration } from './document-generation/document-generation';
-import { DynamicForm } from './dynamic-form/dynamic-form';
 import { GenerationResult } from './generation-result/generation-result';
 import { DocumentPreview } from './document-preview/document-preview';
 import { Notifications } from './notifications/notifications';
@@ -22,6 +21,8 @@ import { SettingsComponent } from './settings/settings';
 import { authGuard } from '../../core/guards/auth.guard';
 
 const routes: Routes = [
+  // Acces sans guard pour le formulaire dynamique public
+
   { 
     path: '', 
     component: User, 
@@ -38,8 +39,6 @@ const routes: Routes = [
       { path: 'template-management', component: TemplateManage },
       { path: 'template-create', component: TemplateCreate },
       { path: 'document-generation', component: DocumentGeneration },
-      { path: 'dynamic-form', component: DynamicForm },
-      { path: 'dynamic-form/:id', component: DynamicForm },
       { path: 'generation-result', component: GenerationResult },
       { path: 'generation-result/:id', component: GenerationResult },
       { path: 'document-preview', component: DocumentPreview },

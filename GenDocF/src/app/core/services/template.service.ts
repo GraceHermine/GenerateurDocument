@@ -23,7 +23,7 @@ export class TemplateService {
   }
 
   getTemplate(id: number): Observable<TemplateDocument> {
-    return this.apiService.get<TemplateDocument>(`${this.endpoint}/${id}`);
+    return this.apiService.get<TemplateDocument>(`${this.endpoint}${id}`);
   }
 
   createTemplate(template: Partial<TemplateDocument>): Observable<TemplateDocument> {
@@ -31,11 +31,11 @@ export class TemplateService {
   }
 
   updateTemplate(id: number, template: Partial<TemplateDocument>): Observable<TemplateDocument> {
-    return this.apiService.put<TemplateDocument>(`${this.endpoint}/${id}`, template);
+    return this.apiService.put<TemplateDocument>(`${this.endpoint}${id}`, template);
   }
 
   deleteTemplate(id: number): Observable<void> {
-    return this.apiService.delete<void>(`${this.endpoint}/${id}`);
+    return this.apiService.delete<void>(`${this.endpoint}${id}`);
   }
 
   getTemplatesByCategorie(categorieId: number): Observable<TemplateDocument[]> {

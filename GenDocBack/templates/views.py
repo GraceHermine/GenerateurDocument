@@ -43,7 +43,6 @@ class TemplateViewSet(viewsets.ModelViewSet):
     - versions: Liste toutes les versions d'un template
     """
     queryset = Template.objects.filter(is_active=True)
-    permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'description']
     ordering_fields = ['title', 'created_at']

@@ -20,7 +20,6 @@ import { Dashboard } from './features/user/dashboard/dashboard';
 import { Document } from './features/user/document/document';
 import { DocumentPreview } from './features/user/document-preview/document-preview';
 import { TemplatesList } from './features/user/templates-list/templates-list';
-import { DynamicForm } from './features/user/dynamic-form/dynamic-form';
 import { GenerationResult } from './features/user/generation-result/generation-result';
 import { DocumentGeneration } from './features/user/document-generation/document-generation';
 import { History } from './features/user/history/history';
