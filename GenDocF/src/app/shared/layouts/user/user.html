@@ -1,5 +1,11 @@
-<div class="public-theme user-layout">
-  <aside class="user-sidebar">
+<div class="public-theme user-layout" [class.menu-open]="isMenuOpen">
+  <!-- Mobile Menu Toggle Button -->
+  <button class="mobile-menu-toggle" (click)="toggleMenu()">
+    <span class="material-symbols-outlined">{{ isMenuOpen ? 'close' : 'menu' }}</span>
+  </button>
+
+  <!-- Sidebar -->
+  <aside class="user-sidebar" [class.is-open]="isMenuOpen">
     <div class="user-brand">
       <div class="user-brand-mark">
         <span class="material-symbols-outlined">forest</span>
@@ -11,48 +17,49 @@
     </div>
 
     <nav class="user-nav">
-      <a routerLink="/user" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/user" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
         <span class="material-symbols-outlined">dashboard</span>
         Dashboard
       </a>
-      <a routerLink="/user/profile" routerLinkActive="is-active">
+      <a routerLink="/user/profile" routerLinkActive="is-active" (click)="closeMenu()">
         <span class="material-symbols-outlined">person</span>
         Profil
       </a>
-      <a routerLink="/user/history" routerLinkActive="is-active">
+      <a routerLink="/user/history" routerLinkActive="is-active" (click)="closeMenu()">
         <span class="material-symbols-outlined">history</span>
         Historique
       </a>
-      <a routerLink="/user/templates-list" routerLinkActive="is-active">
+      <a routerLink="/user/templates-list" routerLinkActive="is-active" (click)="closeMenu()">
         <span class="material-symbols-outlined">description</span>
         Templates
       </a>
-      <a routerLink="/user/template-create" routerLinkActive="is-active">
+      <a routerLink="/user/template-create" routerLinkActive="is-active" (click)="closeMenu()">
         <span class="material-symbols-outlined">note_add</span>
         Creer template
       </a>
 
       <div class="user-nav-divider"></div>
 
-      <a routerLink="/user/settings" routerLinkActive="is-active">
+      <a routerLink="/user/settings" routerLinkActive="is-active" (click)="closeMenu()">
         <span class="material-symbols-outlined">settings</span>
         Parametres
       </a>
-      <a routerLink="/user/notifications" routerLinkActive="is-active">
+      <a routerLink="/user/notifications" routerLinkActive="is-active" (click)="closeMenu()">
         <span class="material-symbols-outlined">notifications</span>
         Notifications
       </a>
     </nav>
 
     <div class="user-logout">
-      <button routerLink="/auth/logout">
+      <button routerLink="/auth/logout" (click)="closeMenu()">
         <span class="material-symbols-outlined">logout</span>
         Se deconnecter
       </button>
     </div>
   </aside>
 
-  <main class="user-main">
+  <!-- Main Content -->
+  <main class="user-main" (click)="isMenuOpen && closeMenu()">
     <div class="user-content">
       <router-outlet></router-outlet>
     </div>

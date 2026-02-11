@@ -1,3 +1,279 @@
 :host {
   display: block;
 }
+
+// ===========================
+// BASE LAYOUT
+// ===========================
+.user-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+// ===========================
+// SIDEBAR
+// ===========================
+.user-sidebar {
+  width: 240px;
+  background-color: #1a1a1a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 100;
+}
+
+// Brand
+.user-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-brand-mark {
+  width: 40px;
+  height: 40px;
+  background-color: #ff5722;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  .material-symbols-outlined {
+    font-size: 24px;
+    color: white;
+  }
+}
+
+.user-brand-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+}
+
+.user-brand-tag {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// Navigation
+.user-nav {
+  flex: 1;
+  padding: 1rem 0;
+  overflow-y: auto;
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.75rem 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+
+    .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+
+    &.is-active {
+      background-color: rgba(255, 87, 34, 0.1);
+      color: #ff5722;
+      border-left-color: #ff5722;
+    }
+  }
+}
+
+.user-nav-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 1rem 0;
+}
+
+// Logout
+.user-logout {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0.75rem 1rem;
+    background-color: transparent;
+    border: 1px solid #ff5722;
+    border-radius: 8px;
+    color: #ff5722;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    &:hover {
+      background-color: #ff5722;
+      color: white;
+    }
+  }
+}
+
+// ===========================
+// MAIN CONTENT
+// ===========================
+.user-main {
+  flex: 1;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+// ===========================
+// MOBILE RESPONSIVE (< 768px)
+// ===========================
+@media (max-width: 767px) {
+  .user-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+
+    &.is-open {
+      transform: translateX(0);
+    }
+  }
+
+  // Overlay pour fermer le menu
+  .user-layout::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+  }
+
+  .user-layout.menu-open::before {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .user-layout.menu-open .user-sidebar {
+    transform: translateX(0);
+  }
+
+  .user-main {
+    width: 100%;
+  }
+
+  .user-content {
+    padding: 1rem;
+  }
+}
+
+// ===========================
+// TABLET (768px - 1024px)
+// ===========================
+@media (min-width: 768px) and (max-width: 1024px) {
+  .user-sidebar {
+    width: 200px;
+  }
+
+  .user-content {
+    padding: 1.5rem;
+  }
+
+  .user-brand {
+    padding: 1.25rem 1rem;
+  }
+
+  .user-brand-name {
+    font-size: 1rem;
+  }
+}
+
+// ===========================
+// DESKTOP (> 1024px)
+// ===========================
+@media (min-width: 1025px) {
+  .user-sidebar {
+    width: 240px;
+  }
+
+  .user-content {
+    padding: 2rem;
+  }
+}
+
+// ===========================
+// MOBILE MENU TOGGLE BUTTON
+// ===========================
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+
+  .material-symbols-outlined {
+    font-size: 24px;
+  }
+
+  &:hover {
+    background-color: #f4511e;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
