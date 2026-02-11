@@ -13,12 +13,9 @@
       </div>
       <div class="public-card public-reveal">
         <div class="public-card-title">Categorie</div>
-        <select class="public-input">
-          <option disabled selected>Selectionner une categorie</option>
-          <option value="legal">Juridique</option>
-          <option value="hr">Ressources humaines</option>
-          <option value="sales">Ventes & devis</option>
-          <option value="internal">Notes internes</option>
+        <select class="public-input" [(ngModel)]="selectedCategoryId">
+          <option [ngValue]="null" disabled>Selectionner une categorie</option>
+          <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.nom }}</option>
         </select>
       </div>
     </div>

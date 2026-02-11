@@ -31,7 +31,7 @@ export class Profile implements OnInit {
       error: () => {
         this.user = null;
         this.cdr.detectChanges();
-      }
+      } 
     });
   }
 

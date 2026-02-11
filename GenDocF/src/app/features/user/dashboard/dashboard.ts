@@ -13,6 +13,7 @@ import { DocumentHistory } from '../../../core/models/document.model';
   styleUrl: './dashboard.scss',
 })
 export class Dashboard implements OnInit {
+  user: any = null;
   userName: string = 'Utilisateur';
   recentDocuments: Array<{ id: number; titre: string; type: string; date: string }> = [];
   isRecentLoading = true;
@@ -23,11 +24,26 @@ export class Dashboard implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
+  
   ngOnInit(): void {
     // On récupère le nom depuis le token via le service
     // Si vous n'avez pas encore de méthode getUserName, on peut extraire le prénom du localStorage
-    const user = JSON.parse(localStorage.getItem('user_data') || '{}');
-    this.userName = user.prenom || 'Gilbert';
+    this.authService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.user = {
+          prenom: user?.prenom ?? user?.first_name ?? '',
+          nom: user?.nom ?? user?.last_name ?? '',
+          email: user?.email ?? user?.username ?? ''
+        };
+        this.userName = this.user.prenom || 'Gilbert';
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.user = null;
+        this.cdr.detectChanges();
+      }
+    });
+    
 
     this.loadRecentDocuments();
   }
