@@ -33,6 +33,21 @@
           [(ngModel)]="responses[q.id]"
           (ngModelChange)="onResponseChange()"
           class="public-input" />
+
+          <input
+          *ngIf="q.type_champ === 'email'"
+          type="email"
+          [(ngModel)]="responses[q.id]"
+          (ngModelChange)="onResponseChange()"
+          class="public-input"
+          placeholder="exemple@domaine.com" />
+
+        <input
+          *ngIf="q.type_champ === 'number'"
+          type="number"
+          [(ngModel)]="responses[q.id]"
+          (ngModelChange)="onResponseChange()"
+          class="public-input" />
       </div>
     </div>
 

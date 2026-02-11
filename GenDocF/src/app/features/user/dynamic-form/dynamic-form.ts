@@ -117,10 +117,26 @@ export class DynamicForm implements OnInit {
     const payload = {
       template: this.templateId,
       format: format,
-      reponses: Object.keys(this.responses).map(id => ({
-        question: Number(id),
-        valeur: String(this.responses[id])
-      }))
+      reponses: Object.keys(this.responses).map(id => {
+        let valeur = this.responses[id];
+        const question = this.questions.find(q => q.id === Number(id));
+
+        // Si c'est une date et qu'elle est remplie, on la reformate
+        if (question?.type_champ === 'date' && valeur) {
+          const d = new Date(valeur);
+          if (!isNaN(d.getTime())) {
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear(); // Ou d.getFullYear().toString().substr(-2) pour AA
+            valeur = `${day}/${month}/${year}`;
+          }
+        }
+
+        return {
+          question: Number(id),
+          valeur: String(valeur)
+        };
+      })
     };
 
     this.documentService.createDocument(payload as any).subscribe({
