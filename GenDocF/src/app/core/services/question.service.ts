@@ -8,7 +8,7 @@ import { Question, PaginatedResponse } from '../models/document.model';
 })
 export class QuestionService {
   private readonly apiService = inject(ApiService);
-  private readonly endpoint = 'documents/questions';
+  private readonly endpoint = 'documents/questions/';
 
   getQuestions(page: number = 1, formulaireId?: number): Observable<PaginatedResponse<Question>> {
     let url = `${this.endpoint}?page=${page}`;
@@ -19,7 +19,7 @@ export class QuestionService {
   }
 
   getQuestion(id: number): Observable<Question> {
-    return this.apiService.get<Question>(`${this.endpoint}/${id}`);
+    return this.apiService.get<Question>(`${this.endpoint}${id}/`);
   }
 
   createQuestion(question: Partial<Question>): Observable<Question> {
@@ -27,11 +27,11 @@ export class QuestionService {
   }
 
   updateQuestion(id: number, question: Partial<Question>): Observable<Question> {
-    return this.apiService.put<Question>(`${this.endpoint}/${id}`, question);
+    return this.apiService.put<Question>(`${this.endpoint}${id}/`, question);
   }
 
   deleteQuestion(id: number): Observable<void> {
-    return this.apiService.delete<void>(`${this.endpoint}/${id}`);
+    return this.apiService.delete<void>(`${this.endpoint}${id}/`);
   }
 
   getQuestionsByFormulaire(formulaireId: number): Observable<Question[]> {

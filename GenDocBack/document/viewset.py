@@ -25,8 +25,8 @@ from .models import (
 )
 from .serializers import (
     CategorieTemplateSerializer, TemplateDocumentListSerializer,
-    TemplateDocumentDetailSerializer, FormulaireSerializer,
-    QuestionSerializer, TypeDocumentSerializer,
+    TemplateDocumentCreateSerializer, TemplateDocumentDetailSerializer,
+    FormulaireSerializer, QuestionSerializer, TypeDocumentSerializer,
     DocumentGenereListSerializer, DocumentGenereDetailSerializer,
     DocumentGenereCreateSerializer, ReponseQuestionSerializer
 )
@@ -73,7 +73,83 @@ class TemplateDocumentViewSet(viewsets.GenericViewSet,
         """Utilisation des différents serializers selon l'action"""
         if self.action == 'retrieve':
             return TemplateDocumentDetailSerializer
+        if self.action == 'create':
+            return TemplateDocumentCreateSerializer
         return TemplateDocumentListSerializer
+
+    def perform_create(self, serializer):
+        """Après création du template : extraction des variables, création du formulaire et des questions"""
+        template = serializer.save()
+        self._extract_and_create_questions(template)
+
+    def _extract_and_create_questions(self, template):
+        """Ouvre le fichier du template, extrait les variables entre {} et crée le formulaire + questions"""
+        variables = self._extract_variables(template.fichier)
+        if not variables:
+            return
+
+        # Créer le formulaire lié au template
+        formulaire = Formulaire.objects.create(
+            template=template,
+            titre=template.nom
+        )
+
+        # Créer une question pour chaque variable
+        for variable in variables:
+            type_champ = self._infer_type(variable)
+            # Générer un nom de variable slug à partir du label
+            slug = re.sub(r'[^\w]+', '_', variable.strip().lower()).strip('_')
+            Question.objects.create(
+                formulaire=formulaire,
+                label=variable.strip(),
+                variable=slug,
+                type_champ=type_champ,
+                obligatoire=True
+            )
+
+    def _extract_variables(self, fichier):
+        """Lit le fichier et extrait les mots entre {}"""
+        try:
+            ext = fichier.name.split('.')[-1].lower()
+            if ext == 'docx':
+                return self._extract_from_docx(fichier)
+            else:
+                fichier.seek(0)
+                content = fichier.read().decode('utf-8', errors='ignore')
+                return list(dict.fromkeys(re.findall(r'\{([^}]+)\}', content)))
+        except Exception as e:
+            print(f"Erreur extraction variables: {e}")
+            return []
+
+    def _extract_from_docx(self, fichier):
+        """Extraction des variables depuis un fichier .docx"""
+        try:
+            fichier.seek(0)
+            doc = Document(fichier)
+            full_text = ' '.join([p.text for p in doc.paragraphs])
+            # Aussi chercher dans les tableaux
+            for table in doc.tables:
+                for row in table.rows:
+                    for cell in row.cells:
+                        full_text += ' ' + cell.text
+            return list(dict.fromkeys(re.findall(r'\{([^}]+)\}', full_text)))
+        except Exception as e:
+            print(f"Erreur lecture docx: {e}")
+            return []
+
+    def _infer_type(self, variable):
+        """Déduit le type de champ à partir du nom de la variable"""
+        var = variable.lower()
+        if any(k in var for k in ['email', 'e-mail', 'mail', 'courriel']):
+            return 'email'
+        if any(k in var for k in ['date', 'jour', 'naissance']):
+            return 'date'
+        if any(k in var for k in ['montant', 'prix', 'total', 'nombre', 'quantite',
+                                   'numero', 'numéro', 'num', 'téléphone', 'telephone',
+                                   'tel', 'age', 'âge', 'salaire', 'taux', 'pourcentage']):
+            return 'number'
+        # Par défaut : texte (nom, prenom, adresse, ville, etc.)
+        return 'text'
 
     @action(detail=True, methods=['get'])
     def formulaires(self, request, pk=None):
@@ -130,7 +206,7 @@ class TypeDocumentViewSet(viewsets.GenericViewSet,
     ordering = ['nom']
 
 class DocumentGenereViewSet(viewsets.ModelViewSet):
-    queryset = DocumentGenere.objects.all()
+    queryset = DocumentGenere.objects.select_related('template', 'user').order_by('-date_generation')
 
     def get_serializer_class(self):
         """Définit quel serializer utiliser selon l'action"""
@@ -280,7 +356,7 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        # 1. Créer l'objet Document
+        # 1. Créer l'objet Document (le serializer gère aussi user et réponses)
         document = serializer.save()
         print(f"📄 Document créé : ID={document.id}")
 
@@ -293,16 +369,9 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # 2. Sauvegarder les réponses en base
+        # 2. Récupérer les réponses déjà créées par le serializer
         reponses_data = request.data.get('reponses', [])
-        print(f"📝 Nombre de réponses reçues : {len(reponses_data)}")
-        
-        for r in reponses_data:
-            ReponseQuestion.objects.create(
-                document=document,
-                question_id=r['question'],
-                valeur=r['valeur']
-            )
+        print(f"📝 Nombre de réponses : {len(reponses_data)}")
 
         # 3. Générer le fichier
         if self._generer_fichier(document, reponses_data):
@@ -315,13 +384,15 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
-    @action(detail=False, methods=['get'], permission_classes=[AllowAny])
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def history(self, request):
         """Historique des documents générés de l'utilisateur connecté."""
-        if not request.user or not request.user.is_authenticated:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-        documents = self.queryset.filter(user=request.user).order_by('-date_generation')
+        documents = (
+            DocumentGenere.objects
+            .filter(user=request.user)
+            .select_related('template')
+            .order_by('-date_generation')
+        )
         serializer = DocumentGenereListSerializer(documents, many=True)
         return Response(serializer.data)
 
@@ -329,8 +400,9 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
     def recent(self, request):
         """Retourne les 5 documents récents de l'utilisateur connecté."""
         documents = (
-            self.queryset
+            DocumentGenere.objects
             .filter(user=request.user)
+            .select_related('template')
             .order_by('-date_generation')[:5]
         )
         serializer = DocumentGenereListSerializer(documents, many=True)

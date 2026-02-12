@@ -9,7 +9,7 @@ import { Formulaire, PaginatedResponse } from '../models/document.model';
 export class FormulaireService {
   private readonly apiService = inject(ApiService);
   // private readonly endpoint = 'documents/formulaires';
-  private readonly endpoint = 'documents/formulaires';
+  private readonly endpoint = 'documents/formulaires/';
 
   getFormulaires(page: number = 1): Observable<PaginatedResponse<Formulaire>> {
     return this.apiService.get<PaginatedResponse<Formulaire>>(
@@ -18,7 +18,7 @@ export class FormulaireService {
   }
 
   getFormulaire(id: number): Observable<Formulaire> {
-    return this.apiService.get<Formulaire>(`${this.endpoint}/${id}`);
+    return this.apiService.get<Formulaire>(`${this.endpoint}${id}/`);
   }
 
   createFormulaire(formulaire: Partial<Formulaire>): Observable<Formulaire> {
@@ -26,11 +26,11 @@ export class FormulaireService {
   }
 
   updateFormulaire(id: number, formulaire: Partial<Formulaire>): Observable<Formulaire> {
-    return this.apiService.put<Formulaire>(`${this.endpoint}/${id}`, formulaire);
+    return this.apiService.put<Formulaire>(`${this.endpoint}${id}/`, formulaire);
   }
 
   deleteFormulaire(id: number): Observable<void> {
-    return this.apiService.delete<void>(`${this.endpoint}/${id}`);
+    return this.apiService.delete<void>(`${this.endpoint}${id}/`);
   }
 
   getFormulairesByTemplate(templateId: number): Observable<Formulaire[]> {

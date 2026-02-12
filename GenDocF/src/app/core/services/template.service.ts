@@ -26,8 +26,14 @@ export class TemplateService {
     return this.apiService.get<TemplateDocument>(`${this.endpoint}${id}`);
   }
 
-  createTemplate(template: Partial<TemplateDocument>): Observable<TemplateDocument> {
-    return this.apiService.post<TemplateDocument>(this.endpoint, template);
+  createTemplate(data: { nom: string; categorie: number; fichier?: File }): Observable<TemplateDocument> {
+    const formData = new FormData();
+    formData.append('nom', data.nom);
+    formData.append('categorie', data.categorie.toString());
+    if (data.fichier) {
+      formData.append('fichier', data.fichier);
+    }
+    return this.apiService.uploadFile<TemplateDocument>(this.endpoint, formData);
   }
 
   updateTemplate(id: number, template: Partial<TemplateDocument>): Observable<TemplateDocument> {

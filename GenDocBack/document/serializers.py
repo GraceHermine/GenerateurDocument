@@ -59,6 +59,25 @@ class TemplateDocumentListSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'date_add']
 
 
+class TemplateDocumentCreateSerializer(serializers.ModelSerializer):
+    """Serializer pour la création d'un template avec upload de fichier"""
+
+    class Meta:
+        model = TemplateDocument
+        fields = ['id', 'nom', 'categorie', 'fichier', 'status']
+        read_only_fields = ['id']
+
+    def validate_fichier(self, value):
+        """Vérifie que le fichier est un format accepté"""
+        if value:
+            ext = value.name.split('.')[-1].lower()
+            if ext not in ['txt', 'md', 'html', 'docx', 'doc']:
+                raise serializers.ValidationError(
+                    "Format non supporté. Utilisez .txt, .md, .html ou .docx"
+                )
+        return value
+
+
 class TemplateDocumentDetailSerializer(serializers.ModelSerializer):
     """Serializer détaillé pour un template avec ses formulaires"""
     categorie_details = CategorieTemplateSerializer(source='categorie', read_only=True)

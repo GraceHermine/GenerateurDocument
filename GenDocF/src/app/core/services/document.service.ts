@@ -15,7 +15,7 @@ export class DocumentGenereService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
 
-  private readonly endpoint = 'documents/documents';
+  private readonly endpoint = 'documents/documents/';
   private readonly apiUrl = `${environment.apiUrl}/documents/documents`;
 
   // 📄 Liste paginée
@@ -29,7 +29,7 @@ export class DocumentGenereService {
 
   // 📄 Détail
   getDocument(id: number): Observable<DocumentGenere> {
-    return this.apiService.get<DocumentGenere>(`${this.endpoint}/${id}`);
+    return this.apiService.get<DocumentGenere>(`${this.endpoint}${id}/`);
   }
 
   // ➕ Création
@@ -39,32 +39,32 @@ export class DocumentGenereService {
 
   // ✏️ Update
   updateDocument(id: number, document: Partial<DocumentGenere>): Observable<DocumentGenere> {
-    return this.apiService.put<DocumentGenere>(`${this.endpoint}/${id}`, document);
+    return this.apiService.put<DocumentGenere>(`${this.endpoint}${id}/`, document);
   }
 
   // ❌ Delete
   deleteDocument(id: number): Observable<void> {
-    return this.apiService.delete<void>(`${this.endpoint}/${id}`);
+    return this.apiService.delete<void>(`${this.endpoint}${id}/`);
   }
 
   // ✅ Finaliser
   finaliserDocument(id: number): Observable<DocumentGenere> {
-    return this.apiService.post<DocumentGenere>(`${this.endpoint}/${id}/finaliser`, {});
+    return this.apiService.post<DocumentGenere>(`${this.endpoint}${id}/finaliser/`, {});
   }
 
   // 📦 Archiver
   archiverDocument(id: number): Observable<DocumentGenere> {
-    return this.apiService.post<DocumentGenere>(`${this.endpoint}/${id}/archiver`, {});
+    return this.apiService.post<DocumentGenere>(`${this.endpoint}${id}/archiver/`, {});
   }
 
   // 📜 Historique utilisateur
   getUserDocuments(): Observable<DocumentHistory[]> {
-    return this.apiService.get<DocumentHistory[]>(`${this.endpoint}/history/`);
+    return this.apiService.get<DocumentHistory[]>(`${this.endpoint}history/`);
   }
 
   // 🕒 Activite recente (5 derniers)
   getRecentDocuments(): Observable<DocumentHistory[]> {
-    return this.apiService.get<DocumentHistory[]>(`${this.endpoint}/recent/`);
+    return this.apiService.get<DocumentHistory[]>(`${this.endpoint}recent/`);
   }
 
   // ⬇️ Télécharger

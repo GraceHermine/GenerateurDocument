@@ -9,7 +9,7 @@
     <div class="public-grid">
       <div class="public-card public-reveal">
         <div class="public-card-title">Nom du modele</div>
-        <input class="public-input" placeholder="Ex: Contrat de prestation" />
+        <input class="public-input" [(ngModel)]="templateName" placeholder="Ex: Contrat de prestation" />
       </div>
       <div class="public-card public-reveal">
         <div class="public-card-title">Categorie</div>
@@ -23,17 +23,36 @@
 
   <section class="public-section">
     <div class="public-panel public-reveal">
-      <div class="public-card-title">Structure du document</div>
-      <textarea class="public-textarea" rows="10" placeholder="Saisissez le contenu du template..."></textarea>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div class="public-card-title" style="margin-bottom: 0;">Structure du document</div>
+        <div class="file-upload-wrapper">
+          <input type="file" #fileInput (change)="onFileSelected($event)" accept=".txt,.md,.html,.docx" style="display: none;">
+          <button class="public-btn public-btn--ghost public-btn--sm" (click)="fileInput.click()">
+            <span class="material-symbols-outlined">upload_file</span>
+            Importer un fichier
+          </button>
+        </div>
+      </div>
+      <textarea 
+        class="public-textarea" 
+        [class.drag-over]="isDragging"
+        (dragover)="onDragOver($event)" 
+        (dragleave)="onDragLeave($event)" 
+        (drop)="onDrop($event)"
+        rows="10" 
+        [disabled]="selectedFile !== null"
+        [(ngModel)]="templateContent" 
+        placeholder="Saisissez le contenu du template ou glissez un fichier (.txt, .md, .docx)...">
+      </textarea>
       <p class="public-card-text">Utilisez le format [[nom_variable]] pour les champs dynamiques.</p>
     </div>
   </section>
 
   <section class="public-section" style="display: flex; justify-content: flex-end; gap: 12px;">
-    <button routerLink="/user/templates-list" class="public-btn public-btn--ghost">Annuler</button>
-    <button class="public-btn public-btn--primary">
+    <button routerLink="/user/templates-list" class="public-btn public-btn--ghost" [disabled]="isSaving">Annuler</button>
+    <button class="public-btn public-btn--primary" (click)="saveTemplate()" [disabled]="isSaving">
       <span class="material-symbols-outlined">save</span>
-      Sauvegarder le modele
+      {{ isSaving ? 'Enregistrement...' : 'Sauvegarder le modele' }}
     </button>
   </section>
 </section>
