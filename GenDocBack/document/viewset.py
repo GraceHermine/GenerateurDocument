@@ -224,11 +224,10 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
         def replace_in_text(text, replacements):
             """Fonction utilitaire pour remplacer dans un texte"""
             for var, val in replacements.items():
-                # Support de plusieurs formats : {VAR}, {{VAR}}, etc.
+                # Support de plusieurs formats : {VAR}, {{VAR}}
                 patterns = [
-                    f"{{{var}}}",           # {Prénom}
-                    f"{{{{{var}}}}}",       # {{Prénom}}
-                    f"{{{{var}}}}",         # Cas avec espaces
+                    f"{{{var}}}",           # {Prénom & Nom du candidat}
+                    f"{{{{{var}}}}}",       # {{Prénom & Nom du candidat}}
                 ]
                 for pattern in patterns:
                     if pattern in text:
@@ -268,47 +267,49 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
         """
         try:
             if not document_obj.template.fichier:
-                print("❌ Aucun fichier template trouvé")
+                print("[ERREUR] Aucun fichier template trouve")
                 return False
 
             if not os.path.exists(document_obj.template.fichier.path):
-                print("❌ Fichier template introuvable sur le disque")
+                print("[ERREUR] Fichier template introuvable sur le disque")
                 return False
 
             # Ouvrir le document Word template
             doc = Document(document_obj.template.fichier.path)
-            print(f"✅ Template chargé : {document_obj.template.fichier.path}")
+            print(f"[OK] Template charge : {document_obj.template.fichier.path}")
             
             # Construction du dictionnaire de remplacement
             replacements = {}
             for r in reponses_data:
                 try:
                     question = Question.objects.get(id=r['question'])
-                    variable_name = question.variable
                     valeur = r['valeur']
                     
-                    replacements[variable_name] = valeur
-                    print(f"📝 Mapping : {{{variable_name}}} -> {valeur}")
+                    # Utiliser le label original (tel qu'il apparaît dans le fichier)
+                    replacements[question.label] = valeur
+                    # Aussi ajouter le slug au cas où le template utilise ce format
+                    replacements[question.variable] = valeur
+                    print(f"[MAP] {{{question.label}}} -> {valeur}")
                     
                 except Question.DoesNotExist:
-                    print(f"⚠️ Question ID {r['question']} non trouvée")
+                    print(f"[WARN] Question ID {r['question']} non trouvee")
                     continue
 
             # DEBUG : Afficher toutes les variables trouvées dans le document
             all_text = "\n".join([p.text for p in doc.paragraphs])
             variables_in_doc = re.findall(r'\{([^}]+)\}', all_text)
-            print(f"🔍 Variables détectées dans le template : {set(variables_in_doc)}")
-            print(f"🔍 Variables à remplacer : {list(replacements.keys())}")
+            print(f"[DEBUG] Variables detectees dans le template : {set(variables_in_doc)}")
+            print(f"[DEBUG] Variables a remplacer : {list(replacements.keys())}")
 
             # Effectuer les remplacements
             self._replace_text_in_docx(doc, replacements)
-            print("✅ Remplacements effectués")
+            print("[OK] Remplacements effectues")
 
             # Sauvegarder dans un dossier temporaire
             with tempfile.TemporaryDirectory() as tmp_dir:
                 temp_docx = os.path.join(tmp_dir, 'out.docx')
                 doc.save(temp_docx)
-                print(f"✅ Document temporaire sauvegardé : {temp_docx}")
+                print(f"[OK] Document temporaire sauvegarde : {temp_docx}")
 
                 ext = 'pdf' if document_obj.format == 'pdf' else 'docx'
                 final_name = f"document_{document_obj.id}.{ext}"
@@ -317,7 +318,7 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
                 # Conversion en PDF si nécessaire
                 if document_obj.format == 'pdf':
                     final_path = os.path.join(tmp_dir, 'out.pdf')
-                    print("🔄 Conversion en PDF...")
+                    print("[INFO] Conversion en PDF...")
                     
                     if platform.system() == 'Windows':
                         pythoncom.CoInitialize()
@@ -331,20 +332,20 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
                             '--outdir', tmp_dir, temp_docx
                         ], check=True)
                     
-                    print("✅ Conversion PDF réussie")
+                    print("[OK] Conversion PDF reussie")
 
                 # Sauvegarder le fichier final
                 with open(final_path, 'rb') as f:
                     document_obj.fichier.save(final_name, ContentFile(f.read()), save=False)
                 
-                print(f"✅ Fichier final sauvegardé : {final_name}")
+                print(f"[OK] Fichier final sauvegarde : {final_name}")
             
             document_obj.status = 'done'
             document_obj.save()
             return True
             
         except Exception as e:
-            print(f"❌ Erreur génération : {e}")
+            print(f"[ERREUR] Erreur generation : {e}")
             import traceback
             traceback.print_exc()
             document_obj.status = 'error'
@@ -358,7 +359,7 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
         
         # 1. Créer l'objet Document (le serializer gère aussi user et réponses)
         document = serializer.save()
-        print(f"📄 Document créé : ID={document.id}")
+        print(f"[OK] Document cree : ID={document.id}")
 
         template_file = document.template.fichier
         if not template_file or not os.path.exists(template_file.path):
@@ -371,7 +372,7 @@ class DocumentGenereViewSet(viewsets.ModelViewSet):
 
         # 2. Récupérer les réponses déjà créées par le serializer
         reponses_data = request.data.get('reponses', [])
-        print(f"📝 Nombre de réponses : {len(reponses_data)}")
+        print(f"[INFO] Nombre de reponses : {len(reponses_data)}")
 
         # 3. Générer le fichier
         if self._generer_fichier(document, reponses_data):

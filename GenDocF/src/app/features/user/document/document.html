@@ -1,20 +1,42 @@
 <section class="public-container">
   <div class="public-panel public-reveal">
     <span class="public-kicker">Documents</span>
-    <h1 class="public-title">Mes documents ({{ documents.length }})</h1>
-    <p class="public-subtitle">Consultez, telechargez ou finalisez vos documents.</p>
+    <h1 class="public-title">Mes documents generés ({{ filteredDocuments.length }})</h1>
+    <p class="public-subtitle">Consultez et téléchargez vos documents générés.</p>
   </div>
 
+  <!-- Filtres par statut -->
   <section class="public-section">
-    <div *ngIf="documents.length > 0; else noDocuments" class="public-grid">
-      <div *ngFor="let doc of documents" class="public-card public-reveal">
-        <div class="public-card-title">{{ doc.titre }}</div>
-        <p class="public-card-text">Statut: {{ doc.statut }}</p>
-        <p class="public-card-text">Cree le: {{ doc.created_at | date:'dd/MM/yyyy' }}</p>
+    <div class="public-panel public-reveal">
+      <div class="public-actions">
+        <button (click)="filterByStatus('')" class="public-btn" [class.public-btn--primary]="statusFilter === ''" [class.public-btn--ghost]="statusFilter !== ''">Tous</button>
+        <button (click)="filterByStatus('done')" class="public-btn" [class.public-btn--primary]="statusFilter === 'done'" [class.public-btn--ghost]="statusFilter !== 'done'">Terminés</button>
+        <button (click)="filterByStatus('processing')" class="public-btn" [class.public-btn--primary]="statusFilter === 'processing'" [class.public-btn--ghost]="statusFilter !== 'processing'">En cours</button>
+        <button (click)="filterByStatus('error')" class="public-btn" [class.public-btn--primary]="statusFilter === 'error'" [class.public-btn--ghost]="statusFilter !== 'error'">Erreurs</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chargement -->
+  <div *ngIf="isLoading" class="public-panel public-reveal">
+    <p class="public-card-text">Chargement de l'historique...</p>
+  </div>
+
+  <!-- Liste des documents -->
+  <section *ngIf="!isLoading" class="public-section">
+    <div *ngIf="filteredDocuments.length > 0; else noDocuments" class="public-grid">
+      <div *ngFor="let doc of filteredDocuments" class="public-card public-reveal">
+        <div class="public-card-title">{{ doc.template_nom }}</div>
+        <p class="public-card-text">
+          Format : <strong>{{ (doc.format || 'docx') | uppercase }}</strong>
+        </p>
+        <p class="public-card-text">
+          Statut : <span [class]="getStatusBadgeClass(doc.status)">{{ getStatusText(doc.status) }}</span>
+        </p>
+        <p class="public-card-text">Généré le : {{ doc.date_generation | date:'dd/MM/yyyy à HH:mm' }}</p>
         <div class="public-actions">
-          <button (click)="downloadDocument(doc.id)" class="public-btn public-btn--ghost">Telecharger</button>
-          <button *ngIf="doc.statut === 'brouillon'" (click)="finaliserDocument(doc.id)" class="public-btn public-btn--ghost">
-            Finaliser
+          <button *ngIf="doc.fichier" (click)="downloadDocument(doc)" class="public-btn public-btn--primary">
+            Télécharger
           </button>
           <button (click)="deleteDocument(doc.id)" class="public-btn public-btn--ghost">Supprimer</button>
         </div>
@@ -23,21 +45,13 @@
 
     <ng-template #noDocuments>
       <div class="public-panel public-reveal">
-        <p class="public-card-text">Aucun document disponible.</p>
-        <button (click)="createNewDocument()" class="public-btn public-btn--primary">Creer un nouveau document</button>
+        <p class="public-card-text">Aucun document généré pour le moment.</p>
+        <a routerLink="/user/template-create" class="public-btn public-btn--primary">Créer un template</a>
       </div>
     </ng-template>
   </section>
 
-  <section *ngIf="categories.length > 0" class="public-section">
-    <div class="public-panel public-reveal">
-      <h2>Categories</h2>
-      <div class="public-actions">
-        <span *ngFor="let cat of categories" class="public-pill">{{ cat.nom }}</span>
-      </div>
-    </div>
-  </section>
-
+  <!-- Templates disponibles -->
   <section *ngIf="templates.length > 0" class="public-section">
     <div class="public-panel public-reveal">
       <h2>Templates disponibles</h2>

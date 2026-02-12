@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { DocumentGenere, PaginatedResponse } from '../models/document.model';
+import { DocumentGenere, DocumentHistory, PaginatedResponse } from '../models/document.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +40,11 @@ export class DocumentGenereService {
 
   archiverDocument(id: number): Observable<DocumentGenere> {
     return this.apiService.post<DocumentGenere>(`${this.endpoint}${id}/archiver/`, {});
+  }
+
+  // Historique des documents de l'utilisateur connecté
+  getUserHistory(): Observable<DocumentHistory[]> {
+    return this.apiService.get<DocumentHistory[]>(`${this.endpoint}history/`);
   }
 
   // CORRIGÉ : Utiliser downloadFile au lieu de get
