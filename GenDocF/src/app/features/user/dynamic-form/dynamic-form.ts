@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TemplateService } from '../../../core/services/template.service';
 import { FormulaireService } from '../../../core/services/formulaire.service';
 import { DocumentGenereService } from '../../../core/services/document-genere.service';
+import { Question } from '../../../core/models/document.model'; // Import ajouté
 
 @Component({
   selector: 'app-dynamic-form',
@@ -16,14 +17,14 @@ import { DocumentGenereService } from '../../../core/services/document-genere.se
 export class DynamicForm implements OnInit {
   templateId: number;
   template: any = null;
-  questions: any[] = [];
+  questions: Question[] = []; // Typage strict
   formulaireId: number | null = null;
   
   responses: any = {};
   progress = 0;
-  isStepPreview = false; // Bascule entre formulaire et aperçu
+  isStepPreview = false;
   today = new Date();
-  showFormatModal = false; // Contrôle l'affichage de la modale de choix
+  showFormatModal = false;
   isGenerating = false;
 
   constructor(
@@ -31,7 +32,8 @@ export class DynamicForm implements OnInit {
     private router: Router,
     private templateService: TemplateService,
     private formulaireService: FormulaireService,
-    private documentService: DocumentGenereService
+    private documentService: DocumentGenereService,
+    private cdr: ChangeDetectorRef // Injection CDR
   ) {
     this.templateId = Number(this.route.snapshot.paramMap.get('id'));
   }
@@ -45,21 +47,31 @@ export class DynamicForm implements OnInit {
     this.templateService.getTemplate(this.templateId).subscribe({
       next: (t) => {
         this.template = t;
+        this.cdr.detectChanges(); // Force update
       },
       error: (err) => console.error('Erreur template:', err)
     });
   }
 
   loadFormData(): void {
+    console.log('[DEBUG] Loading forms for templateId:', this.templateId);
     this.formulaireService.getFormulairesByTemplate(this.templateId).subscribe({
       next: (response: any) => {
         const formulaires = response.results || response;
+        
         if (formulaires && formulaires.length > 0) {
-          const form = formulaires[0];
+          const form = formulaires.find((f: any) => f.template === this.templateId) || formulaires[0];
+
           this.formulaireId = form.id;
           this.questions = form.questions || [];
+          console.log('[DEBUG] Questions loaded:', this.questions.length);
+          
           this.updateProgress();
+          this.cdr.detectChanges(); // Force update
         }
+      },
+      error: (err) => {
+        console.error('[DEBUG] API Error:', err);
       }
     });
   }
@@ -91,9 +103,10 @@ export class DynamicForm implements OnInit {
   }
 
   isFormValid(): boolean {
-    return this.questions
-      .filter(q => q.obligatoire)
-      .every(q => this.responses[q.id] && this.responses[q.id] !== '');
+    const requiredQuestions = this.questions.filter(q => q.obligatoire);
+    const answeredCount = requiredQuestions.filter(q => this.responses[q.id] && this.responses[q.id] !== '').length;
+    // Permettre de continuer si au moins 1 réponse est fournie
+    return answeredCount > 0;
   }
 
   goToPreview(): void {

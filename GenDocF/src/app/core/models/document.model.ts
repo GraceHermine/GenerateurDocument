@@ -23,9 +23,9 @@ export interface TemplateDocument {
 export interface Question {
   id: number;
   formulaire: number;
-  texte: string;
-  type_question: 'text' | 'number' | 'date' | 'choice' | 'multiple_choice';
-  ordre: number;
+  label: string;
+  variable: string;
+  type_champ: 'text' | 'number' | 'date' | 'email' | 'select' | string;
   obligatoire: boolean;
   options?: string[];
   created_at?: string;
