@@ -5,6 +5,34 @@ from rest_framework import serializers
 User = get_user_model()
 
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class SecureTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """
+    Serializer personnalisé pour JWT avec des contrôles de sécurité supplémentaires.
+    """
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Ajout de claims personnalisés (utile pour le frontend mais ne pas mettre de données sensibles)
+        token['nom'] = user.nom
+        token['prenom'] = user.prenom
+        token['is_admin'] = user.is_staff
+        
+        return token
+
+    def validate(self, attrs):
+        # La méthode validate de base gère déjà l'authentification et le hachage
+        data = super().validate(attrs)
+        
+        # Contrôle de sécurité supplémentaire : vérifier si l'utilisateur est banni
+        if not self.user.is_active:
+            raise serializers.ValidationError("Ce compte est désactivé.")
+
+        return data
+
+
 class RegisterSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=75)
     last_name = serializers.CharField(max_length=75)

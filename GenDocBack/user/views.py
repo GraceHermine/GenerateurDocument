@@ -5,9 +5,23 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import RegisterSerializer, UserMeSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import RegisterSerializer, UserMeSerializer, SecureTokenObtainPairSerializer
 
 logger = logging.getLogger(__name__)
+
+
+class SecureLoginAPIView(TokenObtainPairView):
+	"""
+	Vue de login sécurisée utilisant JWT et le serializer personnalisé.
+	Le hachage (BCRYPT/PBKDF2) est géré automatiquement par Django.
+	"""
+	serializer_class = SecureTokenObtainPairSerializer
+
+	def post(self, request, *args, **kwargs):
+		# On peut ajouter ici du logging pour détecter les tentatives de brute-force
+		logger.info("Login attempt for user: %s", request.data.get("email"))
+		return super().post(request, *args, **kwargs)
 
 
 class RegisterAPIView(APIView):

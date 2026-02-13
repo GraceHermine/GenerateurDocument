@@ -24,12 +24,18 @@ if not os.path.exists(os.path.join(BASE_DIR, 'static')):
 
 # Quick-start development settings - unsuitable for production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-yp$o#ebds$l_ll3&^d%xe&m*l!*efs$3$s+8hftpm=20s&y2o='
+# Utilisation de django-environ pour charger les variables d'environnement (Best Practice OWASP)
+import environ
+env = environ.Env(
+    DEBUG=(bool, False),
+    SECRET_KEY=(str, 'django-insecure-yp$o#ebds$l_ll3&^d%xe&m*l!*efs$3$s+8hftpm=20s&y2o='),
+    ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1", "[::1]"]),
+)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -46,14 +52,15 @@ INSTALLED_APPS = [
     # Third party
     'rest_framework',
     'rest_framework_simplejwt',
-    'corsheaders',  # Pour le CORS avec le frontend Angular
-    'drf_spectacular',  # API Documentation (Swagger/OpenAPI)
+    'corsheaders',  # Pour le CORS
+    'drf_spectacular',  # API Documentation
+    'django_filters',
+    'csp', # Content Security Policy
     
     # Local apps
     'document.apps.DocumentConfig',
     'templates.apps.TemplatesConfig',
     'user.apps.UserConfig',
-    'django_filters',
 ]
 
 AUTH_USER_MODEL = 'user.User'
@@ -62,48 +69,49 @@ AUTH_USER_MODEL = 'user.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # DOIT être placé ici (avant CommonMiddleware)
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware', # Middleware CSP (Helmet equivalent)
 ]
 
-ROOT_URLCONF = 'GenDocBack.urls'
+# ============================================================================
+# SECURITY HEADERS (OWASP Best Practices)
+# ============================================================================
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY' # Protection contre le Clickjacking
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
+# HSTS (uniquement si HTTPS est utilisé)
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 31536000 # 1 an
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
-WSGI_APPLICATION = 'GenDocBack.wsgi.application'
+# Content Security Policy (CSP) - Équivalent Helmet.js Content-Security-Policy
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_IMG_SRC = ("'self'", "data:")
+CSP_FONT_SRC = ("'self'",)
 
 
 # ============================================================================
-# CORS CONFIGURATION (pour Angular Frontend)
+# CORS CONFIGURATION (Hardenized)
 # ============================================================================
-
-# Autorise tout le monde en Dev (plus simple pour éviter les erreurs)
-CORS_ALLOW_ALL_ORIGINS = True
-
-# Ou spécifiquement :
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",      # Dev Angular
+CORS_ALLOW_ALL_ORIGINS = False # Jamais True en production !
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[
+    "http://localhost:4200",
     "http://127.0.0.1:4200",
-]
-
+])
 CORS_ALLOW_CREDENTIALS = True
+CORS_SECURE_CHALLENGE_TOKEN = True
 
 
 # Database
@@ -175,8 +183,8 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '1000/hour',  # Augmenté pour éviter les blocages en dev
-        'user': '5000/hour'
+        'anon': '100/day',   # Limite stricte pour les anonymes (protection contre brute-force)
+        'user': '1000/hour'  # Limite raisonnable pour les utilisateurs authentifiés
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
