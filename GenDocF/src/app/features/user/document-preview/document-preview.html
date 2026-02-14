@@ -11,13 +11,13 @@
           {{ document.statut | uppercase }}
         </span>
         <span class="dot">•</span>
-        <span>Modifie le {{ document.updated_at | date:'dd/MM/yyyy HH:mm' }}</span>
+        <span>Modifié le {{ document.updated_at | date:'dd/MM/yyyy HH:mm' }}</span>
       </div>
     </div>
     <div class="actions">
       <button class="btn secondary" (click)="downloadDocument()">
         <span class="material-symbols-outlined">download</span>
-        Telecharger
+        Télécharger
       </button>
       <button class="btn ghost" *ngIf="document.statut !== 'archive'" (click)="archiverDocument()">
         <span class="material-symbols-outlined">archive</span>
@@ -52,7 +52,7 @@
           <div class="html" [innerHTML]="document.contenu_final"></div>
         </div>
         <div class="pdf" *ngIf="pdfUrl">
-          <iframe [src]="pdfUrl" title="Apercu PDF" loading="lazy"></iframe>
+          <iframe [src]="pdfUrl" title="Aperçu PDF" loading="lazy"></iframe>
         </div>
         <div class="pdf-state" *ngIf="isPdfLoading">
           <div class="spinner"></div>
@@ -60,7 +60,7 @@
         </div>
         <div class="pdf-state" *ngIf="pdfError">
           <p>{{ pdfError }}</p>
-          <button class="btn secondary" (click)="loadPdfPreview()">Reessayer</button>
+          <button class="btn secondary" (click)="loadPdfPreview()">Réessayer</button>
         </div>
       </div>
     </section>
@@ -74,11 +74,11 @@
             <dd>{{ document.id }}</dd>
           </div>
           <div>
-            <dt>Cree le</dt>
+            <dt>Créé le</dt>
             <dd>{{ document.created_at | date:'dd/MM/yyyy' }}</dd>
           </div>
           <div>
-            <dt>Modifie le</dt>
+            <dt>Modifié le</dt>
             <dd>{{ document.updated_at | date:'dd/MM/yyyy HH:mm' }}</dd>
           </div>
           <div>
@@ -89,10 +89,10 @@
       </div>
 
       <div class="panel" *ngIf="document.reponses && document.reponses.length > 0">
-        <h2>Reponses</h2>
+        <h2>Réponses</h2>
         <div class="answers">
           <div class="answer" *ngFor="let reponse of document.reponses">
-            <p class="q">{{ reponse.question_details?.texte }}</p>
+            <p class="q">{{ $any(reponse.question_details)?.texte }}</p>
             <p class="a">{{ reponse.reponse }}</p>
           </div>
         </div>
