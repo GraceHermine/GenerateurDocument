@@ -65,7 +65,7 @@ class TemplateDocumentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = TemplateDocument
         fields = ['id', 'nom', 'categorie', 'fichier', 'status']
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'status']
 
     def validate_fichier(self, value):
         """Vérifie que le fichier est un format accepté"""

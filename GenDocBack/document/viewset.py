@@ -2,7 +2,7 @@ import re
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from django.core.files.base import ContentFile
@@ -65,9 +65,17 @@ class TemplateDocumentViewSet(viewsets.GenericViewSet,
     )
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['categorie', 'status']
+    permission_classes = [AllowAny]
     search_fields = ['nom']
     ordering_fields = ['nom', 'date_add']
     ordering = ['-date_add']
+
+    def get_queryset(self):
+        """Surcharge pour filtrer les templates inactifs pour les non-admins"""
+        queryset = super().get_queryset()
+        if self.request.user and self.request.user.is_staff:
+            return queryset
+        return queryset.filter(status=True)
 
     def get_serializer_class(self):
         """Utilisation des différents serializers selon l'action"""
@@ -77,9 +85,18 @@ class TemplateDocumentViewSet(viewsets.GenericViewSet,
             return TemplateDocumentCreateSerializer
         return TemplateDocumentListSerializer
 
+    @action(detail=True, methods=['post'], permission_classes=[IsAdminUser])
+    def approve(self, request, pk=None):
+        """Permet à un administrateur d'activer un template"""
+        template = self.get_object()
+        template.status = True
+        template.save()
+        return Response({'status': 'Template activé avec succès'})
+
     def perform_create(self, serializer):
         """Après création du template : extraction des variables, création du formulaire et des questions"""
-        template = serializer.save()
+        # Le template est créé avec status=False (en attente de validation)
+        template = serializer.save(status=False)
         self._extract_and_create_questions(template)
 
     def _extract_and_create_questions(self, template):

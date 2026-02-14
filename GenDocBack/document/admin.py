@@ -3,6 +3,7 @@ Configuration Django Admin pour les modèles de documents.
 """
 
 from django.contrib import admin
+from django.utils.html import format_html
 # On importe les vrais modèles qui existent dans ton models.py actuel
 from .models import (
     CategorieTemplate,
@@ -21,12 +22,36 @@ class CategorieTemplateAdmin(admin.ModelAdmin):
     list_display = ('id', 'nom', 'description')
     search_fields = ('nom',)
 
+class FormulaireInline(admin.StackedInline):
+    model = Formulaire
+    extra = 0
+    show_change_link = True
+    can_delete = False
+    fields = ('titre', 'date_add', 'apercu_questions')
+    readonly_fields = ('titre', 'date_add', 'apercu_questions')
+
+    def apercu_questions(self, obj):
+        questions = obj.questions.all()
+        if not questions:
+            return "Aucune question"
+        
+        html = '<ul style="margin-top: 0;">'
+        for q in questions:
+            required = '<span style="color: red;">*</span>' if q.obligatoire else ""
+            html += f"<li><strong>{q.label}</strong> <code>{q.variable}</code> ({q.type_champ}) {required}</li>"
+        html += "</ul>"
+        return format_html(html)
+    
+    apercu_questions.short_description = "Questions associées"
+
+
 # 2. Gestion des Templates (Modèles Word/Excel)
 @admin.register(TemplateDocument)
 class TemplateDocumentAdmin(admin.ModelAdmin):
     list_display = ('id', 'nom', 'categorie', 'status', 'date_add')
     list_filter = ('status', 'categorie')
     search_fields = ('nom',)
+    inlines = [FormulaireInline]
 
 
 class QuestionInline(admin.TabularInline):
