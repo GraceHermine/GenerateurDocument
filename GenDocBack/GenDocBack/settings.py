@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'templates.apps.TemplatesConfig',
     'user.apps.UserConfig',
     'django_filters',
+    'admin_custom',
 ]
 
 AUTH_USER_MODEL = 'user.User'
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'admin_custom.middleware.AdminInterfaceRedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'GenDocBack.urls'
