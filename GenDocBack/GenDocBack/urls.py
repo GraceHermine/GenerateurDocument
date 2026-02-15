@@ -21,51 +21,12 @@ from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group, Permission
-from django.contrib.auth.admin import GroupAdmin
-
-from admin_custom.admin_site import custom_admin_site
-from admin_custom.autodiscover import autodiscover_models
-from admin_custom.user_admin import CustomUserAdmin
-from admin_custom.modern_model_admin import ModernTemplateMixin
-from admin_custom.models import DashboardGrid, DashboardChart
-from admin_custom.admin import DashboardGridAdmin, DashboardChartAdmin
 
 User = get_user_model()
 
-# ─── 1. Auto-decouvrir tous les modeles du projet ───
-autodiscover_models(custom_admin_site, exclude_apps=['admin_custom'])
-
-# ─── 2. Enregistrer les modeles auth manuellement ───
-for model in [User, Group, Permission]:
-    if model in custom_admin_site._registry:
-        custom_admin_site.unregister(model)
-
-custom_admin_site.register(User, CustomUserAdmin)
-custom_admin_site.register(Group, GroupAdmin)
-custom_admin_site.register(Permission, type('PermissionAdmin', (
-    ModernTemplateMixin, admin.ModelAdmin
-), {
-    'list_display': ['name', 'content_type', 'codename'],
-    'list_filter': ['content_type'],
-    'search_fields': ['name', 'codename'],
-}))
-
-# ─── 3. Enregistrer les modeles admin_custom ───
-for model, admin_class in [(DashboardGrid, DashboardGridAdmin),
-                            (DashboardChart, DashboardChartAdmin)]:
-    if model in custom_admin_site._registry:
-        custom_admin_site.unregister(model)
-    custom_admin_site.register(model, admin_class)
-
-# ─── 4. Personnaliser les titres ───
-custom_admin_site.site_header = "GenDoc - Administration"  # Titre dans le header
-custom_admin_site.site_title  = "GenDoc Admin"             # Titre de l'onglet
-custom_admin_site.index_title = "Tableau de bord"          # Titre de la page d'accueil
-
 
 urlpatterns = [
-    path('admin/', custom_admin_site.urls),
+    path('admin/', admin.site.urls),
     path('admin_custom/', include('admin_custom.urls')),   # API REST (graphiques, grilles)
     
     # API Documentation (Swagger/OpenAPI)

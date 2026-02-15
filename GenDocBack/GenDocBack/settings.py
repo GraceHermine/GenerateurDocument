@@ -35,6 +35,9 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
 # Application definition
 
 INSTALLED_APPS = [
+    # Jazzmin doit être AVANT django.contrib.admin
+    'jazzmin',
+    
     # Django defaults
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,7 +57,6 @@ INSTALLED_APPS = [
     'templates.apps.TemplatesConfig',
     'user.apps.UserConfig',
     'django_filters',
-    'admin_custom',
 ]
 
 AUTH_USER_MODEL = 'user.User'
@@ -269,4 +271,128 @@ SPECTACULAR_SETTINGS = {
         'persistAuthorizationData': True,
         'displayOperationId': False,
     },
+}
+
+
+# ============================================================================
+# JAZZMIN CONFIGURATION
+# ============================================================================
+JAZZMIN_SETTINGS = {
+    # ---- Titre & Branding ----
+    "site_title": "GenDoc Admin",
+    "site_header": "Générateur de Documents",
+    "site_brand": "GenDoc",
+    "site_logo": None,
+    "login_logo": None,
+    "site_logo_classes": "img-circle",
+    "site_icon": None,
+    "welcome_sign": "Bienvenue sur l'administration GenDoc",
+    "copyright": "Générateur de Documents",
+
+    # ---- Recherche dans les modèles ----
+    "search_model": ["user.User", "document.TemplateDocument", "document.DocumentGenere"],
+
+    # ---- Utilisateur en haut à droite ----
+    "user_avatar": None,
+
+    ############
+    # Top Menu #
+    ############
+    "topmenu_links": [
+        {"name": "Accueil", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "API Docs", "url": "/api/docs/", "new_window": True},
+        {"app": "document"},
+    ],
+
+    #############
+    # Side Menu #
+    #############
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+
+    # Ordre et icônes personnalisées
+    "order_with_respect_to": [
+        "user",
+        "document",
+        "templates",
+        "auth",
+    ],
+
+    "icons": {
+        # App User
+        "user.User": "fas fa-users",
+
+        # App Document
+        "document.CategorieTemplate": "fas fa-folder-open",
+        "document.TemplateDocument": "fas fa-file-word",
+        "document.Formulaire": "fas fa-clipboard-list",
+        "document.Question": "fas fa-question-circle",
+        "document.ChoixQuestion": "fas fa-list-ul",
+        "document.TypeDocument": "fas fa-file-alt",
+        "document.DocumentGenere": "fas fa-file-download",
+        "document.ReponseQuestion": "fas fa-reply",
+
+        # App Templates (versioning)
+        "templates.Category": "fas fa-tags",
+        "templates.Template": "fas fa-file-code",
+        "templates.TemplateVersion": "fas fa-code-branch",
+
+        # Auth & Groupes
+        "auth": "fas fa-users-cog",
+        "auth.Group": "fas fa-user-shield",
+    },
+
+    "default_icon_parents": "fas fa-folder",
+    "default_icon_children": "fas fa-circle",
+
+    #############
+    # UI Tweaks #
+    #############
+    "related_modal_active": True,
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "user.User": "collapsible",
+        "document.TemplateDocument": "horizontal_tabs",
+        "document.DocumentGenere": "vertical_tabs",
+    },
+    "language_chooser": False,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": "darkly",
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    },
+    "actions_sticky_top": True,
 }
