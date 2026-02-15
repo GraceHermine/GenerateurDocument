@@ -64,24 +64,40 @@ def dashboard_view(request):
             if model._meta.abstract or model._meta.proxy:
                 continue
             
+            # Ignorer les modèles swappés (ex: auth.User remplacé par user.User)
+            if getattr(model._meta, 'swapped', False):
+                continue
+            
             model_name = model.__name__.lower()
             
-            # Chercher des champs de montant
-            if hasattr(model, 'total_amount'):
-                count = model.objects.count()
-                revenue = float(model.objects.aggregate(Sum('total_amount'))['total_amount__sum'] or 0)
-                stats[f'total_{model_name}'] = count
-                total_revenue += revenue
-            elif hasattr(model, 'amount'):
-                count = model.objects.count()
-                revenue = float(model.objects.aggregate(Sum('amount'))['amount__sum'] or 0)
-                stats[f'total_{model_name}'] = count
-                total_revenue += revenue
-            else:
-                # Compter simplement le nombre d'objets
-                count = model.objects.count()
-                if count > 0:  # Ne garder que les modèles avec des données
+            try:
+                # Chercher des champs de montant
+                if hasattr(model, 'total_amount'):
+                    count = model.objects.count()
+                    revenue = float(model.objects.aggregate(Sum('total_amount'))['total_amount__sum'] or 0)
                     stats[f'total_{model_name}'] = count
+                    total_revenue += revenue
+                elif hasattr(model, 'amount'):
+                    count = model.objects.count()
+                    revenue = float(model.objects.aggregate(Sum('amount'))['amount__sum'] or 0)
+                    stats[f'total_{model_name}'] = count
+                    total_revenue += revenue
+                else:
+                    # Compter simplement le nombre d'objets
+                    count = model.objects.count()
+                    if count > 0:  # Ne garder que les modèles avec des données
+                        stats[f'total_{model_name}'] = count
+            except Exception:
+                # Ignorer les modèles qui posent problème (table inexistante, etc.)
+                continue
+    
+    # Ajouter manuellement le compteur d'utilisateurs (gère le swap auth.User)
+    from django.contrib.auth import get_user_model
+    UserModel = get_user_model()
+    try:
+        stats['total_user'] = UserModel.objects.count()
+    except Exception:
+        stats['total_user'] = 0
     
     stats['total_revenue'] = total_revenue
     

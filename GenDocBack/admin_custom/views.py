@@ -13,12 +13,18 @@ def get_model_class(model_name):
     """
     Retourne la classe du modèle à partir de son nom.
     Utilise l'auto-découverte Django pour trouver le modèle.
+    Gère correctement les modèles swappés (ex: auth.User → user.User).
     """
+    # Cas spécial pour User : toujours utiliser get_user_model()
+    if model_name.lower() == 'user':
+        from django.contrib.auth import get_user_model
+        return get_user_model()
+    
     # Parcourir toutes les apps pour trouver le modèle
     for app_config in apps.get_app_configs():
         try:
             model = app_config.get_model(model_name)
-            if model:
+            if model and not getattr(model._meta, 'swapped', False):
                 return model
         except LookupError:
             # Le modèle n'existe pas dans cette app, continuer
@@ -29,7 +35,9 @@ def get_model_class(model_name):
         try:
             app_label, model_name_only = model_name.split('.', 1)
             app_config = apps.get_app_config(app_label)
-            return app_config.get_model(model_name_only)
+            model = app_config.get_model(model_name_only)
+            if model and not getattr(model._meta, 'swapped', False):
+                return model
         except (LookupError, ValueError):
             pass
     
@@ -91,6 +99,22 @@ def chart_data(request):
     data = []
     labels = []
     
+    # Détecter automatiquement le champ date du modèle (une seule fois)
+    date_field = None
+    for f in model_class._meta.get_fields():
+        if hasattr(f, 'get_internal_type') and f.get_internal_type() == 'DateTimeField' and hasattr(f, 'name'):
+            date_field = f.name
+            break
+    
+    if not date_field:
+        # Aucun champ DateTimeField trouvé, retourner des données vides
+        return JsonResponse({
+            'labels': [],
+            'data': [],
+            'chart_type': chart_type,
+            'error': f'Le modèle {model_name} n\'a pas de champ DateTimeField'
+        })
+    
     for i in range(periods - 1, -1, -1):
         if frequency == 'day':
             start = now - timedelta(days=i+1)
@@ -132,7 +156,7 @@ def chart_data(request):
             label = str(year)
         
         # Filtrer les données pour cette période
-        queryset = model_class.objects.filter(created_at__gte=start, created_at__lt=end)
+        queryset = model_class.objects.filter(**{f'{date_field}__gte': start, f'{date_field}__lt': end})
         
         # Appliquer l'opération
         if operation == 'sum':
@@ -140,14 +164,14 @@ def chart_data(request):
                 from django.db.models import Sum
                 result = queryset.aggregate(sum=Sum(field_name))
                 value = float(result['sum'] or 0)
-            except:
+            except Exception:
                 value = 0
         elif operation == 'avg':
             try:
                 from django.db.models import Avg
                 result = queryset.aggregate(avg=Avg(field_name))
                 value = float(result['avg'] or 0)
-            except:
+            except Exception:
                 value = 0
         elif operation == 'count':
             value = queryset.count()
@@ -208,6 +232,7 @@ def stats_data(request):
     """API pour récupérer les statistiques rapides - utilise l'auto-découverte"""
     from django.db.models import Sum
     from django.apps import apps
+    from django.contrib.auth import get_user_model
     
     stats = {}
     total_revenue = 0
@@ -222,24 +247,32 @@ def stats_data(request):
             if model._meta.abstract or model._meta.proxy:
                 continue
             
+            # Ignorer les modèles swappés (ex: auth.User remplacé par user.User)
+            if getattr(model._meta, 'swapped', False):
+                continue
+            
             model_name = model.__name__.lower()
             
-            # Chercher des champs de montant pour calculer les revenus
-            if hasattr(model, 'total_amount'):
-                count = model.objects.count()
-                revenue = float(model.objects.aggregate(Sum('total_amount'))['total_amount__sum'] or 0)
-                stats[model_name] = count
-                total_revenue += revenue
-            elif hasattr(model, 'amount'):
-                count = model.objects.count()
-                revenue = float(model.objects.aggregate(Sum('amount'))['amount__sum'] or 0)
-                stats[model_name] = count
-                total_revenue += revenue
-            else:
-                # Compter simplement le nombre d'objets
-                count = model.objects.count()
-                if count > 0:
+            try:
+                # Chercher des champs de montant pour calculer les revenus
+                if hasattr(model, 'total_amount'):
+                    count = model.objects.count()
+                    revenue = float(model.objects.aggregate(Sum('total_amount'))['total_amount__sum'] or 0)
                     stats[model_name] = count
+                    total_revenue += revenue
+                elif hasattr(model, 'amount'):
+                    count = model.objects.count()
+                    revenue = float(model.objects.aggregate(Sum('amount'))['amount__sum'] or 0)
+                    stats[model_name] = count
+                    total_revenue += revenue
+                else:
+                    # Compter simplement le nombre d'objets
+                    count = model.objects.count()
+                    if count > 0:
+                        stats[model_name] = count
+            except Exception:
+                # Ignorer les modèles qui posent problème (table inexistante, etc.)
+                continue
     
     # Ajouter le revenu total
     stats['revenue'] = total_revenue
@@ -248,13 +281,13 @@ def stats_data(request):
     document_model = get_model_class('DocumentGenere')
     template_model = get_model_class('TemplateDocument')
     formulaire_model = get_model_class('Formulaire')
-    user_model = get_model_class('User')
+    UserModel = get_user_model()
     
     result = {
         'documents': document_model.objects.count() if document_model else 0,
         'templates': template_model.objects.count() if template_model else 0,
         'formulaires': formulaire_model.objects.count() if formulaire_model else 0,
-        'users': user_model.objects.count() if user_model else 0,
+        'users': UserModel.objects.count(),
         'revenue': total_revenue,
     }
     
